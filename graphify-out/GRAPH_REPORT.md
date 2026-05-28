@@ -1,16 +1,16 @@
 # Graph Report - delta-trader  (2026-05-29)
 
 ## Corpus Check
-- 99 files · ~23,667 words
+- 99 files · ~24,705 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 674 nodes · 997 edges · 67 communities (56 shown, 11 thin omitted)
-- Extraction: 82% EXTRACTED · 18% INFERRED · 0% AMBIGUOUS · INFERRED: 184 edges (avg confidence: 0.58)
+- 686 nodes · 1014 edges · 71 communities (59 shown, 12 thin omitted)
+- Extraction: 82% EXTRACTED · 18% INFERRED · 0% AMBIGUOUS · INFERRED: 186 edges (avg confidence: 0.59)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `77d3ce89`
+- Built from commit: `92c27aaa`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -59,32 +59,36 @@
 - [[_COMMUNITY_Community 61|Community 61]]
 - [[_COMMUNITY_Community 62|Community 62]]
 - [[_COMMUNITY_Community 63|Community 63]]
+- [[_COMMUNITY_Community 67|Community 67]]
+- [[_COMMUNITY_Community 68|Community 68]]
+- [[_COMMUNITY_Community 69|Community 69]]
+- [[_COMMUNITY_Community 70|Community 70]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `RedisBus` - 42 edges
-2. `MinuteBuffer` - 33 edges
+2. `MinuteBuffer` - 34 edges
 3. `Tick` - 30 edges
 4. `DeltaRestClient` - 23 edges
 5. `DeltaWSClient` - 16 edges
-6. `compilerOptions` - 16 edges
-7. `MinuteAccumulator` - 14 edges
-8. `lifespan()` - 13 edges
-9. `MinuteAggregator` - 13 edges
+6. `MinuteAccumulator` - 16 edges
+7. `compilerOptions` - 16 edges
+8. `MinuteAggregator` - 14 edges
+9. `lifespan()` - 13 edges
 10. `TickNormalizer` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `lifespan()` --calls--> `dispose_engine()`  [INFERRED]
   backend/app/main.py → backend/app/db/session.py
-- `int` --uses--> `Tick`  [INFERRED]
-  backend/app/workers/minute_buffer.py → backend/app/models/market.py
 - `object` --uses--> `Tick`  [INFERRED]
   backend/app/workers/minute_buffer.py → backend/app/models/market.py
-- `test_parse_expiry_code()` --calls--> `parse_expiry_code()`  [INFERRED]
-  backend/tests/unit/test_misc.py → backend/app/services/bootstrap.py
-- `test_nearest_expiry_prefers_future()` --calls--> `_nearest_expiry()`  [INFERRED]
-  backend/tests/unit/test_misc.py → backend/app/services/bootstrap.py
+- `lifespan()` --calls--> `bootstrap_products()`  [INFERRED]
+  backend/app/main.py → backend/app/services/bootstrap.py
+- `lifespan()` --calls--> `DeltaWSClient`  [INFERRED]
+  backend/app/main.py → backend/app/services/delta_ws.py
+- `lifespan()` --calls--> `close_bus()`  [INFERRED]
+  backend/app/main.py → backend/app/services/redis_bus.py
 
-## Communities (67 total, 11 thin omitted)
+## Communities (71 total, 12 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.14
@@ -139,8 +143,8 @@ Cohesion: 0.06
 Nodes (51): ExpirySelectorProps, ChainRow, ChainRowProps, findAtmIndex(), fmtIvPct(), groupByStrike(), OptionChainTableProps, SideCells (+43 more)
 
 ### Community 13 - "Community 13"
-Cohesion: 0.25
-Nodes (7): 2026-05-28 19:36:18 UTC — Autonomous build starting, 2026-05-28 19:37:00 UTC — Pre-flight verification (Block A, Step 0), 2026-05-28 19:40:00 UTC — Phase 0, Step 2 — Create repo + clone, 2026-05-28 19:52:00 UTC — Phase 0, Steps 10-14 + merge, 2026-05-28 20:05:00 UTC — Phase 0, Steps 3-9, 2026-05-28 20:05:00 UTC — Phase 1, Step 1 — ADR, 2026-05-28 20:55:00 UTC — Phase 1, Steps 2-3 — Infra + backend
+Cohesion: 0.18
+Nodes (10): 2026-05-28 19:36:18 UTC — Autonomous build starting, 2026-05-28 19:37:00 UTC — Pre-flight verification (Block A, Step 0), 2026-05-28 19:40:00 UTC — Phase 0, Step 2 — Create repo + clone, 2026-05-28 19:52:00 UTC — Phase 0, Steps 10-14 + merge, 2026-05-28 20:05:00 UTC — Phase 0, Steps 3-9, 2026-05-28 20:05:00 UTC — Phase 1, Step 1 — ADR, 2026-05-28 20:45:00 UTC — Phase 1, Steps 4-5 — Frontend + full e2e, 2026-05-28 20:55:00 UTC — Phase 1, Steps 2-3 — Infra + backend (+2 more)
 
 ### Community 14 - "Community 14"
 Cohesion: 0.40
@@ -151,40 +155,40 @@ Cohesion: 0.40
 Nodes (4): Alternatives considered, Problem / motivation, Proposed solution, Scope
 
 ### Community 18 - "Community 18"
-Cohesion: 0.10
-Nodes (23): health(), health_deep(), Health endpoints: ``/health`` (process liveness) and ``/health/deep`` (db + redi, DecimalJSONResponse, _default(), Custom JSON response that serializes Decimal as string (money safety).  FastAPI', _encode(), _handle_control() (+15 more)
+Cohesion: 0.08
+Nodes (23): health(), health_deep(), Health endpoints: ``/health`` (process liveness) and ``/health/deep`` (db + redi, DecimalJSONResponse, _default(), Custom JSON response that serializes Decimal as string (money safety).  FastAPI', health(), lifespan() (+15 more)
 
 ### Community 24 - "Community 24"
 Cohesion: 0.22
 Nodes (8): Delta Exchange Integration, Endpoints (verified), `mark_vol` scaling differs by transport, Phase 1 scope, Product id field, Product / ticker shapes, Symbol format, Verified quirks (Phase 1)
 
 ### Community 35 - "Community 35"
-Cohesion: 0.08
-Nodes (17): Any, bool, object, str, Delta WS client test using an in-process websockets server.  Verifies: subscribe, test_ws_subscribes_routes_and_resubscribes(), MonkeyPatch, FakeAsyncpgConn (+9 more)
+Cohesion: 0.20
+Nodes (5): Any, bool, str, FakeBus, In-memory stand-in for RedisBus capturing latest hashes, pubs, and sets.
 
 ### Community 49 - "Community 49"
-Cohesion: 0.07
-Nodes (38): str, Any, bool, datetime, RedisBus, str, bool, str (+30 more)
+Cohesion: 0.10
+Nodes (30): Any, bool, datetime, RedisBus, str, Base, SQLAlchemy declarative base shared by all ORM models., Project-wide declarative base. (+22 more)
 
 ### Community 50 - "Community 50"
-Cohesion: 0.09
-Nodes (34): int, bytes, MinuteBuffer, RedisBus, str, Any, bytes, datetime (+26 more)
+Cohesion: 0.07
+Nodes (42): str, int, bytes, str, Any, bytes, datetime, Decimal (+34 more)
 
 ### Community 51 - "Community 51"
-Cohesion: 0.10
-Nodes (16): Any, bool, float, int, object, str, Delta REST client tests with respx-mocked HTTP (recorded-shape fixtures)., test_signature_is_deterministic_hmac() (+8 more)
+Cohesion: 0.09
+Nodes (19): Any, bool, float, int, object, str, Delta REST client tests with respx-mocked HTTP (recorded-shape fixtures)., The query httpx sends must be alphabetically sorted (== the signed string). (+11 more)
 
 ### Community 52 - "Community 52"
-Cohesion: 0.09
-Nodes (20): lifespan(), bytes, float, int, RedisBus, str, bool, ConnectFactory (+12 more)
+Cohesion: 0.08
+Nodes (22): bytes, float, int, RedisBus, str, bool, str, MinuteBuffer (+14 more)
 
 ### Community 53 - "Community 53"
 Cohesion: 0.06
 Nodes (31): dependencies, clsx, date-fns, decimal.js, @hookform/resolvers, lightweight-charts, lucide-react, react (+23 more)
 
 ### Community 54 - "Community 54"
-Cohesion: 0.11
-Nodes (18): datetime, float, int, MinuteBuffer, str, datetime, object, Tick (+10 more)
+Cohesion: 0.16
+Nodes (11): datetime, float, MinuteBuffer, str, object, Tick, _asyncpg_dsn(), Minute aggregator: drains closed minute buckets from the shared buffer and upser (+3 more)
 
 ### Community 55 - "Community 55"
 Cohesion: 0.09
@@ -195,43 +199,55 @@ Cohesion: 0.17
 Nodes (18): list_expiries(), list_products(), option_chain(), Read-only market metadata + option-chain endpoints., Live option chain. Prefers Redis snapshots; falls back to Delta REST., _row_from_delta(), _row_from_redis(), async_sessionmaker (+10 more)
 
 ### Community 57 - "Community 57"
-Cohesion: 0.12
-Nodes (12): str, BaseSettings, get_settings(), Application configuration via pydantic-settings.  Reads from the environment (an, asyncpg DSN used by the application., Synchronous DSN used by Alembic migrations., Cached settings singleton., Settings (+4 more)
+Cohesion: 0.19
+Nodes (9): str, BaseSettings, get_settings(), Application configuration via pydantic-settings.  Reads from the environment (an, asyncpg DSN used by the application., Synchronous DSN used by Alembic migrations., Cached settings singleton., Settings (+1 more)
 
 ### Community 58 - "Community 58"
 Cohesion: 0.11
 Nodes (18): devDependencies, autoprefixer, eslint, eslint-plugin-react-hooks, jsdom, @playwright/test, postcss, tailwindcss (+10 more)
 
 ### Community 59 - "Community 59"
-Cohesion: 0.33
-Nodes (8): datetime, int, str, Unit + property tests for the minute aggregation buffer., test_buffer_builds_ohlc(), test_minute_floor_truncates_seconds(), test_ohlc_invariants(), _tick()
+Cohesion: 0.21
+Nodes (11): datetime, datetime, Unit + property tests for the minute aggregation buffer., test_buffer_builds_ohlc(), test_minute_floor_truncates_seconds(), test_ohlc_invariants(), _tick(), minute_floor() (+3 more)
 
 ### Community 60 - "Community 60"
 Cohesion: 0.31
 Nodes (8): Any, bytes, str, _default(), dumps(), loads(), JSON helpers that serialize ``Decimal`` as strings (never float).  Money safety, Serialize to a JSON string, emitting Decimal as string.
 
 ### Community 61 - "Community 61"
-Cohesion: 0.25
-Nodes (6): Base, SQLAlchemy declarative base shared by all ORM models., Project-wide declarative base., DeclarativeBase, Minute-bar ORM model (Timescale hypertable ``ticks_minute``).  The hypertable co, TickMinute
+Cohesion: 0.36
+Nodes (9): _encode(), _handle_control(), _push_loop(), Frontend-facing WebSocket hub at ``/ws``.  Accepts subscribe/unsubscribe control, Subscription, ws_endpoint(), Any, str (+1 more)
 
 ### Community 63 - "Community 63"
 Cohesion: 0.50
 Nodes (3): expirySelect, ivCells, rows
 
+### Community 67 - "Community 67"
+Cohesion: 0.20
+Nodes (4): object, FakeAsyncpgConn, Shared test fixtures and in-memory fakes (no external services required)., Records copy + execute calls instead of touching Postgres.
+
+### Community 68 - "Community 68"
+Cohesion: 0.31
+Nodes (8): MonkeyPatch, Worker logic tests using in-memory fakes (no Redis/Postgres)., test_aggregator_flush_upserts(), test_aggregator_no_rows_is_noop(), test_aggregator_rebuffers_on_db_failure(), test_normalizer_process_updates_redis_and_buffer(), test_spot_indexer_routes_channels(), MinuteAggregator
+
+### Community 69 - "Community 69"
+Cohesion: 0.29
+Nodes (4): int, Connection, MinuteAccumulator, Drain closed buckets and upsert them. Returns rows written.          On any DB f
+
 ## Knowledge Gaps
-- **209 isolated node(s):** `@modelcontextprotocol/server-github`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `GITHUB_TOKEN`, `@modelcontextprotocol/server-filesystem`, `@modelcontextprotocol/server-postgres` (+204 more)
+- **212 isolated node(s):** `@modelcontextprotocol/server-github`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `GITHUB_TOKEN`, `@modelcontextprotocol/server-filesystem`, `@modelcontextprotocol/server-postgres` (+207 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `RedisBus` connect `Community 49` to `Community 50`, `Community 52`?**
+- **Why does `RedisBus` connect `Community 52` to `Community 49`, `Community 50`?**
   _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Why does `Tick` connect `Community 49` to `Community 35`, `Community 50`, `Community 59`, `Community 54`?**
-  _High betweenness centrality (0.052) - this node is a cross-community bridge._
+- **Why does `Tick` connect `Community 50` to `Community 49`, `Community 59`, `Community 68`, `Community 54`?**
+  _High betweenness centrality (0.054) - this node is a cross-community bridge._
 - **Why does `DeltaRestClient` connect `Community 51` to `Community 56`, `Community 49`?**
-  _High betweenness centrality (0.043) - this node is a cross-community bridge._
+  _High betweenness centrality (0.046) - this node is a cross-community bridge._
 - **Are the 29 inferred relationships involving `RedisBus` (e.g. with `Any` and `bool`) actually correct?**
   _`RedisBus` has 29 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 29 inferred relationships involving `MinuteBuffer` (e.g. with `bool` and `datetime`) actually correct?**
