@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import clsx from "clsx";
 import ExpirySelector from "../components/ExpirySelector";
 import OptionChainTable from "../components/OptionChainTable";
 import SpotChart from "../components/SpotChart";
+import PaperTradePage from "./paper/PaperTradePage";
 import { useExpiries } from "../hooks/useExpiries";
 import { useOptionChain } from "../hooks/useOptionChain";
 import { useSpotCandles } from "../hooks/useSpotCandles";
@@ -9,9 +11,12 @@ import { fmt } from "../lib/decimal";
 
 const UNDERLYING = "BTC";
 
+type Tab = "chain" | "trade";
+
 export default function Section1Paper(): JSX.Element {
   const { data: expiries = [], isLoading: expiriesLoading } = useExpiries(UNDERLYING);
   const [expiry, setExpiry] = useState<string | null>(null);
+  const [tab, setTab] = useState<Tab>("chain");
 
   // Default to the nearest (first ascending) expiry once loaded.
   useEffect(() => {
@@ -45,20 +50,65 @@ export default function Section1Paper(): JSX.Element {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_420px]">
-        <section>
-          <div className="mb-2 flex items-center justify-between text-xs text-neutral">
-            <span>Option Chain · {UNDERLYING}</span>
-            {source && <span>source: {source}</span>}
-          </div>
-          <OptionChainTable rows={rows} spot={spotClose} isLoading={isLoading} />
-        </section>
+      {/* section tabs */}
+      <nav className="mb-4 flex gap-1 border-b border-[var(--color-border)]">
+        <TabButton
+          active={tab === "chain"}
+          onClick={() => setTab("chain")}
+          testid="tab-chain"
+        >
+          Option Chain
+        </TabButton>
+        <TabButton
+          active={tab === "trade"}
+          onClick={() => setTab("trade")}
+          testid="tab-trade"
+        >
+          Paper Trade
+        </TabButton>
+      </nav>
 
-        <section>
-          <div className="mb-2 text-xs text-neutral">BTC Spot (1m close)</div>
-          <SpotChart close={spotClose} />
-        </section>
-      </div>
+      {tab === "chain" ? (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_420px]">
+          <section>
+            <div className="mb-2 flex items-center justify-between text-xs text-neutral">
+              <span>Option Chain · {UNDERLYING}</span>
+              {source && <span>source: {source}</span>}
+            </div>
+            <OptionChainTable rows={rows} spot={spotClose} isLoading={isLoading} />
+          </section>
+
+          <section>
+            <div className="mb-2 text-xs text-neutral">BTC Spot (1m close)</div>
+            <SpotChart close={spotClose} />
+          </section>
+        </div>
+      ) : (
+        <PaperTradePage />
+      )}
     </div>
+  );
+}
+
+interface TabButtonProps {
+  active: boolean;
+  onClick: () => void;
+  testid: string;
+  children: React.ReactNode;
+}
+function TabButton({ active, onClick, testid, children }: TabButtonProps): JSX.Element {
+  return (
+    <button
+      className={clsx(
+        "-mb-px border-b-2 px-3 py-1.5 text-sm",
+        active
+          ? "border-green text-text"
+          : "border-transparent text-neutral hover:text-text",
+      )}
+      onClick={onClick}
+      data-testid={testid}
+    >
+      {children}
+    </button>
   );
 }

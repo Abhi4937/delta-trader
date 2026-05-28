@@ -25,12 +25,39 @@ interface ErrorFrame {
   ch: "error";
   msg: string;
 }
+/** Live MTM push for a paper position (ADR 0003 §10). Numbers are strings. */
+export interface PaperPositionFrame {
+  ch: "paper_position";
+  id: number;
+  ts: string;
+  total_pnl: string;
+  unrealized_pnl: string;
+  realized_pnl: string;
+  net_delta: string;
+  net_gamma: string;
+  net_theta: string;
+  net_vega: string;
+  strategy_iv: string;
+  mark_stale: boolean | string;
+}
 type ServerFrame =
   | SubscribedFrame
   | OptionChainFrame
   | CandleFrame
   | ErrorFrame
+  | PaperPositionFrame
   | { ch: string; [k: string]: unknown };
+
+// Listeners for paper_position frames — the paperStore registers one here so we
+// keep a single WS connection (ADR 0003 §10 reuses the existing /ws hub).
+type PaperFrameListener = (frame: PaperPositionFrame) => void;
+const paperListeners = new Set<PaperFrameListener>();
+export function onPaperFrame(fn: PaperFrameListener): () => void {
+  paperListeners.add(fn);
+  return () => {
+    paperListeners.delete(fn);
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Store
@@ -78,7 +105,8 @@ export const useChainStore = create<ChainState>((set) => ({
 // ---------------------------------------------------------------------------
 type SubMsg =
   | { sub: "option_chain"; underlying: string; expiry: string }
-  | { sub: "candles"; underlying: string };
+  | { sub: "candles"; underlying: string }
+  | { sub: "paper_position"; id: number };
 
 let socket: WebSocket | null = null;
 let queue: ServerFrame[] = [];
@@ -103,6 +131,14 @@ function startFlushLoop(): void {
       const batch = queue;
       queue = [];
       useChainStore.getState()._applyBatch(batch);
+      if (paperListeners.size) {
+        for (const f of batch) {
+          if (f.ch === "paper_position") {
+            const pf = f as PaperPositionFrame;
+            for (const fn of paperListeners) fn(pf);
+          }
+        }
+      }
     }
     rafId = requestAnimationFrame(tick);
   };
@@ -174,4 +210,18 @@ export function subscribeCandles(underlying: string): void {
   desiredSubs.set(key, { sub: "candles", underlying });
   ensureSocket();
   send({ sub: "candles", underlying });
+}
+
+export function subscribePaperPosition(id: number): void {
+  if (!hasWindow()) return;
+  const key = `paper_position:${id}`;
+  desiredSubs.set(key, { sub: "paper_position", id });
+  ensureSocket();
+  send({ sub: "paper_position", id });
+}
+
+export function unsubscribePaperPosition(id: number): void {
+  desiredSubs.delete(`paper_position:${id}`);
+  // The hub has no explicit unsub frame; dropping it from desiredSubs means it
+  // won't be replayed on reconnect, and the store stops reading it.
 }
