@@ -1,0 +1,15 @@
+repos:
+  - repo: local
+    hooks:
+      - id: project-lint
+        name: Project lint (ruff + mypy + tsc)
+        entry: .claude/hooks/pre-commit-lint.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+      - id: graphify-rebuild
+        name: Graphify rebuild
+        entry: .claude/hooks/post-commit-graphify.sh
+        language: system
+        pass_filenames: false
+        stages: [post-commit]
