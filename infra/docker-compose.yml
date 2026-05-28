@@ -1,0 +1,3 @@
+# Placeholder — full compose stack (postgres+timescale, redis, backend, frontend)
+# is written in Phase 1.
+services: {}
