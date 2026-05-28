@@ -1,0 +1,42 @@
+{
+  "model": "claude-opus-4-7",
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(gh:*)",
+      "Bash(pnpm:*)",
+      "Bash(npm:*)",
+      "Bash(uv:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(mypy:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(graphify:*)",
+      "Bash(curl:*)",
+      "Bash(jq:*)",
+      "Read(**)",
+      "Write(**)",
+      "Edit(**)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(sudo:*)",
+      "Bash(*credentials*)",
+      "Bash(*--api-key*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/secrets/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "command": ".claude/hooks/block-dangerous.sh"
+      }
+    ]
+  }
+}
