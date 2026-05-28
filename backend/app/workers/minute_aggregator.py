@@ -57,15 +57,23 @@ class MinuteAggregator:
                 logger.warning("minute flush failed; will retry", error=str(exc))
 
     async def flush_once(self, now: datetime) -> int:
-        """Drain closed buckets and upsert them. Returns rows written."""
+        """Drain closed buckets and upsert them. Returns rows written.
+
+        On any DB failure the drained rows are restored to the buffer so the next
+        flush retries them — a transient Postgres outage never loses minute bars.
+        """
         drained = self._buffer.drain_closed(now)
         if not drained:
             return 0
-        conn = await asyncpg.connect(self._dsn)
         try:
-            await self._write(conn, drained)
-        finally:
-            await conn.close()
+            conn = await asyncpg.connect(self._dsn)
+            try:
+                await self._write(conn, drained)
+            finally:
+                await conn.close()
+        except Exception:
+            self._buffer.readd(drained)
+            raise
         logger.info("minute bars persisted", rows=len(drained))
         return len(drained)
 

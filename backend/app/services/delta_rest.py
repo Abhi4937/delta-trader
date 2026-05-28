@@ -80,11 +80,12 @@ class DeltaRestClient:
         auth: bool = False,
     ) -> Any:
         headers: dict[str, str] = {"Accept": "application/json"}
-        # Build a deterministic, alphabetically-sorted query string for signing.
-        query = ""
-        if params:
-            items = sorted((k, str(v)) for k, v in params.items())
-            query = "?" + "&".join(f"{k}={v}" for k, v in items)
+        # Build a deterministic, alphabetically-sorted query string for signing AND
+        # send that exact same ordered sequence to httpx so signed == sent.
+        sorted_items: list[tuple[str, str]] = (
+            sorted((k, str(v)) for k, v in params.items()) if params else []
+        )
+        query = "?" + "&".join(f"{k}={v}" for k, v in sorted_items) if sorted_items else ""
 
         if auth:
             if not settings.live_trading_enabled:
@@ -98,7 +99,10 @@ class DeltaRestClient:
             headers.update({"api-key": self._api_key, "timestamp": ts, "signature": signature})
             logger.info("delta auth request", method=method, path=path)
 
-        resp = await self._client.request(method, path, params=params, headers=headers)
+        # dict preserves insertion order (== sorted), so the sent query matches
+        # the signed query string byte-for-byte.
+        ordered_params = dict(sorted_items)
+        resp = await self._client.request(method, path, params=ordered_params, headers=headers)
         if resp.status_code >= 500:
             resp.raise_for_status()  # retryable
         resp.raise_for_status()

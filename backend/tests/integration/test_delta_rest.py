@@ -82,3 +82,18 @@ def test_signature_is_deterministic_hmac() -> None:
     sig2 = _sign("secret", "GET", "1700000000", "/v2/orders", "?state=open", "")
     assert sig1 == sig2
     assert len(sig1) == 64  # sha256 hexdigest
+
+
+@respx.mock
+async def test_sent_query_is_sorted_to_match_signature() -> None:
+    """The query httpx sends must be alphabetically sorted (== the signed string)."""
+    route = respx.get(f"{BASE}/v2/tickers").mock(
+        return_value=httpx.Response(200, json=TICKERS_FIXTURE)
+    )
+    async with DeltaRestClient(base_url=BASE) as client:
+        # Params intentionally given out of alphabetical order.
+        await client.get_option_chain("BTC", "31-05-2026")
+    sent = str(route.calls.last.request.url)
+    # contract_types < expiry_date < underlying_asset_symbols alphabetically
+    assert sent.index("contract_types") < sent.index("expiry_date")
+    assert sent.index("expiry_date") < sent.index("underlying_asset_symbols")

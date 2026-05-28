@@ -52,6 +52,26 @@ class MinuteAccumulator:
             if val is not None:
                 setattr(self, fld, val)
 
+    def merge_older(self, other: MinuteAccumulator) -> None:
+        """Fold an earlier (drained-but-unflushed) accumulator into this one.
+
+        ``other`` precedes ``self`` chronologically, so ``other.open`` is the true
+        open; this accumulator's ``close`` stays the latest. Extremes combine.
+        """
+        if other.open is not None:
+            self.open = other.open
+        for hi in (other.high,):
+            if hi is not None:
+                self.high = hi if self.high is None else max(self.high, hi)
+        for lo in (other.low,):
+            if lo is not None:
+                self.low = lo if self.low is None else min(self.low, lo)
+        if self.close is None:
+            self.close = other.close
+        for fld in ("mark_price", "iv", "delta", "gamma", "theta", "vega", "oi", "volume"):
+            if getattr(self, fld) is None and getattr(other, fld) is not None:
+                setattr(self, fld, getattr(other, fld))
+
     def as_row(self) -> tuple[object, ...]:
         return (
             self.symbol,
@@ -108,6 +128,20 @@ class MinuteBuffer:
         closed_keys = [k for k, acc in self._buckets.items() if acc.ts < current]
         drained = [self._buckets.pop(k) for k in closed_keys]
         return drained
+
+    def readd(self, accumulators: list[MinuteAccumulator]) -> None:
+        """Restore drained accumulators after a failed flush (no data loss).
+
+        If late ticks re-created a bucket for the same (symbol, ts) while the flush
+        was in flight, merge the drained values into it.
+        """
+        for acc in accumulators:
+            key = (acc.symbol, acc.ts)
+            existing = self._buckets.get(key)
+            if existing is None:
+                self._buckets[key] = acc
+            else:
+                existing.merge_older(acc)
 
     def __len__(self) -> int:
         return len(self._buckets)

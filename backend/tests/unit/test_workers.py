@@ -70,3 +70,34 @@ async def test_aggregator_flush_upserts(monkeypatch: pytest.MonkeyPatch) -> None
 async def test_aggregator_no_rows_is_noop(monkeypatch: pytest.MonkeyPatch) -> None:
     aggregator = MinuteAggregator(MinuteBuffer(), dsn="postgres://x")
     assert await aggregator.flush_once(datetime.now(tz=UTC)) == 0
+
+
+async def test_aggregator_rebuffers_on_db_failure(monkeypatch: pytest.MonkeyPatch) -> None:
+    from decimal import Decimal
+
+    from app.models.market import Tick
+
+    buffer = MinuteBuffer()
+    base = datetime(2026, 5, 28, 10, 30, 1, tzinfo=UTC)
+    buffer.add(Tick(symbol="C-BTC-1-1", channel="ticker", ts=base, mark_price=Decimal("100")))
+    later = datetime(2026, 5, 28, 10, 31, 5, tzinfo=UTC)
+
+    async def boom(dsn: str, *a: Any, **k: Any) -> Any:
+        raise OSError("db down")
+
+    monkeypatch.setattr(agg_mod.asyncpg, "connect", boom)
+    aggregator = MinuteAggregator(buffer, dsn="postgres://x")
+    with pytest.raises(OSError):
+        await aggregator.flush_once(later)
+    # The minute bar must NOT be lost — it is restored for the next flush.
+    assert len(buffer) == 1
+
+    # Recovery: a working connection now flushes the restored row.
+    fake_conn = FakeAsyncpgConn()
+
+    async def ok(dsn: str, *a: Any, **k: Any) -> FakeAsyncpgConn:
+        return fake_conn
+
+    monkeypatch.setattr(agg_mod.asyncpg, "connect", ok)
+    assert await aggregator.flush_once(later) == 1
+    assert fake_conn.copied[0][0] == "C-BTC-1-1"
