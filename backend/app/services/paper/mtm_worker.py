@@ -15,6 +15,7 @@ from datetime import UTC, datetime
 from decimal import Decimal
 
 import asyncpg
+import orjson
 from sqlalchemy import select
 
 from app.core.config import settings
@@ -172,10 +173,15 @@ class PaperMtmWorker:
 
     async def _tick(self, now: datetime) -> None:
         for pos in self._cache.values():
+            # Fetch all leg marks concurrently (bounds tick latency at leg count).
+            snaps = await asyncio.gather(
+                *(self._bus.get_latest(f"latest:{leg[0]}") for leg in pos.legs)
+            )
             views: list[LegView] = []
             mark_stale = False
-            for symbol, side, qty_open, cs, entry_fill in pos.legs:
-                snap = await self._bus.get_latest(f"latest:{symbol}")
+            for (_symbol, side, qty_open, cs, entry_fill), snap in zip(
+                pos.legs, snaps, strict=True
+            ):
                 mark = _d(snap.get("mark_price"))
                 if mark is None:
                     mark_stale = True
@@ -229,8 +235,6 @@ class PaperMtmWorker:
             "mark_stale": "true" if snap["mark_stale"] else "false",
         }
         await self._bus.set_latest(f"paper:mtm:{position_id}", mapping)
-        import orjson
-
         await self._bus.publish(
             f"paper:position:{position_id}",
             orjson.dumps({"ch": "paper_position", "id": position_id, **mapping}).decode(),
@@ -268,10 +272,11 @@ class PaperMtmWorker:
 
     async def _flush(self, now: datetime) -> None:
         current = _minute(now)
+        # Peek (do NOT pop) closed buckets — only delete them after a successful
+        # upsert so a transient DB error never drops a minute of MTM history.
         closed = [k for k, acc in self._buf.items() if acc.ts < current]
         if not closed:
             return
-        rows = [self._buf.pop(k) for k in closed]
         records = [
             (
                 r.position_id,
@@ -289,7 +294,7 @@ class PaperMtmWorker:
                 r.strategy_iv,
                 r.mark_stale,
             )
-            for r in rows
+            for r in (self._buf[k] for k in closed)
         ]
         conn = await asyncpg.connect(self._dsn)
         try:
@@ -304,4 +309,7 @@ class PaperMtmWorker:
                 await conn.execute(_UPSERT_SQL)
         finally:
             await conn.close()
+        # Upsert committed — now it's safe to evict the flushed buckets.
+        for k in closed:
+            self._buf.pop(k, None)
         logger.info("paper mtm flushed", rows=len(records))

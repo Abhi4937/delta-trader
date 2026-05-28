@@ -40,6 +40,9 @@ class FakeRest:
     async def get_candles(self, *a: Any, **k: Any) -> list[dict[str, Any]]:
         return []
 
+    async def get_ticker(self, symbol: str) -> dict[str, Any]:
+        return {"volume": "1000", "mark_price": "50"}
+
     async def aclose(self) -> None:
         return None
 

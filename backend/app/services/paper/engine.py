@@ -7,6 +7,7 @@ publishes ``paper:events`` so the MTM worker refreshes its position cache.
 
 from __future__ import annotations
 
+import asyncio
 import json
 from datetime import UTC, datetime
 from decimal import Decimal
@@ -21,7 +22,8 @@ from app.models.paper import PaperFill, PaperLeg, PaperPosition, Strategy
 from app.models.product import Product
 from app.services.paper import closer as closer_mod
 from app.services.paper.executor import execute_entry
-from app.services.paper.models import ExecutionResult, StrategySpec
+from app.services.paper.models import ExecutionResult, StrategySpec, signed_qty
+from app.services.quant.pnl import realized_pnl_slice
 from app.services.quant.slippage import InsufficientDepthError, Level, OrderBook
 from app.services.redis_bus import RedisBus, get_bus
 
@@ -68,30 +70,53 @@ class PaperEngine:
             )
             by_symbol = {p.symbol: p for p in rows}
 
-        for symbol in symbols:
+        async def fetch_one(
+            symbol: str,
+        ) -> tuple[str, OrderBook, Decimal, Decimal | None, int | None]:
             # A symbol whose L2 book can't be fetched (404 / Delta error) has no
             # tradeable depth -> empty book -> compute_fill raises InsufficientDepth
             # -> the API returns a clean 409 instead of an unhandled 500.
             try:
                 raw = await self._rest.get_l2_orderbook(symbol)
             except Exception as exc:
-                logger.warning(
-                    "l2 fetch failed; treating as no depth", symbol=symbol, error=str(exc)
-                )
+                logger.warning("l2 fetch failed; no depth", symbol=symbol, error=str(exc))
                 raw = {}
-            books[symbol] = parse_l2(raw if isinstance(raw, dict) else {})
+            book = parse_l2(raw if isinstance(raw, dict) else {})
             prod = by_symbol.get(symbol)
             cs = prod.contract_size if prod and prod.contract_size is not None else Decimal(1)
+            vol = await self._vol_24h(symbol, cs)
+            return symbol, book, cs, vol, (prod.product_id if prod else None)
+
+        results = await asyncio.gather(*(fetch_one(s) for s in symbols))
+        for symbol, book, cs, vol, pid in results:
+            books[symbol] = book
             contract_sizes[symbol] = cs
-            product_ids[symbol] = prod.product_id if prod else None
-            snap = await self._bus.get_latest(f"latest:{symbol}")
-            vol = snap.get("volume")
-            mark = snap.get("mark_price")
-            if vol and mark:
-                vol24h[symbol] = Decimal(vol) * Decimal(mark) * cs
-            else:
-                vol24h[symbol] = None
+            vol24h[symbol] = vol
+            product_ids[symbol] = pid
         return books, contract_sizes, vol24h, product_ids
+
+    async def _vol_24h(self, symbol: str, cs: Decimal) -> Decimal | None:
+        """24h traded notional: Redis turnover/volume first, then a REST ticker
+        fallback (ADR 0003 §2). None -> the slippage model applies the illiquid floor.
+        """
+        snap = await self._bus.get_latest(f"latest:{symbol}")
+        turnover = snap.get("turnover")
+        if turnover:
+            return Decimal(turnover)
+        vol, mark = snap.get("volume"), snap.get("mark_price")
+        if vol and mark:
+            return Decimal(vol) * Decimal(mark) * cs
+        try:
+            t = await self._rest.get_ticker(symbol)
+        except Exception as exc:
+            logger.warning("ticker vol fallback failed", symbol=symbol, error=str(exc))
+            return None
+        if isinstance(t, dict):
+            if t.get("turnover"):
+                return Decimal(str(t["turnover"]))
+            if t.get("volume") and t.get("mark_price"):
+                return Decimal(str(t["volume"])) * Decimal(str(t["mark_price"])) * cs
+        return None
 
     # --- create / execute -------------------------------------------------
     async def create_strategy(self, spec: StrategySpec) -> int:
@@ -200,13 +225,21 @@ class PaperEngine:
 
         by_leg = {cl.leg_id: cl for cl in close_legs}
         closed_map = {c.leg_id: c for c in result.legs}
+        realized_added = Decimal(0)
         async with sessionmaker() as session, session.begin():
             pos = await session.get(PaperPosition, position_id)
             if pos is None:
                 raise ValueError("position vanished")
-            # Mutate legs attached to THIS session so changes persist.
+            # Re-read legs with a row lock so a concurrent close can't drive
+            # qty_open negative or double-count realized PnL (TOCTOU guard).
             fresh = (
-                (await session.execute(select(PaperLeg).where(PaperLeg.position_id == position_id)))
+                (
+                    await session.execute(
+                        select(PaperLeg)
+                        .where(PaperLeg.position_id == position_id)
+                        .with_for_update()
+                    )
+                )
                 .scalars()
                 .all()
             )
@@ -214,22 +247,32 @@ class PaperEngine:
                 c = closed_map.get(int(leg.id))
                 if c is None:
                     continue
-                leg.qty_open = leg.qty_open - c.qty_close
+                # Clamp to what is actually still open at write time.
+                actual = min(c.qty_close, leg.qty_open)
+                if actual <= 0:
+                    continue
+                leg.qty_open = leg.qty_open - actual
                 leg.exit_fill = c.fill.fill_price
                 leg.status = "closed" if leg.qty_open <= 0 else "partially_closed"
+                realized_added += realized_pnl_slice(
+                    signed_qty_closed=signed_qty(by_leg[int(leg.id)].entry_side, actual),
+                    entry_fill=leg.entry_fill,
+                    exit_fill=c.fill.fill_price,
+                    contract_size=leg.contract_size,
+                )
                 session.add(
                     PaperFill(
                         leg_id=leg.id,
                         kind="close",
                         side=by_leg[int(leg.id)].entry_side,
-                        qty=c.qty_close,
+                        qty=actual,
                         vwap=c.fill.vwap,
                         impact=c.fill.impact,
                         fill_price=c.fill.fill_price,
                         book_snapshot={"consumed": c.fill.consumed},
                     )
                 )
-            pos.realized_pnl = pos.realized_pnl + result.realized_pnl
+            pos.realized_pnl = pos.realized_pnl + realized_added
             all_closed = all(leg.qty_open <= 0 for leg in fresh)
             if all_closed:
                 pos.status = "closed"

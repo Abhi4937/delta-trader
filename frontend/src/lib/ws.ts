@@ -108,6 +108,8 @@ type SubMsg =
   | { sub: "candles"; underlying: string }
   | { sub: "paper_position"; id: number };
 
+type UnsubMsg = { unsub: string; id?: number; underlying?: string; expiry?: string };
+
 let socket: WebSocket | null = null;
 let queue: ServerFrame[] = [];
 let rafId: number | null = null;
@@ -145,7 +147,7 @@ function startFlushLoop(): void {
   rafId = requestAnimationFrame(tick);
 }
 
-function send(msg: SubMsg): void {
+function send(msg: SubMsg | UnsubMsg): void {
   if (socket && socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify(msg));
   }
@@ -222,6 +224,7 @@ export function subscribePaperPosition(id: number): void {
 
 export function unsubscribePaperPosition(id: number): void {
   desiredSubs.delete(`paper_position:${id}`);
-  // The hub has no explicit unsub frame; dropping it from desiredSubs means it
-  // won't be replayed on reconnect, and the store stops reading it.
+  // Tell the hub to stop polling/pushing this id (it supports unsub); also keeps
+  // it from being replayed on reconnect.
+  send({ unsub: "paper_position", id });
 }
