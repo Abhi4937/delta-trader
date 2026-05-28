@@ -69,7 +69,16 @@ class PaperEngine:
             by_symbol = {p.symbol: p for p in rows}
 
         for symbol in symbols:
-            raw = await self._rest.get_l2_orderbook(symbol)
+            # A symbol whose L2 book can't be fetched (404 / Delta error) has no
+            # tradeable depth -> empty book -> compute_fill raises InsufficientDepth
+            # -> the API returns a clean 409 instead of an unhandled 500.
+            try:
+                raw = await self._rest.get_l2_orderbook(symbol)
+            except Exception as exc:
+                logger.warning(
+                    "l2 fetch failed; treating as no depth", symbol=symbol, error=str(exc)
+                )
+                raw = {}
             books[symbol] = parse_l2(raw if isinstance(raw, dict) else {})
             prod = by_symbol.get(symbol)
             cs = prod.contract_size if prod and prod.contract_size is not None else Decimal(1)

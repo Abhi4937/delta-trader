@@ -13,6 +13,7 @@ from typing import Any
 
 import orjson
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from starlette.websockets import WebSocketState
 
 from app.api.products import _row_from_redis
 from app.core.logging import logger
@@ -105,41 +106,53 @@ async def _push_loop(
     bus = get_bus()
     while True:
         await asyncio.sleep(_PUSH_INTERVAL_SECONDS)
-        for sub in list(subs.values()):
-            if sub.kind == "paper_position" and sub.pid is not None:
-                snap = await bus.get_latest(f"paper:mtm:{sub.pid}")
+        # Stop quietly once the socket is closing (avoids send-after-close tracebacks).
+        if websocket.client_state != WebSocketState.CONNECTED:
+            return
+        try:
+            await _push_subscriptions(websocket, bus, subs)
+        except (WebSocketDisconnect, RuntimeError):
+            return
+
+
+async def _push_subscriptions(
+    websocket: WebSocket,
+    bus: Any,
+    subs: dict[SubKey, Subscription],
+) -> None:
+    for sub in list(subs.values()):
+        if sub.kind == "paper_position" and sub.pid is not None:
+            snap = await bus.get_latest(f"paper:mtm:{sub.pid}")
+            if snap:
+                await websocket.send_text(_encode({"ch": "paper_position", "id": sub.pid, **snap}))
+        elif sub.kind == "option_chain" and sub.expiry:
+            symbols = sorted(await bus.smembers(f"idx:chain:{sub.underlying}:{sub.expiry}"))
+            rows = []
+            for symbol in symbols:
+                snap = await bus.get_latest(f"latest:{symbol}")
                 if snap:
-                    await websocket.send_text(
-                        _encode({"ch": "paper_position", "id": sub.pid, **snap})
+                    rows.append(_row_from_redis(symbol, snap))
+            if rows:
+                await websocket.send_text(
+                    _encode(
+                        {
+                            "ch": "option_chain",
+                            "underlying": sub.underlying,
+                            "expiry": sub.expiry,
+                            "rows": rows,
+                        }
                     )
-            elif sub.kind == "option_chain" and sub.expiry:
-                symbols = sorted(await bus.smembers(f"idx:chain:{sub.underlying}:{sub.expiry}"))
-                rows = []
-                for symbol in symbols:
-                    snap = await bus.get_latest(f"latest:{symbol}")
-                    if snap:
-                        rows.append(_row_from_redis(symbol, snap))
-                if rows:
-                    await websocket.send_text(
-                        _encode(
-                            {
-                                "ch": "option_chain",
-                                "underlying": sub.underlying,
-                                "expiry": sub.expiry,
-                                "rows": rows,
-                            }
-                        )
+                )
+        elif sub.kind == "candles":
+            snap = await bus.get_latest(f"latest:spot:{sub.underlying}")
+            if snap:
+                await websocket.send_text(
+                    _encode(
+                        {
+                            "ch": "candle",
+                            "underlying": sub.underlying,
+                            "close": snap.get("close") or snap.get("mark_price"),
+                            "ts": snap.get("ts"),
+                        }
                     )
-            elif sub.kind == "candles":
-                snap = await bus.get_latest(f"latest:spot:{sub.underlying}")
-                if snap:
-                    await websocket.send_text(
-                        _encode(
-                            {
-                                "ch": "candle",
-                                "underlying": sub.underlying,
-                                "close": snap.get("close") or snap.get("mark_price"),
-                                "ts": snap.get("ts"),
-                            }
-                        )
-                    )
+                )
