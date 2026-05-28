@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Graphify
+graphify-out/manifest.json
+graphify-out/cost.json
+graphify-out/cache/

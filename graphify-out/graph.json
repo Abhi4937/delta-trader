@@ -1,0 +1,3287 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": ".mcp.json",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_config_file"
+      },
+      "id": "mcp_json",
+      "community": 0,
+      "norm_label": ".mcp.json"
+    },
+    {
+      "label": "github",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "id": "delta_trader_mcp_mcp_server_github",
+      "community": 0,
+      "norm_label": "github"
+    },
+    {
+      "label": "npx",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_command"
+      },
+      "id": "mcp_command_npx",
+      "community": 0,
+      "norm_label": "npx"
+    },
+    {
+      "label": "@modelcontextprotocol/server-github",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "id": "mcp_package_modelcontextprotocol_server_github",
+      "community": 0,
+      "norm_label": "@modelcontextprotocol/server-github"
+    },
+    {
+      "label": "GITHUB_PERSONAL_ACCESS_TOKEN",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "env_var"
+      },
+      "id": "env_var_github_personal_access_token",
+      "community": 0,
+      "norm_label": "github_personal_access_token"
+    },
+    {
+      "label": "GITHUB_TOKEN",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "env_var"
+      },
+      "id": "env_var_github_token",
+      "community": 0,
+      "norm_label": "github_token"
+    },
+    {
+      "label": "filesystem",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "id": "delta_trader_mcp_mcp_server_filesystem",
+      "community": 0,
+      "norm_label": "filesystem"
+    },
+    {
+      "label": "@modelcontextprotocol/server-filesystem",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "id": "mcp_package_modelcontextprotocol_server_filesystem",
+      "community": 0,
+      "norm_label": "@modelcontextprotocol/server-filesystem"
+    },
+    {
+      "label": "postgres",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "id": "delta_trader_mcp_mcp_server_postgres",
+      "community": 0,
+      "norm_label": "postgres"
+    },
+    {
+      "label": "@modelcontextprotocol/server-postgres",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "id": "mcp_package_modelcontextprotocol_server_postgres",
+      "community": 0,
+      "norm_label": "@modelcontextprotocol/server-postgres"
+    },
+    {
+      "label": "memory",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "id": "delta_trader_mcp_mcp_server_memory",
+      "community": 0,
+      "norm_label": "memory"
+    },
+    {
+      "label": "@modelcontextprotocol/server-memory",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "id": "mcp_package_modelcontextprotocol_server_memory",
+      "community": 0,
+      "norm_label": "@modelcontextprotocol/server-memory"
+    },
+    {
+      "label": "sequential-thinking",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "id": "delta_trader_mcp_mcp_server_sequential_thinking",
+      "community": 0,
+      "norm_label": "sequential-thinking"
+    },
+    {
+      "label": "@modelcontextprotocol/server-sequential-thinking",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "id": "mcp_package_modelcontextprotocol_server_sequential_thinking",
+      "community": 0,
+      "norm_label": "@modelcontextprotocol/server-sequential-thinking"
+    },
+    {
+      "label": "playwright",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "id": "delta_trader_mcp_mcp_server_playwright",
+      "community": 0,
+      "norm_label": "playwright"
+    },
+    {
+      "label": "@playwright/mcp",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "id": "mcp_package_playwright_mcp",
+      "community": 0,
+      "norm_label": "@playwright/mcp"
+    },
+    {
+      "label": "context7",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "id": "delta_trader_mcp_mcp_server_context7",
+      "community": 0,
+      "norm_label": "context7"
+    },
+    {
+      "label": "@upstash/context7-mcp",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "id": "mcp_package_upstash_context7_mcp",
+      "community": 0,
+      "norm_label": "@upstash/context7-mcp"
+    },
+    {
+      "label": "fetch",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "id": "delta_trader_mcp_mcp_server_fetch",
+      "community": 0,
+      "norm_label": "fetch"
+    },
+    {
+      "label": "@modelcontextprotocol/server-fetch",
+      "file_type": "code",
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "id": "mcp_package_modelcontextprotocol_server_fetch",
+      "community": 0,
+      "norm_label": "@modelcontextprotocol/server-fetch"
+    },
+    {
+      "label": "settings.json",
+      "file_type": "code",
+      "source_file": ".claude/settings.json",
+      "source_location": "L1",
+      "id": "claude_settings_json",
+      "community": 8,
+      "norm_label": "settings.json"
+    },
+    {
+      "label": "model",
+      "file_type": "code",
+      "source_file": ".claude/settings.json",
+      "source_location": "L2",
+      "id": "claude_settings_model",
+      "community": 8,
+      "norm_label": "model"
+    },
+    {
+      "label": "permissions",
+      "file_type": "code",
+      "source_file": ".claude/settings.json",
+      "source_location": "L3",
+      "id": "claude_settings_permissions",
+      "community": 8,
+      "norm_label": "permissions"
+    },
+    {
+      "label": "allow",
+      "file_type": "code",
+      "source_file": ".claude/settings.json",
+      "source_location": "L4",
+      "id": "claude_settings_permissions_allow",
+      "community": 8,
+      "norm_label": "allow"
+    },
+    {
+      "label": "deny",
+      "file_type": "code",
+      "source_file": ".claude/settings.json",
+      "source_location": "L24",
+      "id": "claude_settings_permissions_deny",
+      "community": 8,
+      "norm_label": "deny"
+    },
+    {
+      "label": "hooks",
+      "file_type": "code",
+      "source_file": ".claude/settings.json",
+      "source_location": "L34",
+      "id": "claude_settings_hooks",
+      "community": 8,
+      "norm_label": "hooks"
+    },
+    {
+      "label": "PreToolUse",
+      "file_type": "code",
+      "source_file": ".claude/settings.json",
+      "source_location": "L35",
+      "id": "claude_settings_hooks_pretooluse",
+      "community": 8,
+      "norm_label": "pretooluse"
+    },
+    {
+      "label": "settings.local.json",
+      "file_type": "code",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L1",
+      "id": "claude_settings_local_json",
+      "community": 12,
+      "norm_label": "settings.local.json"
+    },
+    {
+      "label": "//",
+      "file_type": "code",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L2",
+      "id": "claude_settings_local",
+      "community": 12,
+      "norm_label": "//"
+    },
+    {
+      "label": "permissions",
+      "file_type": "code",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L3",
+      "id": "claude_settings_local_permissions",
+      "community": 12,
+      "norm_label": "permissions"
+    },
+    {
+      "label": "allow",
+      "file_type": "code",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L4",
+      "id": "claude_settings_local_permissions_allow",
+      "community": 12,
+      "norm_label": "allow"
+    },
+    {
+      "label": "deny",
+      "file_type": "code",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L5",
+      "id": "claude_settings_local_permissions_deny",
+      "community": 12,
+      "norm_label": "deny"
+    },
+    {
+      "label": "block-dangerous.sh",
+      "file_type": "code",
+      "source_file": ".claude/hooks/block-dangerous.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "id": "claude_hooks_block_dangerous_sh",
+      "community": 16,
+      "norm_label": "block-dangerous.sh"
+    },
+    {
+      "label": "block-dangerous.sh script",
+      "file_type": "code",
+      "source_file": ".claude/hooks/block-dangerous.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "id": "c_dev_live_trading_platform_build_delta_trader_claude_hooks_block_dangerous_sh__entry",
+      "community": 16,
+      "norm_label": "block-dangerous.sh script"
+    },
+    {
+      "label": "block()",
+      "file_type": "code",
+      "source_file": ".claude/hooks/block-dangerous.sh",
+      "source_location": "L11",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "id": "hooks_block_dangerous_block",
+      "community": 16,
+      "norm_label": "block()"
+    },
+    {
+      "label": "post-commit-graphify.sh",
+      "file_type": "code",
+      "source_file": ".claude/hooks/post-commit-graphify.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "id": "claude_hooks_post_commit_graphify_sh",
+      "community": 21,
+      "norm_label": "post-commit-graphify.sh"
+    },
+    {
+      "label": "post-commit-graphify.sh script",
+      "file_type": "code",
+      "source_file": ".claude/hooks/post-commit-graphify.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "id": "c_dev_live_trading_platform_build_delta_trader_claude_hooks_post_commit_graphify_sh__entry",
+      "community": 21,
+      "norm_label": "post-commit-graphify.sh script"
+    },
+    {
+      "label": "pre-commit-lint.sh",
+      "file_type": "code",
+      "source_file": ".claude/hooks/pre-commit-lint.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "id": "claude_hooks_pre_commit_lint_sh",
+      "community": 19,
+      "norm_label": "pre-commit-lint.sh"
+    },
+    {
+      "label": "pre-commit-lint.sh script",
+      "file_type": "code",
+      "source_file": ".claude/hooks/pre-commit-lint.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "id": "c_dev_live_trading_platform_build_delta_trader_claude_hooks_pre_commit_lint_sh__entry",
+      "community": 19,
+      "norm_label": "pre-commit-lint.sh script"
+    },
+    {
+      "label": "main.py",
+      "file_type": "code",
+      "source_file": "backend/app/main.py",
+      "source_location": "L1",
+      "id": "backend_app_main_py",
+      "community": 18,
+      "norm_label": "main.py"
+    },
+    {
+      "label": "health()",
+      "file_type": "code",
+      "source_file": "backend/app/main.py",
+      "source_location": "L7",
+      "id": "app_main_health",
+      "community": 18,
+      "norm_label": "health()"
+    },
+    {
+      "label": "str",
+      "file_type": "code",
+      "source_file": "backend/app/main.py",
+      "source_location": "L7",
+      "id": "str",
+      "community": 18,
+      "norm_label": "str"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/app/__init__.py",
+      "source_location": "L1",
+      "id": "backend_app_init_py",
+      "community": 27,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/app/api/__init__.py",
+      "source_location": "L1",
+      "id": "backend_app_api_init_py",
+      "community": 28,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/app/core/__init__.py",
+      "source_location": "L1",
+      "id": "backend_app_core_init_py",
+      "community": 29,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/app/db/__init__.py",
+      "source_location": "L1",
+      "id": "backend_app_db_init_py",
+      "community": 30,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/app/models/__init__.py",
+      "source_location": "L1",
+      "id": "backend_app_models_init_py",
+      "community": 31,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/app/services/__init__.py",
+      "source_location": "L1",
+      "id": "backend_app_services_init_py",
+      "community": 32,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/app/utils/__init__.py",
+      "source_location": "L1",
+      "id": "backend_app_utils_init_py",
+      "community": 33,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/app/workers/__init__.py",
+      "source_location": "L1",
+      "id": "backend_app_workers_init_py",
+      "community": 34,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "conftest.py",
+      "file_type": "code",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L1",
+      "id": "backend_tests_conftest_py",
+      "community": 35,
+      "norm_label": "conftest.py"
+    },
+    {
+      "label": "test_smoke.py",
+      "file_type": "code",
+      "source_file": "backend/tests/test_smoke.py",
+      "source_location": "L1",
+      "id": "backend_tests_test_smoke_py",
+      "community": 26,
+      "norm_label": "test_smoke.py"
+    },
+    {
+      "label": "test_smoke()",
+      "file_type": "code",
+      "source_file": "backend/tests/test_smoke.py",
+      "source_location": "L1",
+      "id": "tests_test_smoke_test_smoke",
+      "community": 26,
+      "norm_label": "test_smoke()"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/tests/__init__.py",
+      "source_location": "L1",
+      "id": "backend_tests_init_py",
+      "community": 36,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/tests/integration/__init__.py",
+      "source_location": "L1",
+      "id": "backend_tests_integration_init_py",
+      "community": 37,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "backend/tests/unit/__init__.py",
+      "source_location": "L1",
+      "id": "backend_tests_unit_init_py",
+      "community": 38,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "playwright.config.ts",
+      "file_type": "code",
+      "source_file": "frontend/playwright.config.ts",
+      "source_location": "L1",
+      "id": "frontend_playwright_config_ts",
+      "community": 39,
+      "norm_label": "playwright.config.ts"
+    },
+    {
+      "label": "tailwind.config.js",
+      "file_type": "code",
+      "source_file": "frontend/tailwind.config.js",
+      "source_location": "L1",
+      "id": "frontend_tailwind_config_js",
+      "community": 40,
+      "norm_label": "tailwind.config.js"
+    },
+    {
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L1",
+      "id": "frontend_tsconfig_json",
+      "community": 1,
+      "norm_label": "tsconfig.json"
+    },
+    {
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L2",
+      "id": "frontend_tsconfig_compileroptions",
+      "community": 1,
+      "norm_label": "compileroptions"
+    },
+    {
+      "label": "target",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L3",
+      "id": "frontend_tsconfig_compileroptions_target",
+      "community": 1,
+      "norm_label": "target"
+    },
+    {
+      "label": "useDefineForClassFields",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L4",
+      "id": "frontend_tsconfig_compileroptions_usedefineforclassfields",
+      "community": 1,
+      "norm_label": "usedefineforclassfields"
+    },
+    {
+      "label": "lib",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L5",
+      "id": "frontend_tsconfig_compileroptions_lib",
+      "community": 1,
+      "norm_label": "lib"
+    },
+    {
+      "label": "module",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L6",
+      "id": "frontend_tsconfig_compileroptions_module",
+      "community": 1,
+      "norm_label": "module"
+    },
+    {
+      "label": "skipLibCheck",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L7",
+      "id": "frontend_tsconfig_compileroptions_skiplibcheck",
+      "community": 1,
+      "norm_label": "skiplibcheck"
+    },
+    {
+      "label": "moduleResolution",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L8",
+      "id": "frontend_tsconfig_compileroptions_moduleresolution",
+      "community": 1,
+      "norm_label": "moduleresolution"
+    },
+    {
+      "label": "allowImportingTsExtensions",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L9",
+      "id": "frontend_tsconfig_compileroptions_allowimportingtsextensions",
+      "community": 1,
+      "norm_label": "allowimportingtsextensions"
+    },
+    {
+      "label": "resolveJsonModule",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L10",
+      "id": "frontend_tsconfig_compileroptions_resolvejsonmodule",
+      "community": 1,
+      "norm_label": "resolvejsonmodule"
+    },
+    {
+      "label": "isolatedModules",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L11",
+      "id": "frontend_tsconfig_compileroptions_isolatedmodules",
+      "community": 1,
+      "norm_label": "isolatedmodules"
+    },
+    {
+      "label": "noEmit",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L12",
+      "id": "frontend_tsconfig_compileroptions_noemit",
+      "community": 1,
+      "norm_label": "noemit"
+    },
+    {
+      "label": "jsx",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L13",
+      "id": "frontend_tsconfig_compileroptions_jsx",
+      "community": 1,
+      "norm_label": "jsx"
+    },
+    {
+      "label": "strict",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L14",
+      "id": "frontend_tsconfig_compileroptions_strict",
+      "community": 1,
+      "norm_label": "strict"
+    },
+    {
+      "label": "noUnusedLocals",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L15",
+      "id": "frontend_tsconfig_compileroptions_nounusedlocals",
+      "community": 1,
+      "norm_label": "nounusedlocals"
+    },
+    {
+      "label": "noUnusedParameters",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L16",
+      "id": "frontend_tsconfig_compileroptions_nounusedparameters",
+      "community": 1,
+      "norm_label": "nounusedparameters"
+    },
+    {
+      "label": "noFallthroughCasesInSwitch",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L17",
+      "id": "frontend_tsconfig_compileroptions_nofallthroughcasesinswitch",
+      "community": 1,
+      "norm_label": "nofallthroughcasesinswitch"
+    },
+    {
+      "label": "include",
+      "file_type": "code",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L19",
+      "id": "frontend_tsconfig_include",
+      "community": 1,
+      "norm_label": "include"
+    },
+    {
+      "label": "vite.config.ts",
+      "file_type": "code",
+      "source_file": "frontend/vite.config.ts",
+      "source_location": "L1",
+      "id": "frontend_vite_config_ts",
+      "community": 41,
+      "norm_label": "vite.config.ts"
+    },
+    {
+      "label": "main.tsx",
+      "file_type": "code",
+      "source_file": "frontend/src/main.tsx",
+      "source_location": "L1",
+      "id": "frontend_src_main_tsx",
+      "community": 42,
+      "norm_label": "main.tsx"
+    },
+    {
+      "label": "dev.sh",
+      "file_type": "code",
+      "source_file": "scripts/dev.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "id": "scripts_dev_sh",
+      "community": 20,
+      "norm_label": "dev.sh"
+    },
+    {
+      "label": "dev.sh script",
+      "file_type": "code",
+      "source_file": "scripts/dev.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "id": "c_dev_live_trading_platform_build_delta_trader_scripts_dev_sh__entry",
+      "community": 20,
+      "norm_label": "dev.sh script"
+    },
+    {
+      "label": "seed_test_data.py",
+      "file_type": "code",
+      "source_file": "scripts/seed_test_data.py",
+      "source_location": "L1",
+      "id": "scripts_seed_test_data_py",
+      "community": 17,
+      "norm_label": "seed_test_data.py"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "scripts/seed_test_data.py",
+      "source_location": "L4",
+      "id": "scripts_seed_test_data_main",
+      "community": 17,
+      "norm_label": "main()"
+    },
+    {
+      "label": "Placeholder \u2014 seeds fixture market data for local testing. Implemented in Phase",
+      "file_type": "rationale",
+      "source_file": "scripts/seed_test_data.py",
+      "source_location": "L1",
+      "id": "scripts_seed_test_data_rationale_1",
+      "community": 17,
+      "norm_label": "placeholder \u2014 seeds fixture market data for local testing. implemented in phase"
+    },
+    {
+      "label": "CLAUDE.md",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "id": "claude_md",
+      "community": 4,
+      "norm_label": "claude.md"
+    },
+    {
+      "label": "Delta Trader \u2014 Project Brief for Claude",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "id": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "community": 4,
+      "norm_label": "delta trader \u2014 project brief for claude"
+    },
+    {
+      "label": "What this is",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L3",
+      "id": "delta_trader_claude_what_this_is",
+      "community": 4,
+      "norm_label": "what this is"
+    },
+    {
+      "label": "Stack",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L11",
+      "id": "delta_trader_claude_stack",
+      "community": 4,
+      "norm_label": "stack"
+    },
+    {
+      "label": "Hard rules",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L18",
+      "id": "delta_trader_claude_hard_rules",
+      "community": 4,
+      "norm_label": "hard rules"
+    },
+    {
+      "label": "Working agreement with you (Claude)",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L27",
+      "id": "delta_trader_claude_working_agreement_with_you_claude",
+      "community": 4,
+      "norm_label": "working agreement with you (claude)"
+    },
+    {
+      "label": "Where things live",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L35",
+      "id": "delta_trader_claude_where_things_live",
+      "community": 4,
+      "norm_label": "where things live"
+    },
+    {
+      "label": "When in doubt",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L44",
+      "id": "delta_trader_claude_when_in_doubt",
+      "community": 4,
+      "norm_label": "when in doubt"
+    },
+    {
+      "label": "graphify",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L49",
+      "id": "delta_trader_claude_graphify",
+      "community": 4,
+      "norm_label": "graphify"
+    },
+    {
+      "label": "OVERNIGHT_LOG.md",
+      "file_type": "document",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L1",
+      "id": "overnight_log_md",
+      "community": 13,
+      "norm_label": "overnight_log.md"
+    },
+    {
+      "label": "2026-05-28 19:36:18 UTC \u2014 Autonomous build starting",
+      "file_type": "document",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L1",
+      "id": "delta_trader_overnight_log_2026_05_28_19_36_18_utc_autonomous_build_starting",
+      "community": 13,
+      "norm_label": "2026-05-28 19:36:18 utc \u2014 autonomous build starting"
+    },
+    {
+      "label": "2026-05-28 19:37:00 UTC \u2014 Pre-flight verification (Block A, Step 0)",
+      "file_type": "document",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L9",
+      "id": "delta_trader_overnight_log_2026_05_28_19_37_00_utc_pre_flight_verification_block_a_step_0",
+      "community": 13,
+      "norm_label": "2026-05-28 19:37:00 utc \u2014 pre-flight verification (block a, step 0)"
+    },
+    {
+      "label": "2026-05-28 19:40:00 UTC \u2014 Phase 0, Step 2 \u2014 Create repo + clone",
+      "file_type": "document",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L20",
+      "id": "delta_trader_overnight_log_2026_05_28_19_40_00_utc_phase_0_step_2_create_repo_clone",
+      "community": 13,
+      "norm_label": "2026-05-28 19:40:00 utc \u2014 phase 0, step 2 \u2014 create repo + clone"
+    },
+    {
+      "label": "2026-05-28 20:05:00 UTC \u2014 Phase 0, Steps 3-9",
+      "file_type": "document",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L25",
+      "id": "delta_trader_overnight_log_2026_05_28_20_05_00_utc_phase_0_steps_3_9",
+      "community": 13,
+      "norm_label": "2026-05-28 20:05:00 utc \u2014 phase 0, steps 3-9"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "readme_md",
+      "community": 7,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "Delta Trader",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "delta_trader_readme_delta_trader",
+      "community": 7,
+      "norm_label": "delta trader"
+    },
+    {
+      "label": "Sections",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L6",
+      "id": "delta_trader_readme_sections",
+      "community": 7,
+      "norm_label": "sections"
+    },
+    {
+      "label": "Stack",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L15",
+      "id": "delta_trader_readme_stack",
+      "community": 7,
+      "norm_label": "stack"
+    },
+    {
+      "label": "Quick start (local)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L21",
+      "id": "delta_trader_readme_quick_start_local",
+      "community": 7,
+      "norm_label": "quick start (local)"
+    },
+    {
+      "label": "code:bash (cp .env.example .env      # fill in values)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L22",
+      "id": "delta_trader_readme_codeblock_1",
+      "community": 7,
+      "norm_label": "code:bash (cp .env.example .env      # fill in values)"
+    },
+    {
+      "label": "Development",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L28",
+      "id": "delta_trader_readme_development",
+      "community": 7,
+      "norm_label": "development"
+    },
+    {
+      "label": "License",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L33",
+      "id": "delta_trader_readme_license",
+      "community": 7,
+      "norm_label": "license"
+    },
+    {
+      "label": "architect.md",
+      "file_type": "document",
+      "source_file": ".claude/agents/architect.md",
+      "source_location": "L1",
+      "id": "claude_agents_architect_md",
+      "community": 43,
+      "norm_label": "architect.md"
+    },
+    {
+      "label": "backend-dev.md",
+      "file_type": "document",
+      "source_file": ".claude/agents/backend-dev.md",
+      "source_location": "L1",
+      "id": "claude_agents_backend_dev_md",
+      "community": 44,
+      "norm_label": "backend-dev.md"
+    },
+    {
+      "label": "frontend-dev.md",
+      "file_type": "document",
+      "source_file": ".claude/agents/frontend-dev.md",
+      "source_location": "L1",
+      "id": "claude_agents_frontend_dev_md",
+      "community": 45,
+      "norm_label": "frontend-dev.md"
+    },
+    {
+      "label": "quant-analyst.md",
+      "file_type": "document",
+      "source_file": ".claude/agents/quant-analyst.md",
+      "source_location": "L1",
+      "id": "claude_agents_quant_analyst_md",
+      "community": 46,
+      "norm_label": "quant-analyst.md"
+    },
+    {
+      "label": "reviewer.md",
+      "file_type": "document",
+      "source_file": ".claude/agents/reviewer.md",
+      "source_location": "L1",
+      "id": "claude_agents_reviewer_md",
+      "community": 47,
+      "norm_label": "reviewer.md"
+    },
+    {
+      "label": "tester.md",
+      "file_type": "document",
+      "source_file": ".claude/agents/tester.md",
+      "source_location": "L1",
+      "id": "claude_agents_tester_md",
+      "community": 48,
+      "norm_label": "tester.md"
+    },
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L1",
+      "id": "claude_skills_delta_api_skill_md",
+      "community": 2,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "Delta Exchange India \u2014 API reference",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L6",
+      "id": "delta_api_skill_delta_exchange_india_api_reference",
+      "community": 2,
+      "norm_label": "delta exchange india \u2014 api reference"
+    },
+    {
+      "label": "Endpoints",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L8",
+      "id": "delta_api_skill_endpoints",
+      "community": 2,
+      "norm_label": "endpoints"
+    },
+    {
+      "label": "Auth signing (REST)",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L12",
+      "id": "delta_api_skill_auth_signing_rest",
+      "community": 2,
+      "norm_label": "auth signing (rest)"
+    },
+    {
+      "label": "Key REST endpoints",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L15",
+      "id": "delta_api_skill_key_rest_endpoints",
+      "community": 2,
+      "norm_label": "key rest endpoints"
+    },
+    {
+      "label": "Symbol format",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L29",
+      "id": "delta_api_skill_symbol_format",
+      "community": 2,
+      "norm_label": "symbol format"
+    },
+    {
+      "label": "WebSocket subscribe payload",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L32",
+      "id": "delta_api_skill_websocket_subscribe_payload",
+      "community": 2,
+      "norm_label": "websocket subscribe payload"
+    },
+    {
+      "label": "code:json ({\"type\":\"subscribe\",\"payload\":{\"channels\":[{\"name\":\"v2/ticke)",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L33",
+      "id": "delta_api_skill_codeblock_1",
+      "community": 2,
+      "norm_label": "code:json ({\"type\":\"subscribe\",\"payload\":{\"channels\":[{\"name\":\"v2/ticke)"
+    },
+    {
+      "label": "Channels to know",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L37",
+      "id": "delta_api_skill_channels_to_know",
+      "community": 2,
+      "norm_label": "channels to know"
+    },
+    {
+      "label": "Gotchas",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L46",
+      "id": "delta_api_skill_gotchas",
+      "community": 2,
+      "norm_label": "gotchas"
+    },
+    {
+      "label": "Sandbox",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L55",
+      "id": "delta_api_skill_sandbox",
+      "community": 2,
+      "norm_label": "sandbox"
+    },
+    {
+      "label": "Source of truth",
+      "file_type": "document",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L59",
+      "id": "delta_api_skill_source_of_truth",
+      "community": 2,
+      "norm_label": "source of truth"
+    },
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L1",
+      "id": "claude_skills_options_math_skill_md",
+      "community": 5,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "Options math reference",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L6",
+      "id": "options_math_skill_options_math_reference",
+      "community": 5,
+      "norm_label": "options math reference"
+    },
+    {
+      "label": "Pricing model: Black-76 (futures-style, Delta uses this)",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L8",
+      "id": "options_math_skill_pricing_model_black_76_futures_style_delta_uses_this",
+      "community": 5,
+      "norm_label": "pricing model: black-76 (futures-style, delta uses this)"
+    },
+    {
+      "label": "Greeks",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L15",
+      "id": "options_math_skill_greeks",
+      "community": 5,
+      "norm_label": "greeks"
+    },
+    {
+      "label": "IV inversion",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L24",
+      "id": "options_math_skill_iv_inversion",
+      "community": 5,
+      "norm_label": "iv inversion"
+    },
+    {
+      "label": "Realized Volatility",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L29",
+      "id": "options_math_skill_realized_volatility",
+      "community": 5,
+      "norm_label": "realized volatility"
+    },
+    {
+      "label": "Put-Call Parity (use as a property test)",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L37",
+      "id": "options_math_skill_put_call_parity_use_as_a_property_test",
+      "community": 5,
+      "norm_label": "put-call parity (use as a property test)"
+    },
+    {
+      "label": "PnL for a multi-leg position",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L41",
+      "id": "options_math_skill_pnl_for_a_multi_leg_position",
+      "community": 5,
+      "norm_label": "pnl for a multi-leg position"
+    },
+    {
+      "label": "Margin (initial)",
+      "file_type": "document",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L45",
+      "id": "options_math_skill_margin_initial",
+      "community": 5,
+      "norm_label": "margin (initial)"
+    },
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L1",
+      "id": "claude_skills_react_trading_ui_skill_md",
+      "community": 6,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "React trading UI patterns",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L6",
+      "id": "react_trading_ui_skill_react_trading_ui_patterns",
+      "community": 6,
+      "norm_label": "react trading ui patterns"
+    },
+    {
+      "label": "Performance: throttling live data",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L8",
+      "id": "react_trading_ui_skill_performance_throttling_live_data",
+      "community": 6,
+      "norm_label": "performance: throttling live data"
+    },
+    {
+      "label": "State for live streams",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L19",
+      "id": "react_trading_ui_skill_state_for_live_streams",
+      "community": 6,
+      "norm_label": "state for live streams"
+    },
+    {
+      "label": "code:ts (// hooks/useDeltaStream.ts pattern)",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L22",
+      "id": "react_trading_ui_skill_codeblock_1",
+      "community": 6,
+      "norm_label": "code:ts (// hooks/usedeltastream.ts pattern)"
+    },
+    {
+      "label": "Numbers",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L37",
+      "id": "react_trading_ui_skill_numbers",
+      "community": 6,
+      "norm_label": "numbers"
+    },
+    {
+      "label": "Strategy builder",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L44",
+      "id": "react_trading_ui_skill_strategy_builder",
+      "community": 6,
+      "norm_label": "strategy builder"
+    },
+    {
+      "label": "Forms",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L47",
+      "id": "react_trading_ui_skill_forms",
+      "community": 6,
+      "norm_label": "forms"
+    },
+    {
+      "label": "Don'ts",
+      "file_type": "document",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L50",
+      "id": "react_trading_ui_skill_don_ts",
+      "community": 6,
+      "norm_label": "don'ts"
+    },
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L1",
+      "id": "claude_skills_timeseries_db_skill_md",
+      "community": 3,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "TimescaleDB conventions for this repo",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L6",
+      "id": "timeseries_db_skill_timescaledb_conventions_for_this_repo",
+      "community": 3,
+      "norm_label": "timescaledb conventions for this repo"
+    },
+    {
+      "label": "Hypertables",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L8",
+      "id": "timeseries_db_skill_hypertables",
+      "community": 3,
+      "norm_label": "hypertables"
+    },
+    {
+      "label": "code:sql (SELECT create_hypertable('ticks_minute', 'ts', chunk_time_in)",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L10",
+      "id": "timeseries_db_skill_codeblock_1",
+      "community": 3,
+      "norm_label": "code:sql (select create_hypertable('ticks_minute', 'ts', chunk_time_in)"
+    },
+    {
+      "label": "Schema pattern",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L14",
+      "id": "timeseries_db_skill_schema_pattern",
+      "community": 3,
+      "norm_label": "schema pattern"
+    },
+    {
+      "label": "code:sql (CREATE TABLE ticks_minute ()",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L15",
+      "id": "timeseries_db_skill_codeblock_2",
+      "community": 3,
+      "norm_label": "code:sql (create table ticks_minute ()"
+    },
+    {
+      "label": "Continuous aggregates (for charts)",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L35",
+      "id": "timeseries_db_skill_continuous_aggregates_for_charts",
+      "community": 3,
+      "norm_label": "continuous aggregates (for charts)"
+    },
+    {
+      "label": "code:sql (CREATE MATERIALIZED VIEW ticks_hourly)",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L36",
+      "id": "timeseries_db_skill_codeblock_3",
+      "community": 3,
+      "norm_label": "code:sql (create materialized view ticks_hourly)"
+    },
+    {
+      "label": "Retention + archival",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L46",
+      "id": "timeseries_db_skill_retention_archival",
+      "community": 3,
+      "norm_label": "retention + archival"
+    },
+    {
+      "label": "Performance rules",
+      "file_type": "document",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L51",
+      "id": "timeseries_db_skill_performance_rules",
+      "community": 3,
+      "norm_label": "performance rules"
+    },
+    {
+      "label": "pull_request_template.md",
+      "file_type": "document",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L1",
+      "id": "github_pull_request_template_md",
+      "community": 9,
+      "norm_label": "pull_request_template.md"
+    },
+    {
+      "label": "What changed",
+      "file_type": "document",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L1",
+      "id": "github_pull_request_template_what_changed",
+      "community": 9,
+      "norm_label": "what changed"
+    },
+    {
+      "label": "Why",
+      "file_type": "document",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L3",
+      "id": "github_pull_request_template_why",
+      "community": 9,
+      "norm_label": "why"
+    },
+    {
+      "label": "How to test",
+      "file_type": "document",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L5",
+      "id": "github_pull_request_template_how_to_test",
+      "community": 9,
+      "norm_label": "how to test"
+    },
+    {
+      "label": "code:block1 (# commands a reviewer can run)",
+      "file_type": "document",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L6",
+      "id": "github_pull_request_template_codeblock_1",
+      "community": 9,
+      "norm_label": "code:block1 (# commands a reviewer can run)"
+    },
+    {
+      "label": "Screenshots (UI changes)",
+      "file_type": "document",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L10",
+      "id": "github_pull_request_template_screenshots_ui_changes",
+      "community": 9,
+      "norm_label": "screenshots (ui changes)"
+    },
+    {
+      "label": "Checklist",
+      "file_type": "document",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L12",
+      "id": "github_pull_request_template_checklist",
+      "community": 9,
+      "norm_label": "checklist"
+    },
+    {
+      "label": "bug.md",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L1",
+      "id": "github_issue_template_bug_md",
+      "community": 11,
+      "norm_label": "bug.md"
+    },
+    {
+      "label": "What happened",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L8",
+      "id": "issue_template_bug_what_happened",
+      "community": 11,
+      "norm_label": "what happened"
+    },
+    {
+      "label": "Expected",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L10",
+      "id": "issue_template_bug_expected",
+      "community": 11,
+      "norm_label": "expected"
+    },
+    {
+      "label": "Steps to reproduce",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L12",
+      "id": "issue_template_bug_steps_to_reproduce",
+      "community": 11,
+      "norm_label": "steps to reproduce"
+    },
+    {
+      "label": "Environment",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L15",
+      "id": "issue_template_bug_environment",
+      "community": 11,
+      "norm_label": "environment"
+    },
+    {
+      "label": "Logs / screenshots",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L20",
+      "id": "issue_template_bug_logs_screenshots",
+      "community": 11,
+      "norm_label": "logs / screenshots"
+    },
+    {
+      "label": "feature.md",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L1",
+      "id": "github_issue_template_feature_md",
+      "community": 15,
+      "norm_label": "feature.md"
+    },
+    {
+      "label": "Problem / motivation",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L8",
+      "id": "issue_template_feature_problem_motivation",
+      "community": 15,
+      "norm_label": "problem / motivation"
+    },
+    {
+      "label": "Proposed solution",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L10",
+      "id": "issue_template_feature_proposed_solution",
+      "community": 15,
+      "norm_label": "proposed solution"
+    },
+    {
+      "label": "Alternatives considered",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L12",
+      "id": "issue_template_feature_alternatives_considered",
+      "community": 15,
+      "norm_label": "alternatives considered"
+    },
+    {
+      "label": "Scope",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L14",
+      "id": "issue_template_feature_scope",
+      "community": 15,
+      "norm_label": "scope"
+    },
+    {
+      "label": "API.md",
+      "file_type": "document",
+      "source_file": "docs/API.md",
+      "source_location": "L1",
+      "id": "docs_api_md",
+      "community": 22,
+      "norm_label": "api.md"
+    },
+    {
+      "label": "API",
+      "file_type": "document",
+      "source_file": "docs/API.md",
+      "source_location": "L1",
+      "id": "docs_api_api",
+      "community": 22,
+      "norm_label": "api"
+    },
+    {
+      "label": "ARCHITECTURE.md",
+      "file_type": "document",
+      "source_file": "docs/ARCHITECTURE.md",
+      "source_location": "L1",
+      "id": "docs_architecture_md",
+      "community": 23,
+      "norm_label": "architecture.md"
+    },
+    {
+      "label": "Architecture",
+      "file_type": "document",
+      "source_file": "docs/ARCHITECTURE.md",
+      "source_location": "L1",
+      "id": "docs_architecture_architecture",
+      "community": 23,
+      "norm_label": "architecture"
+    },
+    {
+      "label": "DELTA_INTEGRATION.md",
+      "file_type": "document",
+      "source_file": "docs/DELTA_INTEGRATION.md",
+      "source_location": "L1",
+      "id": "docs_delta_integration_md",
+      "community": 24,
+      "norm_label": "delta_integration.md"
+    },
+    {
+      "label": "Delta Exchange Integration",
+      "file_type": "document",
+      "source_file": "docs/DELTA_INTEGRATION.md",
+      "source_location": "L1",
+      "id": "docs_delta_integration_delta_exchange_integration",
+      "community": 24,
+      "norm_label": "delta exchange integration"
+    },
+    {
+      "label": "DEPLOY_ORACLE.md",
+      "file_type": "document",
+      "source_file": "docs/DEPLOY_ORACLE.md",
+      "source_location": "L1",
+      "id": "docs_deploy_oracle_md",
+      "community": 25,
+      "norm_label": "deploy_oracle.md"
+    },
+    {
+      "label": "Deploy to Oracle Cloud",
+      "file_type": "document",
+      "source_file": "docs/DEPLOY_ORACLE.md",
+      "source_location": "L1",
+      "id": "docs_deploy_oracle_deploy_to_oracle_cloud",
+      "community": 25,
+      "norm_label": "deploy to oracle cloud"
+    },
+    {
+      "label": "MCP_SERVERS.md",
+      "file_type": "document",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L1",
+      "id": "docs_mcp_servers_md",
+      "community": 14,
+      "norm_label": "mcp_servers.md"
+    },
+    {
+      "label": "MCP Servers",
+      "file_type": "document",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L1",
+      "id": "docs_mcp_servers_mcp_servers",
+      "community": 14,
+      "norm_label": "mcp servers"
+    },
+    {
+      "label": "Secrets",
+      "file_type": "document",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L21",
+      "id": "docs_mcp_servers_secrets",
+      "community": 14,
+      "norm_label": "secrets"
+    },
+    {
+      "label": "Verify",
+      "file_type": "document",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L26",
+      "id": "docs_mcp_servers_verify",
+      "community": 14,
+      "norm_label": "verify"
+    },
+    {
+      "label": "code:bash (claude mcp list   # should list all 8; approve project serve)",
+      "file_type": "document",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L27",
+      "id": "docs_mcp_servers_codeblock_1",
+      "community": 14,
+      "norm_label": "code:bash (claude mcp list   # should list all 8; approve project serve)"
+    },
+    {
+      "label": "0001-stack-choice.md",
+      "file_type": "document",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L1",
+      "id": "docs_decisions_0001_stack_choice_md",
+      "community": 10,
+      "norm_label": "0001-stack-choice.md"
+    },
+    {
+      "label": "0001 \u2014 Stack choice",
+      "file_type": "document",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L1",
+      "id": "decisions_0001_stack_choice_0001_stack_choice",
+      "community": 10,
+      "norm_label": "0001 \u2014 stack choice"
+    },
+    {
+      "label": "Context",
+      "file_type": "document",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L7",
+      "id": "decisions_0001_stack_choice_context",
+      "community": 10,
+      "norm_label": "context"
+    },
+    {
+      "label": "Decision",
+      "file_type": "document",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L12",
+      "id": "decisions_0001_stack_choice_decision",
+      "community": 10,
+      "norm_label": "decision"
+    },
+    {
+      "label": "Consequences",
+      "file_type": "document",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L19",
+      "id": "decisions_0001_stack_choice_consequences",
+      "community": 10,
+      "norm_label": "consequences"
+    },
+    {
+      "label": "Template for future ADRs",
+      "file_type": "document",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L25",
+      "id": "decisions_0001_stack_choice_template_for_future_adrs",
+      "community": 10,
+      "norm_label": "template for future adrs"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "mcp_json",
+      "target": "delta_trader_mcp_mcp_server_context7"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "mcp_json",
+      "target": "delta_trader_mcp_mcp_server_fetch"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "mcp_json",
+      "target": "delta_trader_mcp_mcp_server_filesystem"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "mcp_json",
+      "target": "delta_trader_mcp_mcp_server_github"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "mcp_json",
+      "target": "delta_trader_mcp_mcp_server_memory"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "mcp_json",
+      "target": "delta_trader_mcp_mcp_server_playwright"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "mcp_json",
+      "target": "delta_trader_mcp_mcp_server_postgres"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "mcp_json",
+      "target": "delta_trader_mcp_mcp_server_sequential_thinking"
+    },
+    {
+      "relation": "requires_env",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "delta_trader_mcp_mcp_server_github",
+      "target": "env_var_github_personal_access_token"
+    },
+    {
+      "relation": "requires_env",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "delta_trader_mcp_mcp_server_github",
+      "target": "env_var_github_token"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "source": "delta_trader_mcp_mcp_server_github",
+      "target": "mcp_command_npx"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "source": "delta_trader_mcp_mcp_server_github",
+      "target": "mcp_package_modelcontextprotocol_server_github"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "source": "delta_trader_mcp_mcp_server_context7",
+      "target": "mcp_command_npx"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "source": "delta_trader_mcp_mcp_server_fetch",
+      "target": "mcp_command_npx"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "source": "delta_trader_mcp_mcp_server_filesystem",
+      "target": "mcp_command_npx"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "source": "delta_trader_mcp_mcp_server_memory",
+      "target": "mcp_command_npx"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "source": "delta_trader_mcp_mcp_server_playwright",
+      "target": "mcp_command_npx"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "source": "delta_trader_mcp_mcp_server_postgres",
+      "target": "mcp_command_npx"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "source": "delta_trader_mcp_mcp_server_sequential_thinking",
+      "target": "mcp_command_npx"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "source": "delta_trader_mcp_mcp_server_filesystem",
+      "target": "mcp_package_modelcontextprotocol_server_filesystem"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "source": "delta_trader_mcp_mcp_server_postgres",
+      "target": "mcp_package_modelcontextprotocol_server_postgres"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "source": "delta_trader_mcp_mcp_server_memory",
+      "target": "mcp_package_modelcontextprotocol_server_memory"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "source": "delta_trader_mcp_mcp_server_sequential_thinking",
+      "target": "mcp_package_modelcontextprotocol_server_sequential_thinking"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "source": "delta_trader_mcp_mcp_server_playwright",
+      "target": "mcp_package_playwright_mcp"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "source": "delta_trader_mcp_mcp_server_context7",
+      "target": "mcp_package_upstash_context7_mcp"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".mcp.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "source": "delta_trader_mcp_mcp_server_fetch",
+      "target": "mcp_package_modelcontextprotocol_server_fetch"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "claude_settings_json",
+      "target": "claude_settings_hooks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "claude_settings_json",
+      "target": "claude_settings_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "claude_settings_json",
+      "target": "claude_settings_permissions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "claude_settings_permissions",
+      "target": "claude_settings_permissions_allow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "claude_settings_permissions",
+      "target": "claude_settings_permissions_deny",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "claude_settings_hooks",
+      "target": "claude_settings_hooks_pretooluse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "claude_settings_local_json",
+      "target": "claude_settings_local",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "claude_settings_local_json",
+      "target": "claude_settings_local_permissions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "claude_settings_local_permissions",
+      "target": "claude_settings_local_permissions_allow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/settings.local.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "claude_settings_local_permissions",
+      "target": "claude_settings_local_permissions_deny",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/hooks/block-dangerous.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "claude_hooks_block_dangerous_sh",
+      "target": "c_dev_live_trading_platform_build_delta_trader_claude_hooks_block_dangerous_sh__entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/hooks/block-dangerous.sh",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "claude_hooks_block_dangerous_sh",
+      "target": "hooks_block_dangerous_block",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/hooks/block-dangerous.sh",
+      "source_location": "L17",
+      "weight": 1.0,
+      "context": "call",
+      "source": "c_dev_live_trading_platform_build_delta_trader_claude_hooks_block_dangerous_sh__entry",
+      "target": "hooks_block_dangerous_block",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/hooks/post-commit-graphify.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "claude_hooks_post_commit_graphify_sh",
+      "target": "c_dev_live_trading_platform_build_delta_trader_claude_hooks_post_commit_graphify_sh__entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/hooks/pre-commit-lint.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "claude_hooks_pre_commit_lint_sh",
+      "target": "c_dev_live_trading_platform_build_delta_trader_claude_hooks_pre_commit_lint_sh__entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/main.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "backend_app_main_py",
+      "target": "app_main_health",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/main.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "app_main_health",
+      "target": "str",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/tests/test_smoke.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "backend_tests_test_smoke_py",
+      "target": "tests_test_smoke_test_smoke",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_json",
+      "target": "frontend_tsconfig_compileroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_json",
+      "target": "frontend_tsconfig_include",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_allowimportingtsextensions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_isolatedmodules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_lib",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_module",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_moduleresolution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_noemit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_nofallthroughcasesinswitch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_nounusedlocals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_nounusedparameters",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_resolvejsonmodule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_skiplibcheck",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_strict",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_target",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "frontend_tsconfig_compileroptions",
+      "target": "frontend_tsconfig_compileroptions_usedefineforclassfields",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/dev.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scripts_dev_sh",
+      "target": "c_dev_live_trading_platform_build_delta_trader_scripts_dev_sh__entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/seed_test_data.py",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scripts_seed_test_data_py",
+      "target": "scripts_seed_test_data_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/seed_test_data.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scripts_seed_test_data_rationale_1",
+      "target": "scripts_seed_test_data_py",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "claude_md",
+      "target": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "target": "delta_trader_claude_graphify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "target": "delta_trader_claude_hard_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "target": "delta_trader_claude_stack",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "target": "delta_trader_claude_what_this_is",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "target": "delta_trader_claude_when_in_doubt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "target": "delta_trader_claude_where_things_live",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "delta_trader_claude_delta_trader_project_brief_for_claude",
+      "target": "delta_trader_claude_working_agreement_with_you_claude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "overnight_log_md",
+      "target": "delta_trader_overnight_log_2026_05_28_19_36_18_utc_autonomous_build_starting",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "overnight_log_md",
+      "target": "delta_trader_overnight_log_2026_05_28_19_37_00_utc_pre_flight_verification_block_a_step_0",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "overnight_log_md",
+      "target": "delta_trader_overnight_log_2026_05_28_19_40_00_utc_phase_0_step_2_create_repo_clone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "OVERNIGHT_LOG.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "overnight_log_md",
+      "target": "delta_trader_overnight_log_2026_05_28_20_05_00_utc_phase_0_steps_3_9",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "readme_md",
+      "target": "delta_trader_readme_delta_trader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "delta_trader_readme_delta_trader",
+      "target": "delta_trader_readme_development",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "delta_trader_readme_delta_trader",
+      "target": "delta_trader_readme_license",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "delta_trader_readme_delta_trader",
+      "target": "delta_trader_readme_quick_start_local",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "delta_trader_readme_delta_trader",
+      "target": "delta_trader_readme_sections",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "delta_trader_readme_delta_trader",
+      "target": "delta_trader_readme_stack",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "delta_trader_readme_quick_start_local",
+      "target": "delta_trader_readme_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "claude_skills_delta_api_skill_md",
+      "target": "delta_api_skill_delta_exchange_india_api_reference",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_auth_signing_rest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_channels_to_know",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_endpoints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_gotchas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_key_rest_endpoints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_sandbox",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_source_of_truth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_symbol_format",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "delta_api_skill_delta_exchange_india_api_reference",
+      "target": "delta_api_skill_websocket_subscribe_payload",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/delta-api/SKILL.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "delta_api_skill_websocket_subscribe_payload",
+      "target": "delta_api_skill_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "claude_skills_options_math_skill_md",
+      "target": "options_math_skill_options_math_reference",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "options_math_skill_options_math_reference",
+      "target": "options_math_skill_greeks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "options_math_skill_options_math_reference",
+      "target": "options_math_skill_iv_inversion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "options_math_skill_options_math_reference",
+      "target": "options_math_skill_margin_initial",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "options_math_skill_options_math_reference",
+      "target": "options_math_skill_pnl_for_a_multi_leg_position",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "options_math_skill_options_math_reference",
+      "target": "options_math_skill_pricing_model_black_76_futures_style_delta_uses_this",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "options_math_skill_options_math_reference",
+      "target": "options_math_skill_put_call_parity_use_as_a_property_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/options-math/SKILL.md",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "options_math_skill_options_math_reference",
+      "target": "options_math_skill_realized_volatility",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "claude_skills_react_trading_ui_skill_md",
+      "target": "react_trading_ui_skill_react_trading_ui_patterns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "react_trading_ui_skill_react_trading_ui_patterns",
+      "target": "react_trading_ui_skill_don_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "react_trading_ui_skill_react_trading_ui_patterns",
+      "target": "react_trading_ui_skill_forms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "react_trading_ui_skill_react_trading_ui_patterns",
+      "target": "react_trading_ui_skill_numbers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "react_trading_ui_skill_react_trading_ui_patterns",
+      "target": "react_trading_ui_skill_performance_throttling_live_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "react_trading_ui_skill_react_trading_ui_patterns",
+      "target": "react_trading_ui_skill_state_for_live_streams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "react_trading_ui_skill_react_trading_ui_patterns",
+      "target": "react_trading_ui_skill_strategy_builder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/react-trading-ui/SKILL.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "react_trading_ui_skill_state_for_live_streams",
+      "target": "react_trading_ui_skill_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "claude_skills_timeseries_db_skill_md",
+      "target": "timeseries_db_skill_timescaledb_conventions_for_this_repo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "timeseries_db_skill_timescaledb_conventions_for_this_repo",
+      "target": "timeseries_db_skill_continuous_aggregates_for_charts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "timeseries_db_skill_timescaledb_conventions_for_this_repo",
+      "target": "timeseries_db_skill_hypertables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "timeseries_db_skill_timescaledb_conventions_for_this_repo",
+      "target": "timeseries_db_skill_performance_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "timeseries_db_skill_timescaledb_conventions_for_this_repo",
+      "target": "timeseries_db_skill_retention_archival",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "timeseries_db_skill_timescaledb_conventions_for_this_repo",
+      "target": "timeseries_db_skill_schema_pattern",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "timeseries_db_skill_hypertables",
+      "target": "timeseries_db_skill_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "timeseries_db_skill_schema_pattern",
+      "target": "timeseries_db_skill_codeblock_2",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/timeseries-db/SKILL.md",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "timeseries_db_skill_continuous_aggregates_for_charts",
+      "target": "timeseries_db_skill_codeblock_3",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "github_pull_request_template_md",
+      "target": "github_pull_request_template_checklist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "github_pull_request_template_md",
+      "target": "github_pull_request_template_how_to_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "github_pull_request_template_md",
+      "target": "github_pull_request_template_screenshots_ui_changes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "github_pull_request_template_md",
+      "target": "github_pull_request_template_what_changed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "github_pull_request_template_md",
+      "target": "github_pull_request_template_why",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/pull_request_template.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "github_pull_request_template_how_to_test",
+      "target": "github_pull_request_template_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_md",
+      "target": "issue_template_bug_environment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_md",
+      "target": "issue_template_bug_expected",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_md",
+      "target": "issue_template_bug_logs_screenshots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_md",
+      "target": "issue_template_bug_steps_to_reproduce",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_md",
+      "target": "issue_template_bug_what_happened",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "github_issue_template_feature_md",
+      "target": "issue_template_feature_alternatives_considered",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "github_issue_template_feature_md",
+      "target": "issue_template_feature_problem_motivation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "github_issue_template_feature_md",
+      "target": "issue_template_feature_proposed_solution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/feature.md",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "github_issue_template_feature_md",
+      "target": "issue_template_feature_scope",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/API.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_api_md",
+      "target": "docs_api_api",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/ARCHITECTURE.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_architecture_md",
+      "target": "docs_architecture_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DELTA_INTEGRATION.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_delta_integration_md",
+      "target": "docs_delta_integration_delta_exchange_integration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DEPLOY_ORACLE.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_deploy_oracle_md",
+      "target": "docs_deploy_oracle_deploy_to_oracle_cloud",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_mcp_servers_md",
+      "target": "docs_mcp_servers_mcp_servers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "docs_mcp_servers_mcp_servers",
+      "target": "docs_mcp_servers_secrets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "docs_mcp_servers_mcp_servers",
+      "target": "docs_mcp_servers_verify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/MCP_SERVERS.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "docs_mcp_servers_verify",
+      "target": "docs_mcp_servers_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_decisions_0001_stack_choice_md",
+      "target": "decisions_0001_stack_choice_0001_stack_choice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "decisions_0001_stack_choice_0001_stack_choice",
+      "target": "decisions_0001_stack_choice_consequences",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "decisions_0001_stack_choice_0001_stack_choice",
+      "target": "decisions_0001_stack_choice_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "decisions_0001_stack_choice_0001_stack_choice",
+      "target": "decisions_0001_stack_choice_decision",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DECISIONS/0001-stack-choice.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "decisions_0001_stack_choice_0001_stack_choice",
+      "target": "decisions_0001_stack_choice_template_for_future_adrs",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "5adf46b3dd4b5e4a42d2a07baa729f73a3bbf8c0"
+}
