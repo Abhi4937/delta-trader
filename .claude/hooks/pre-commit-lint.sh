@@ -8,7 +8,8 @@ frontend_changed=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.
 
 if [ -n "$backend_changed" ]; then
   echo "→ Linting backend..."
-  (cd backend && ruff check . && ruff format --check . && mypy app/)
+  # Use the project venv via uv so ruff/mypy resolve the right interpreter + deps.
+  (cd backend && uv run --no-sync ruff check . && uv run --no-sync ruff format --check . && uv run --no-sync mypy app/)
 fi
 
 if [ -n "$frontend_changed" ]; then

@@ -1,16 +1,16 @@
 # Graph Report - delta-trader  (2026-05-29)
 
 ## Corpus Check
-- 50 files · ~5,460 words
+- 99 files · ~23,667 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 188 nodes · 147 edges · 49 communities (39 shown, 10 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
+- 674 nodes · 997 edges · 67 communities (56 shown, 11 thin omitted)
+- Extraction: 82% EXTRACTED · 18% INFERRED · 0% AMBIGUOUS · INFERRED: 184 edges (avg confidence: 0.58)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5adf46b3`
+- Built from commit: `77d3ce89`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -41,23 +41,50 @@
 - [[_COMMUNITY_Community 23|Community 23]]
 - [[_COMMUNITY_Community 24|Community 24]]
 - [[_COMMUNITY_Community 25|Community 25]]
+- [[_COMMUNITY_Community 31|Community 31]]
+- [[_COMMUNITY_Community 35|Community 35]]
+- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 49|Community 49]]
+- [[_COMMUNITY_Community 50|Community 50]]
+- [[_COMMUNITY_Community 51|Community 51]]
+- [[_COMMUNITY_Community 52|Community 52]]
+- [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
+- [[_COMMUNITY_Community 62|Community 62]]
+- [[_COMMUNITY_Community 63|Community 63]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `compilerOptions` - 16 edges
-2. `Delta Exchange India — API reference` - 10 edges
-3. `npx` - 8 edges
-4. `Delta Trader — Project Brief for Claude` - 8 edges
-5. `Options math reference` - 8 edges
-6. `React trading UI patterns` - 7 edges
-7. `Delta Trader` - 6 edges
-8. `TimescaleDB conventions for this repo` - 6 edges
-9. `github` - 5 edges
-10. `0001 — Stack choice` - 5 edges
+1. `RedisBus` - 42 edges
+2. `MinuteBuffer` - 33 edges
+3. `Tick` - 30 edges
+4. `DeltaRestClient` - 23 edges
+5. `DeltaWSClient` - 16 edges
+6. `compilerOptions` - 16 edges
+7. `MinuteAccumulator` - 14 edges
+8. `lifespan()` - 13 edges
+9. `MinuteAggregator` - 13 edges
+10. `TickNormalizer` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
-- None detected - all connections are within the same source files.
+- `lifespan()` --calls--> `dispose_engine()`  [INFERRED]
+  backend/app/main.py → backend/app/db/session.py
+- `int` --uses--> `Tick`  [INFERRED]
+  backend/app/workers/minute_buffer.py → backend/app/models/market.py
+- `object` --uses--> `Tick`  [INFERRED]
+  backend/app/workers/minute_buffer.py → backend/app/models/market.py
+- `test_parse_expiry_code()` --calls--> `parse_expiry_code()`  [INFERRED]
+  backend/tests/unit/test_misc.py → backend/app/services/bootstrap.py
+- `test_nearest_expiry_prefers_future()` --calls--> `_nearest_expiry()`  [INFERRED]
+  backend/tests/unit/test_misc.py → backend/app/services/bootstrap.py
 
-## Communities (49 total, 10 thin omitted)
+## Communities (67 total, 11 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.14
@@ -108,12 +135,12 @@ Cohesion: 0.33
 Nodes (5): Environment, Expected, Logs / screenshots, Steps to reproduce, What happened
 
 ### Community 12 - "Community 12"
-Cohesion: 0.40
-Nodes (4): //, permissions, allow, deny
+Cohesion: 0.06
+Nodes (51): ExpirySelectorProps, ChainRow, ChainRowProps, findAtmIndex(), fmtIvPct(), groupByStrike(), OptionChainTableProps, SideCells (+43 more)
 
 ### Community 13 - "Community 13"
-Cohesion: 0.40
-Nodes (4): 2026-05-28 19:36:18 UTC — Autonomous build starting, 2026-05-28 19:37:00 UTC — Pre-flight verification (Block A, Step 0), 2026-05-28 19:40:00 UTC — Phase 0, Step 2 — Create repo + clone, 2026-05-28 20:05:00 UTC — Phase 0, Steps 3-9
+Cohesion: 0.25
+Nodes (7): 2026-05-28 19:36:18 UTC — Autonomous build starting, 2026-05-28 19:37:00 UTC — Pre-flight verification (Block A, Step 0), 2026-05-28 19:40:00 UTC — Phase 0, Step 2 — Create repo + clone, 2026-05-28 19:52:00 UTC — Phase 0, Steps 10-14 + merge, 2026-05-28 20:05:00 UTC — Phase 0, Steps 3-9, 2026-05-28 20:05:00 UTC — Phase 1, Step 1 — ADR, 2026-05-28 20:55:00 UTC — Phase 1, Steps 2-3 — Infra + backend
 
 ### Community 14 - "Community 14"
 Cohesion: 0.40
@@ -123,17 +150,93 @@ Nodes (4): code:bash (claude mcp list   # should list all 8; approve project ser
 Cohesion: 0.40
 Nodes (4): Alternatives considered, Problem / motivation, Proposed solution, Scope
 
+### Community 18 - "Community 18"
+Cohesion: 0.10
+Nodes (23): health(), health_deep(), Health endpoints: ``/health`` (process liveness) and ``/health/deep`` (db + redi, DecimalJSONResponse, _default(), Custom JSON response that serializes Decimal as string (money safety).  FastAPI', _encode(), _handle_control() (+15 more)
+
+### Community 24 - "Community 24"
+Cohesion: 0.22
+Nodes (8): Delta Exchange Integration, Endpoints (verified), `mark_vol` scaling differs by transport, Phase 1 scope, Product id field, Product / ticker shapes, Symbol format, Verified quirks (Phase 1)
+
+### Community 35 - "Community 35"
+Cohesion: 0.08
+Nodes (17): Any, bool, object, str, Delta WS client test using an in-process websockets server.  Verifies: subscribe, test_ws_subscribes_routes_and_resubscribes(), MonkeyPatch, FakeAsyncpgConn (+9 more)
+
+### Community 49 - "Community 49"
+Cohesion: 0.07
+Nodes (38): str, Any, bool, datetime, RedisBus, str, bool, str (+30 more)
+
+### Community 50 - "Community 50"
+Cohesion: 0.09
+Nodes (34): int, bytes, MinuteBuffer, RedisBus, str, Any, bytes, datetime (+26 more)
+
+### Community 51 - "Community 51"
+Cohesion: 0.10
+Nodes (16): Any, bool, float, int, object, str, Delta REST client tests with respx-mocked HTTP (recorded-shape fixtures)., test_signature_is_deterministic_hmac() (+8 more)
+
+### Community 52 - "Community 52"
+Cohesion: 0.09
+Nodes (20): lifespan(), bytes, float, int, RedisBus, str, bool, ConnectFactory (+12 more)
+
+### Community 53 - "Community 53"
+Cohesion: 0.06
+Nodes (31): dependencies, clsx, date-fns, decimal.js, @hookform/resolvers, lightweight-charts, lucide-react, react (+23 more)
+
+### Community 54 - "Community 54"
+Cohesion: 0.11
+Nodes (18): datetime, float, int, MinuteBuffer, str, datetime, object, Tick (+10 more)
+
+### Community 55 - "Community 55"
+Cohesion: 0.09
+Nodes (21): 0002 — Phase 1 foundation layer, 10. Trade-offs considered and rejected, 11. Test strategy, 1. Component diagram, 2. WS connection topology — single shared connection (multiplexed), 3. Tick normalization model, 4. Redis key schema, 5. Postgres schema (Alembic migration runs this raw SQL) (+13 more)
+
+### Community 56 - "Community 56"
+Cohesion: 0.17
+Nodes (18): list_expiries(), list_products(), option_chain(), Read-only market metadata + option-chain endpoints., Live option chain. Prefers Redis snapshots; falls back to Delta REST., _row_from_delta(), _row_from_redis(), async_sessionmaker (+10 more)
+
+### Community 57 - "Community 57"
+Cohesion: 0.12
+Nodes (12): str, BaseSettings, get_settings(), Application configuration via pydantic-settings.  Reads from the environment (an, asyncpg DSN used by the application., Synchronous DSN used by Alembic migrations., Cached settings singleton., Settings (+4 more)
+
+### Community 58 - "Community 58"
+Cohesion: 0.11
+Nodes (18): devDependencies, autoprefixer, eslint, eslint-plugin-react-hooks, jsdom, @playwright/test, postcss, tailwindcss (+10 more)
+
+### Community 59 - "Community 59"
+Cohesion: 0.33
+Nodes (8): datetime, int, str, Unit + property tests for the minute aggregation buffer., test_buffer_builds_ohlc(), test_minute_floor_truncates_seconds(), test_ohlc_invariants(), _tick()
+
+### Community 60 - "Community 60"
+Cohesion: 0.31
+Nodes (8): Any, bytes, str, _default(), dumps(), loads(), JSON helpers that serialize ``Decimal`` as strings (never float).  Money safety, Serialize to a JSON string, emitting Decimal as string.
+
+### Community 61 - "Community 61"
+Cohesion: 0.25
+Nodes (6): Base, SQLAlchemy declarative base shared by all ORM models., Project-wide declarative base., DeclarativeBase, Minute-bar ORM model (Timescale hypertable ``ticks_minute``).  The hypertable co, TickMinute
+
+### Community 63 - "Community 63"
+Cohesion: 0.50
+Nodes (3): expirySelect, ivCells, rows
+
 ## Knowledge Gaps
-- **103 isolated node(s):** `@modelcontextprotocol/server-github`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `GITHUB_TOKEN`, `@modelcontextprotocol/server-filesystem`, `@modelcontextprotocol/server-postgres` (+98 more)
+- **209 isolated node(s):** `@modelcontextprotocol/server-github`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `GITHUB_TOKEN`, `@modelcontextprotocol/server-filesystem`, `@modelcontextprotocol/server-postgres` (+204 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **What connects `@modelcontextprotocol/server-github`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `GITHUB_TOKEN` to the rest of the system?**
-  _104 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.1368421052631579 - nodes in this community are weakly interconnected._
-- **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
+- **Why does `RedisBus` connect `Community 49` to `Community 50`, `Community 52`?**
+  _High betweenness centrality (0.056) - this node is a cross-community bridge._
+- **Why does `Tick` connect `Community 49` to `Community 35`, `Community 50`, `Community 59`, `Community 54`?**
+  _High betweenness centrality (0.052) - this node is a cross-community bridge._
+- **Why does `DeltaRestClient` connect `Community 51` to `Community 56`, `Community 49`?**
+  _High betweenness centrality (0.043) - this node is a cross-community bridge._
+- **Are the 29 inferred relationships involving `RedisBus` (e.g. with `Any` and `bool`) actually correct?**
+  _`RedisBus` has 29 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 29 inferred relationships involving `MinuteBuffer` (e.g. with `bool` and `datetime`) actually correct?**
+  _`MinuteBuffer` has 29 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 26 inferred relationships involving `Tick` (e.g. with `Any` and `bool`) actually correct?**
+  _`Tick` has 26 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 9 inferred relationships involving `DeltaRestClient` (e.g. with `Any` and `str`) actually correct?**
+  _`DeltaRestClient` has 9 INFERRED edges - model-reasoned connections that need verification._
