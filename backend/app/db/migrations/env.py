@@ -9,7 +9,15 @@ from sqlalchemy import engine_from_config, pool
 
 from app.core.config import settings
 from app.db.base import Base
-from app.models import Expiry, Product, TickMinute  # noqa: F401  (register metadata)
+from app.models import (  # noqa: F401  (register metadata)
+    Expiry,
+    PaperFill,
+    PaperLeg,
+    PaperPosition,
+    Product,
+    Strategy,
+    TickMinute,
+)
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.pg_dsn_sync)
