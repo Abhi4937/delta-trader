@@ -1,0 +1,27 @@
+[project]
+name = "delta-trader-backend"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = []  # filled in Phase 1
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF", "ASYNC"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "-q --strict-markers --cov=app --cov-report=term-missing"
+testpaths = ["tests"]
+markers = [
+  "integration: hits external services (sandbox or recorded)",
+  "slow: takes >1s",
+]
