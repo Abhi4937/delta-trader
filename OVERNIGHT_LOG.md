@@ -116,3 +116,29 @@ Duration: ~66 min (19:52 -> 20:58 UTC)
 - STOP — Phase 2 NOT started (human review required first).
 
 === OVERNIGHT BUILD COMPLETE ===
+
+## 2026-05-29 (cont) — Phase 2, Step 2 — Backend paper engine
+- Action: Built quant/ (slippage walk+impact, greeks, strategy IV notional-weighted, RV hist/intraday, pnl, Black-76 IV inversion) + paper/ (DTOs, executor atomic entry, closer reverse-walk partial, margin estimate, engine orchestration w/ DB+events, mtm_worker 1s->Redis 5s->Timescale COPY-upsert) + api/paper.py (strategies/execute/positions/close/mtm) + paper_position WS topic + migration 0002 (contract_size on products, paper_* tables, enums, hypertable). Wired worker into main lifespan.
+- Result: OK — ruff + mypy(strict) clean (50 files), pytest 55 passed (+27). Coverage on target packages: app/services/quant ~94%, app/services/paper ~91% (engine 93%, mtm_worker 84%, slippage 98%) — both > 80% gate.
+- Commits: e9fceee (backend source), 3fb2652 (tests).
+- Notes / decisions:
+  - Delta product contract size = `contract_value` field (0.001 BTC); added contract_size col to products + bootstrap populates it.
+  - PG ENUM columns mapped via postgresql.ENUM(create_type=False) so asyncpg casts str->enum on insert (String mapping failed with DatatypeMismatchError).
+  - engine.close bug found+fixed during testing: leg mutations must be on objects attached to the write session (was mutating detached objects from a read session -> close never persisted -> stuck partially_closed).
+  - Integration test uses live Postgres (localhost), fake REST + fake bus; skips when DB unreachable (CI). Migration 0002 applied to running dev DB.
+  - ruff: added flake8-bugbear extend-immutable-calls for fastapi.Depends/Query/Path/Body (B008).
+
+## 2026-05-29 (cont) — Phase 2, Steps 3-5 — Frontend, verify, review
+- Frontend: paper UI (StrategyBuilder, PreviewModal, PositionsTable, PositionDetail w/ live PnL chart+greeks+IV+RV, ClosePositionDialog) + lib/strategy-math, paperApi, paperStore, ws.ts paper_position topic. Lint+typecheck clean, 23 vitest pass. e2e paper-trade.spec PASSES against live stack (build->preview->execute->live MTM->close).
+  - e2e fidelity fix: 1-lot BTC-option PnL rounds to $0.00; added data-total-pnl/data-mtm-ts attrs and assert liveness on those.
+  - e2e initially hit stale nginx container on 5173 (reuseExistingServer); stopped frontend container so playwright runs the dev build.
+- Verify (Step 4): paper+quant coverage ~91%/94% (>80%); pnpm lint/typecheck/test/e2e green. 10-min soak (position #10 ATM straddle): mem 92.8->89.7 MiB (stable, no leak), paper_mtm_minute 0->10 bars (1/min), 0 tracebacks. docs/ARCHITECTURE.md + docs/API.md (OpenAPI) updated; graphify update (1266 nodes).
+- Reviewer (Step 5): REQUEST CHANGES, 1 withdrawn + 5 real. Fixed must-fix:
+  - #2 MTM flush data-loss: peek-then-pop (only evict buckets after successful upsert). Test added.
+  - #4 sequential per-leg awaits: asyncio.gather leg marks in _tick and per-symbol fetches in _fetch_market.
+  - #5 vol_24h sourcing: turnover -> volume*mark -> get_ticker fallback (ADR chain), not straight to floor.
+  - #6 close TOCTOU: single locked transaction (SELECT ... FOR UPDATE), clamp qty_open>=0, realized recomputed on clamped qty.
+  - N2 hoisted orjson import; N3 send unsub frame to hub.
+  - Re-ran gate: ruff+mypy clean, 56 backend tests pass; paper e2e re-passed on rebuilt backend.
+  - Deferred NITs (-> report): N1 %return denominator, N4 naked-short-call margin grid cap, N6 preview persists strategy per call, expired-leg last-good freeze not yet implemented.
+- Commits: e9fceee/3fb2652 backend, 814471c/71c4ac7 frontend, 6f3a813 docs, ee57bd9 + d8640fc fixes.
