@@ -6,32 +6,39 @@ on:
     branches: [develop]
 
 jobs:
-  lint-backend:
+  backend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
-      - run: pip install ruff mypy
-      - run: cd backend && ruff check . && ruff format --check .
-      # mypy gated on real deps — added Phase 1
+      - run: pip install -r requirements.txt
+      - run: >-
+          pip install ruff==0.6.8 mypy==1.11.2 pytest==8.3.3
+          pytest-asyncio==0.24.0 pytest-cov==5.0.0 pytest-mock==3.14.0
+          respx==0.21.1 hypothesis==6.112.1 vcrpy==6.0.1
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: mypy app/
+      - run: pytest -q
 
-  lint-frontend:
+  frontend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with: { version: 9 }
+      - uses: pnpm/action-setup@v4        # version read from package.json packageManager
       - uses: actions/setup-node@v4
-        with: { node-version: 20, cache: 'pnpm', cache-dependency-path: 'frontend/pnpm-lock.yaml' }
-      - run: cd frontend && pnpm install --frozen-lockfile || pnpm install
-      - run: cd frontend && pnpm typecheck || true  # gated on real code
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
-      - run: pip install pytest pytest-cov
-      - run: cd backend && pytest -q
+        with:
+          node-version: 22
+          cache: 'pnpm'
+          cache-dependency-path: 'frontend/pnpm-lock.yaml'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
