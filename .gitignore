@@ -216,3 +216,36 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Graphify
+graphify-out/manifest.json
+graphify-out/cost.json
+graphify-out/cache/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Claude
+.claude/settings.local.json
+.claude/memory.json
+
+# Data
+data/
+*.parquet
+
+# Build
+backend/dist/
+frontend/dist/
+frontend/.vite/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Node
+node_modules/

@@ -1,0 +1,5 @@
+# Shell hooks must stay LF even on Windows checkouts
+*.sh text eol=lf
+
+# Graphify graph is machine-generated; union-merge to avoid conflicts
+graphify-out/graph.json merge=union
