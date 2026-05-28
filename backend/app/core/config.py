@@ -56,6 +56,11 @@ class Settings(BaseSettings):
     parquet_dir: str = "./data/parquet"
     parquet_enabled: bool = True
 
+    # Paper engine (Phase 2)
+    paper_impact_k: float = 0.0001
+    paper_impact_illiquid_floor: float = 0.005
+    paper_atomic_default: bool = True
+
     @computed_field  # type: ignore[prop-decorator]
     @property
     def underlying_list(self) -> list[str]:

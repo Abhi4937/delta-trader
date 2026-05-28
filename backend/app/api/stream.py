@@ -13,6 +13,7 @@ from typing import Any
 
 import orjson
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from starlette.websockets import WebSocketState
 
 from app.api.products import _row_from_redis
 from app.core.logging import logger
@@ -27,22 +28,28 @@ def _encode(payload: dict[str, Any]) -> str:
     return orjson.dumps(payload, default=str).decode()
 
 
-class Subscription:
-    __slots__ = ("kind", "underlying", "expiry")
+SubKey = tuple[str, str, str | None, int | None]
 
-    def __init__(self, kind: str, underlying: str, expiry: str | None) -> None:
+
+class Subscription:
+    __slots__ = ("kind", "underlying", "expiry", "pid")
+
+    def __init__(
+        self, kind: str, underlying: str, expiry: str | None, pid: int | None = None
+    ) -> None:
         self.kind = kind
         self.underlying = underlying
         self.expiry = expiry
+        self.pid = pid
 
-    def key(self) -> tuple[str, str, str | None]:
-        return (self.kind, self.underlying, self.expiry)
+    def key(self) -> SubKey:
+        return (self.kind, self.underlying, self.expiry, self.pid)
 
 
 @router.websocket("/ws")
 async def ws_endpoint(websocket: WebSocket) -> None:
     await websocket.accept()
-    subs: dict[tuple[str, str, str | None], Subscription] = {}
+    subs: dict[SubKey, Subscription] = {}
     push_task = asyncio.create_task(_push_loop(websocket, subs))
     try:
         while True:
@@ -60,7 +67,7 @@ async def ws_endpoint(websocket: WebSocket) -> None:
 
 async def _handle_control(
     raw: str,
-    subs: dict[tuple[str, str, str | None], Subscription],
+    subs: dict[SubKey, Subscription],
     websocket: WebSocket,
 ) -> None:
     try:
@@ -70,54 +77,82 @@ async def _handle_control(
         return
     underlying = str(msg.get("underlying", "BTC")).upper()
     expiry = msg.get("expiry")
+    pid = msg.get("id")
+    pid_int = int(pid) if pid is not None else None
     if "sub" in msg:
         kind = str(msg["sub"])
-        sub = Subscription(kind, underlying, expiry)
+        sub = Subscription(kind, underlying, expiry, pid_int)
         subs[sub.key()] = sub
         await websocket.send_text(
-            _encode({"ch": "subscribed", "sub": kind, "underlying": underlying, "expiry": expiry})
+            _encode(
+                {
+                    "ch": "subscribed",
+                    "sub": kind,
+                    "underlying": underlying,
+                    "expiry": expiry,
+                    "id": pid_int,
+                }
+            )
         )
     elif "unsub" in msg:
         kind = str(msg["unsub"])
-        subs.pop((kind, underlying, expiry), None)
+        subs.pop((kind, underlying, expiry, pid_int), None)
 
 
 async def _push_loop(
     websocket: WebSocket,
-    subs: dict[tuple[str, str, str | None], Subscription],
+    subs: dict[SubKey, Subscription],
 ) -> None:
     bus = get_bus()
     while True:
         await asyncio.sleep(_PUSH_INTERVAL_SECONDS)
-        for sub in list(subs.values()):
-            if sub.kind == "option_chain" and sub.expiry:
-                symbols = sorted(await bus.smembers(f"idx:chain:{sub.underlying}:{sub.expiry}"))
-                rows = []
-                for symbol in symbols:
-                    snap = await bus.get_latest(f"latest:{symbol}")
-                    if snap:
-                        rows.append(_row_from_redis(symbol, snap))
-                if rows:
-                    await websocket.send_text(
-                        _encode(
-                            {
-                                "ch": "option_chain",
-                                "underlying": sub.underlying,
-                                "expiry": sub.expiry,
-                                "rows": rows,
-                            }
-                        )
-                    )
-            elif sub.kind == "candles":
-                snap = await bus.get_latest(f"latest:spot:{sub.underlying}")
+        # Stop quietly once the socket is closing (avoids send-after-close tracebacks).
+        if websocket.client_state != WebSocketState.CONNECTED:
+            return
+        try:
+            await _push_subscriptions(websocket, bus, subs)
+        except (WebSocketDisconnect, RuntimeError):
+            return
+
+
+async def _push_subscriptions(
+    websocket: WebSocket,
+    bus: Any,
+    subs: dict[SubKey, Subscription],
+) -> None:
+    for sub in list(subs.values()):
+        if sub.kind == "paper_position" and sub.pid is not None:
+            snap = await bus.get_latest(f"paper:mtm:{sub.pid}")
+            if snap:
+                await websocket.send_text(_encode({"ch": "paper_position", "id": sub.pid, **snap}))
+        elif sub.kind == "option_chain" and sub.expiry:
+            symbols = sorted(await bus.smembers(f"idx:chain:{sub.underlying}:{sub.expiry}"))
+            rows = []
+            for symbol in symbols:
+                snap = await bus.get_latest(f"latest:{symbol}")
                 if snap:
-                    await websocket.send_text(
-                        _encode(
-                            {
-                                "ch": "candle",
-                                "underlying": sub.underlying,
-                                "close": snap.get("close") or snap.get("mark_price"),
-                                "ts": snap.get("ts"),
-                            }
-                        )
+                    rows.append(_row_from_redis(symbol, snap))
+            if rows:
+                await websocket.send_text(
+                    _encode(
+                        {
+                            "ch": "option_chain",
+                            "underlying": sub.underlying,
+                            "expiry": sub.expiry,
+                            "rows": rows,
+                        }
                     )
+                )
+        elif sub.kind == "candles":
+            snap = await bus.get_latest(f"latest:spot:{sub.underlying}")
+            if snap:
+                await websocket.send_text(
+                    _encode(
+                        {
+                            "ch": "candle",
+                            "underlying": sub.underlying,
+                            "close": snap.get("close") or snap.get("mark_price"),
+                            "ts": snap.get("ts"),
+                        }
+                    )
+                )

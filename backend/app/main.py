@@ -14,13 +14,14 @@ from collections.abc import AsyncIterator
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health, products, stream
+from app.api import health, paper, products, stream
 from app.api.responses import DecimalJSONResponse
 from app.core.config import settings
 from app.core.logging import logger, setup_logging
 from app.db.session import dispose_engine
 from app.services.bootstrap import bootstrap_products
 from app.services.delta_ws import DeltaWSClient
+from app.services.paper.mtm_worker import PaperMtmWorker
 from app.services.redis_bus import close_bus, get_bus
 from app.services.runtime import get_runtime, reset_runtime
 from app.workers.minute_aggregator import MinuteAggregator
@@ -52,11 +53,13 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     normalizer = TickNormalizer(runtime.buffer, bus=bus)
     spot = SpotIndexer(runtime.buffer, bus=bus)
     aggregator = MinuteAggregator(runtime.buffer)
+    paper_mtm = PaperMtmWorker(bus=bus)
 
     tasks.append(asyncio.create_task(ws.run()))
     tasks.append(asyncio.create_task(normalizer.run()))
     tasks.append(asyncio.create_task(spot.run()))
     tasks.append(asyncio.create_task(aggregator.run()))
+    tasks.append(asyncio.create_task(paper_mtm.run()))
     logger.info("delta-trader backend started", tasks=len(tasks))
 
     try:
@@ -66,6 +69,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         normalizer.stop()
         spot.stop()
         aggregator.stop()
+        paper_mtm.stop()
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
@@ -91,4 +95,5 @@ app.add_middleware(
 
 app.include_router(health.router)
 app.include_router(products.router)
+app.include_router(paper.router)
 app.include_router(stream.router)

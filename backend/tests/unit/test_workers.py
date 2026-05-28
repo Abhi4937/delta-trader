@@ -101,3 +101,36 @@ async def test_aggregator_rebuffers_on_db_failure(monkeypatch: pytest.MonkeyPatc
     monkeypatch.setattr(agg_mod.asyncpg, "connect", ok)
     assert await aggregator.flush_once(later) == 1
     assert fake_conn.copied[0][0] == "C-BTC-1-1"
+
+
+async def test_paper_mtm_flush_rebuffers_on_db_failure(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A failed paper MTM flush must NOT drop the closed minute bucket (must-fix #2)."""
+    from datetime import timedelta
+    from decimal import Decimal
+
+    from app.services import redis_bus as rb
+    from app.services.paper import mtm_worker as mw
+
+    bus = FakeBus()
+    worker = mw.PaperMtmWorker(bus=cast(rb.RedisBus, bus), dsn="postgres://x")
+    base = datetime(2026, 5, 28, 10, 30, 1, tzinfo=UTC)
+    snap: dict[str, Any] = {
+        "unrealized_pnl": Decimal("1"),
+        "realized_pnl": Decimal("0"),
+        "net_delta": Decimal("0"),
+        "net_gamma": Decimal("0"),
+        "net_theta": Decimal("0"),
+        "net_vega": Decimal("0"),
+        "strategy_iv": None,
+        "mark_stale": False,
+    }
+    worker._accumulate(1, base, Decimal("1"), snap)
+
+    async def boom(dsn: str, *a: Any, **k: Any) -> Any:
+        raise OSError("db down")
+
+    monkeypatch.setattr(mw.asyncpg, "connect", boom)
+    with pytest.raises(OSError):
+        await worker._flush(base + timedelta(minutes=1, seconds=5))
+    # Bucket retained for retry — not silently dropped.
+    assert len(worker._buf) == 1

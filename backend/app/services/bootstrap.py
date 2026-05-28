@@ -84,6 +84,7 @@ async def bootstrap_products(
             continue
         expiry_code = parse_expiry_code(symbol)
         strike = p.get("strike_price")
+        cv = p.get("contract_value")
         rows.append(
             {
                 "product_id": int(pid),
@@ -92,6 +93,7 @@ async def bootstrap_products(
                 "underlying": underlying,
                 "strike": Decimal(str(strike)) if strike is not None else None,
                 "expiry_code": expiry_code,
+                "contract_size": Decimal(str(cv)) if cv is not None else Decimal(1),
             }
         )
         if expiry_code:
@@ -144,6 +146,7 @@ async def _persist(rows: list[dict[str, Any]], expiries: dict[str, datetime]) ->
                 "contract_type": prod_stmt.excluded.contract_type,
                 "strike": prod_stmt.excluded.strike,
                 "expiry_code": prod_stmt.excluded.expiry_code,
+                "contract_size": prod_stmt.excluded.contract_size,
             },
         )
         await session.execute(prod_stmt)

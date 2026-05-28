@@ -20,6 +20,7 @@ class Product(Base):
     underlying: Mapped[str] = mapped_column(String, nullable=False)
     strike: Mapped[Decimal | None] = mapped_column(Numeric(20, 8), nullable=True)
     expiry_code: Mapped[str | None] = mapped_column(String, nullable=True)
+    contract_size: Mapped[Decimal | None] = mapped_column(Numeric(20, 8), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
