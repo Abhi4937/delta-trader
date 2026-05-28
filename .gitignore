@@ -249,3 +249,11 @@ frontend/.vite/
 
 # Node
 node_modules/
+
+# Frontend source lib/ must not be caught by Python lib/ rule
+!frontend/src/lib/
+!frontend/src/lib/**
+
+# Playwright output
+frontend/test-results/
+frontend/playwright-report/

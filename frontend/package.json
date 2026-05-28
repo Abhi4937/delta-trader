@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx",
     "typecheck": "tsc --noEmit",
@@ -14,6 +14,40 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@hookform/resolvers": "^3.9",
+    "@tanstack/react-query": "^5.56",
+    "@tanstack/react-virtual": "^3.10",
+    "clsx": "^2.1",
+    "date-fns": "^3.6",
+    "decimal.js": "^10.4",
+    "lightweight-charts": "^4.2",
+    "lucide-react": "^0.445",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53",
+    "react-router-dom": "^6.26",
+    "recharts": "^2.12",
+    "zod": "^3.23",
+    "zustand": "^4.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47",
+    "@testing-library/jest-dom": "^6.5",
+    "@testing-library/react": "^16.0",
+    "@types/react": "^18.3",
+    "@types/react-dom": "^18.3",
+    "@typescript-eslint/eslint-plugin": "^8.7",
+    "@typescript-eslint/parser": "^8.7",
+    "@vitejs/plugin-react": "^4.3",
+    "autoprefixer": "^10.4",
+    "eslint": "^8.57",
+    "eslint-plugin-react-hooks": "^4.6",
+    "jsdom": "^25.0",
+    "postcss": "^8.4",
+    "tailwindcss": "^3.4",
+    "typescript": "^5.6",
+    "vite": "^5.4",
+    "vitest": "^2.1"
+  }
 }
