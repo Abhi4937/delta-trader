@@ -1,8 +1,9 @@
 """Normalize raw Delta frames into ``Tick`` objects and fan them into Redis +
 the minute buffer.
 
-Delta gotchas (delta-api skill): ``mark_vol`` is IV*100; greeks/prices arrive as
-strings -> Decimal; missing/empty -> None; heartbeats already filtered upstream.
+Delta gotchas: IV comes from ``quotes.mark_iv`` (clean fraction), not the
+ambiguous top-level ``mark_vol``; greeks/prices arrive as strings -> Decimal;
+missing/empty -> None; heartbeats already filtered upstream.
 """
 
 from __future__ import annotations
@@ -40,27 +41,41 @@ def _ts(value: Any) -> datetime:
         return datetime.now(tz=UTC)
 
 
-def _normalize_iv(mark_vol: Decimal | None) -> Decimal | None:
+def _scale_iv(value: Decimal | None) -> Decimal | None:
+    """Coerce an ambiguously-scaled IV to a sigma fraction.
+
+    Used only for the ``mark_vol`` fallback. Crypto option IV realistically lives
+    in [0.05, 5.0], so values > 5 are treated as percent-scaled (IV*100) and
+    divided by 100. Prefer ``quotes.mark_iv`` over this — see ``_extract_iv``.
+    """
+    if value is None:
+        return None
+    return value / 100 if value > 5 else value
+
+
+def _extract_iv(frame: dict[str, Any], quotes: dict[str, Any]) -> Decimal | None:
     """Return IV as a sigma fraction.
 
-    Delta quirk: the WS ``v2/ticker`` channel historically sends ``mark_vol`` as
-    IV*100 (e.g. ``"55"`` -> 0.55), but the India REST ``/v2/tickers`` already
-    returns a fraction (e.g. ``"0.2495"``). Heuristic: values > 5 are treated as
-    percent-scaled and divided by 100; values <= 5 are already fractions. Crypto
-    option IV realistically lives in [0.05, 5.0]. See docs/DELTA_INTEGRATION.md.
+    Delta's ``v2/ticker`` (WS and REST) carries ``quotes.mark_iv`` — always a
+    clean fraction (e.g. ``"0.2400"``), Delta's authoritative mark IV. Use it
+    directly. Only when it is absent do we fall back to the top-level
+    ``mark_vol``, whose scale is ambiguous (WS historically sent IV*100, India
+    REST sends a fraction), running it through ``_scale_iv``. See
+    docs/DELTA_INTEGRATION.md.
     """
-    if mark_vol is None:
-        return None
-    return mark_vol / 100 if mark_vol > 5 else mark_vol
+    mark_iv = _dec(quotes.get("mark_iv"))
+    if mark_iv is not None:
+        return mark_iv
+    return _scale_iv(_dec(frame.get("mark_vol")))
 
 
 def normalize_ticker(frame: dict[str, Any]) -> Tick | None:
     symbol = frame.get("symbol")
     if not symbol:
         return None
-    iv = _normalize_iv(_dec(frame.get("mark_vol")))
     greeks = frame.get("greeks") or {}
     quotes = frame.get("quotes") or {}
+    iv = _extract_iv(frame, quotes)
     return Tick(
         symbol=str(symbol),
         channel="ticker",
