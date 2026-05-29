@@ -22,7 +22,9 @@ This is a personal single-user project. Report issues privately to the repo owne
   `/health*` and `/metrics` require `Authorization: Bearer <token>` (WS via `?token=`).
   Unset in dev/CI (permissive) so local UX/tests are unchanged.
 - **Rate limiting.** Per-IP 60/min/route (slowapi) → 429 with `Retry-After`. A shared
-  ~10 req/s token bucket throttles all authenticated Delta calls.
+  ~10 req/s token bucket throttles all authenticated Delta calls. Note: slowapi keys
+  on `request.client.host` (not `X-Forwarded-For`), so behind Caddy the limit is
+  effectively global-per-route — fine for a single-user deployment.
 - **CORS** locked to `CORS_ORIGINS` (the deployed origin in prod; localhost in dev).
 - **Network** (ADR 0006): only 80/443 inbound; Postgres/Redis never published; SSH on
   a non-default port.

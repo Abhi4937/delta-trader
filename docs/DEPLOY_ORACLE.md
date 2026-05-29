@@ -27,8 +27,12 @@ charged).
 ## 2. Prepare the host
 ```bash
 ssh -p 2222 ubuntu@<public-ip>
-sudo apt-get update && sudo apt-get install -y docker.io docker-compose-plugin git
+# Docker Engine + the compose v2 plugin from Docker's official repo (Ubuntu's
+# docker.io does NOT ship `docker compose` v2). The convenience script is simplest:
+curl -fsSL https://get.docker.com | sudo sh
+sudo apt-get install -y git
 sudo usermod -aG docker ubuntu && newgrp docker
+# verify: docker compose version
 sudo mkdir -p /opt && sudo chown ubuntu /opt
 git clone https://github.com/Abhi4937/delta-trader /opt/delta-trader
 cd /opt/delta-trader

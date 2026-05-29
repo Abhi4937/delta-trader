@@ -30,6 +30,9 @@ services:
   frontend:
     restart: unless-stopped
     ports: !reset []
+    build:
+      args:
+        VITE_API_TOKEN: ${VITE_API_TOKEN:-}
     deploy:
       resources:
         limits: { memory: 512M }
