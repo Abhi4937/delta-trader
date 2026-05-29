@@ -10,6 +10,7 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy import text
 
+from app.api.timeseries import read_timeseries
 from app.core.config import settings
 from app.db.session import get_sessionmaker
 from app.services.live import sl_monitor
@@ -131,6 +132,19 @@ async def strategy_mtm(strategy_id: int, history: bool = Query(False)) -> dict[s
     if history:
         out["curve"] = await _mtm_history(strategy_id)
     return out
+
+
+@router.get("/strategies/{strategy_id}/timeseries")
+async def strategy_timeseries(
+    strategy_id: int,
+    fields: str = Query("close,delta,gamma,theta,vega,iv,rv_intraday,rv_historical"),
+    from_: str | None = Query(None, alias="from"),
+    to: str | None = Query(None),
+) -> dict[str, Any]:
+    _gate()
+    return await read_timeseries(
+        "live_mtm_minute", "strategy_id", strategy_id, fields, from_=from_, to=to
+    )
 
 
 @router.post("/strategies/{strategy_id}/stop-loss")
