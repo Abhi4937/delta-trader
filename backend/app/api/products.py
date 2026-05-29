@@ -13,7 +13,7 @@ from app.models.expiry import Expiry
 from app.models.product import Product
 from app.services.delta_rest import DeltaRestClient
 from app.services.redis_bus import get_bus
-from app.workers.tick_normalizer import _dec, _normalize_iv
+from app.workers.tick_normalizer import _dec, _extract_iv
 
 router = APIRouter(tags=["market"])
 
@@ -77,7 +77,7 @@ def _row_from_delta(t: dict[str, Any]) -> dict[str, Any]:
     return {
         "symbol": t.get("symbol"),
         "mark_price": _dec(t.get("mark_price")),
-        "iv": _normalize_iv(_dec(t.get("mark_vol"))),
+        "iv": _extract_iv(t, quotes),
         "delta": _dec(greeks.get("delta")),
         "gamma": _dec(greeks.get("gamma")),
         "theta": _dec(greeks.get("theta")),
