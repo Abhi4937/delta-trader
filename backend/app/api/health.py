@@ -17,7 +17,9 @@ from app.services.runtime import get_runtime
 router = APIRouter(tags=["health"])
 
 _TICK_MAX_AGE_S = 60
-_BAR_MAX_AGE_S = 120  # bars are per-minute (flushed ~5s into the next minute)
+# Bars are per-minute; allow margin for the first flush after a (re)start so a fresh
+# deploy verifies green within a minute or two rather than flapping "degraded".
+_BAR_MAX_AGE_S = 180
 
 
 @router.get("/health")
