@@ -45,6 +45,12 @@ async def _rv_at(conn: asyncpg.Connection, ts: object) -> tuple[Decimal | None, 
 
 
 async def backfill(table: str, id_col: str) -> int:
+    # Whitelist (mirrors app.api.timeseries) — never interpolate unvalidated names.
+    if table not in {"paper_mtm_minute", "live_mtm_minute"} or id_col not in {
+        "position_id",
+        "strategy_id",
+    }:
+        raise ValueError(f"invalid table/id_col: {table}/{id_col}")
     conn = await asyncpg.connect(settings.pg_dsn_sync)
     updated = 0
     try:

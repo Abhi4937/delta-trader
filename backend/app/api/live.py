@@ -3,6 +3,7 @@ only write path and is double-gated (live_trading_enabled + confirm=true)."""
 
 from __future__ import annotations
 
+import time
 from decimal import Decimal
 from typing import Any, cast
 
@@ -13,6 +14,7 @@ from sqlalchemy import text
 from app.api.timeseries import read_timeseries
 from app.core.config import settings
 from app.db.session import get_sessionmaker
+from app.services.delta_rest import DeltaRestClient
 from app.services.live import sl_monitor
 from app.services.live.auth_gate import AuthGateError, RateLimitError, require_auth
 from app.services.live.mtm import aggregate
@@ -24,7 +26,7 @@ from app.services.live.strategy_grouper import (
     list_strategies,
     strategy_symbols,
 )
-from app.services.quant.rv import intraday_rv
+from app.services.quant.rv import historical_rv, intraday_rv
 from app.services.redis_bus import get_bus
 
 router = APIRouter(prefix="/live", tags=["live"])
@@ -192,10 +194,24 @@ async def _underlying_rv() -> dict[str, str | None]:
         intraday = intraday_rv([Decimal(str(r[0])) for r in rows if r[0] is not None])
     except Exception:
         intraday = None
+    # Historical RV from Delta daily candles (public endpoint, no keys) — parity
+    # with the paper path so the live RV card isn't permanently blank.
+    rest = DeltaRestClient()
+    try:
+        now = int(time.time())
+        start = now - settings.rv_historical_window_days * 86400
+        candles = await rest.get_candles(UNDERLYING_FUTURE, "1d", start, now)
+        closes = [Decimal(str(c["close"])) for c in candles if c.get("close") is not None]
+        historical = historical_rv(closes)
+    except Exception:
+        historical = None
+    finally:
+        await rest.aclose()
     return {
         "intraday": None if intraday is None else str(intraday),
         "historical": None if historical is None else str(historical),
         "window_minutes": str(settings.rv_intraday_window_minutes),
+        "window_days": str(settings.rv_historical_window_days),
     }
 
 
