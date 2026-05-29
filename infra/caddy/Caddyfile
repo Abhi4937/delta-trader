@@ -1,0 +1,22 @@
+# Replace the email and the site address before deploying.
+# With a real domain Caddy auto-provisions Let's Encrypt TLS.
+# No domain yet? Replace the site line with `:80` (plain HTTP behind the VCN
+# firewall) or `https://<vm-ip>.nip.io` for Caddy's internal CA — see DEPLOY_ORACLE.md.
+{
+	email YOUR_EMAIL_HERE
+}
+
+your-domain.example {
+	encode zstd gzip
+
+	handle /api/* {
+		uri strip_prefix /api
+		reverse_proxy backend:8000
+	}
+	handle /ws* {
+		reverse_proxy backend:8000
+	}
+	handle {
+		reverse_proxy frontend:80
+	}
+}

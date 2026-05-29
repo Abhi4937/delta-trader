@@ -1,0 +1,20 @@
+# Bring the Delta Trader compose stack up at boot and keep it running.
+# Install (on the Oracle VM):
+#   sudo cp infra/systemd/delta-trader.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now delta-trader
+# Adjust WorkingDirectory to the repo clone path.
+[Unit]
+Description=Delta Trader (docker compose)
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/delta-trader
+ExecStart=/usr/bin/docker compose -f infra/docker-compose.yml -f infra/docker-compose.prod.yml up -d --build
+ExecStop=/usr/bin/docker compose -f infra/docker-compose.yml -f infra/docker-compose.prod.yml down
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
