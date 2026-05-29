@@ -61,6 +61,10 @@ class Settings(BaseSettings):
     paper_impact_illiquid_floor: float = 0.005
     paper_atomic_default: bool = True
 
+    # Live monitor (Phase 3) — read-only by default
+    auth_rate_limit_per_sec: float = 10.0
+    sl_debounce_ticks: int = 3
+
     @computed_field  # type: ignore[prop-decorator]
     @property
     def underlying_list(self) -> list[str]:

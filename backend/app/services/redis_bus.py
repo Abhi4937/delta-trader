@@ -63,10 +63,22 @@ class RedisBus:
     def pubsub(self) -> redis.client.PubSub:
         return self.client.pubsub()
 
+    # --- persistent hashes (no TTL — e.g. stop-loss state) ----------------
+    async def set_hash(self, key: str, mapping: Mapping[str, str]) -> None:
+        if mapping:
+            await cast("Awaitable[int]", self.client.hset(key, mapping=dict(mapping)))
+
+    async def delete(self, key: str) -> None:
+        await cast("Awaitable[int]", self.client.delete(key))
+
     # --- index sets -------------------------------------------------------
     async def sadd(self, key: str, *members: str) -> None:
         if members:
             await cast("Awaitable[int]", self.client.sadd(key, *members))
+
+    async def srem(self, key: str, *members: str) -> None:
+        if members:
+            await cast("Awaitable[int]", self.client.srem(key, *members))
 
     async def smembers(self, key: str) -> set[str]:
         return await cast("Awaitable[set[str]]", self.client.smembers(key))

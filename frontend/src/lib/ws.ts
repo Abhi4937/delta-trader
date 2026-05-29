@@ -40,12 +40,47 @@ export interface PaperPositionFrame {
   strategy_iv: string;
   mark_stale: boolean | string;
 }
+/** Live positions snapshot push (ADR 0004 §9). Numbers are strings. */
+export interface LivePositionsFrame {
+  ch: "live_positions";
+  ts?: string;
+  rows: Array<{
+    symbol: string;
+    size: string;
+    entry_price: string;
+    mark_price: string;
+    contract_size: string;
+    margin: string;
+    unrealized: string;
+    product_id: number | string;
+  }>;
+}
+
+/** Live strategy aggregate + SL-state push (ADR 0004 §9). Drives the SL badge. */
+export interface LiveStrategyFrame {
+  ch: "live_strategy";
+  id: number;
+  ts?: string;
+  sl_state: string | null;
+  total_pnl?: string;
+  unrealized_pnl?: string;
+  net_delta?: string;
+  net_gamma?: string;
+  net_theta?: string;
+  net_vega?: string;
+  strategy_iv?: string;
+  margin?: string;
+  mark_stale?: boolean | string;
+}
+
 type ServerFrame =
   | SubscribedFrame
   | OptionChainFrame
   | CandleFrame
   | ErrorFrame
   | PaperPositionFrame
+  | LivePositionsFrame
+  | LiveStrategyFrame
   | { ch: string; [k: string]: unknown };
 
 // Listeners for paper_position frames — the paperStore registers one here so we
@@ -56,6 +91,26 @@ export function onPaperFrame(fn: PaperFrameListener): () => void {
   paperListeners.add(fn);
   return () => {
     paperListeners.delete(fn);
+  };
+}
+
+// Live-monitor frame listeners — the liveStore registers these so we keep the
+// single WS connection (ADR 0004 §9 reuses the existing /ws hub).
+type LivePositionsListener = (frame: LivePositionsFrame) => void;
+const livePositionsListeners = new Set<LivePositionsListener>();
+export function onLivePositionsFrame(fn: LivePositionsListener): () => void {
+  livePositionsListeners.add(fn);
+  return () => {
+    livePositionsListeners.delete(fn);
+  };
+}
+
+type LiveStrategyListener = (frame: LiveStrategyFrame) => void;
+const liveStrategyListeners = new Set<LiveStrategyListener>();
+export function onLiveStrategyFrame(fn: LiveStrategyListener): () => void {
+  liveStrategyListeners.add(fn);
+  return () => {
+    liveStrategyListeners.delete(fn);
   };
 }
 
@@ -106,7 +161,9 @@ export const useChainStore = create<ChainState>((set) => ({
 type SubMsg =
   | { sub: "option_chain"; underlying: string; expiry: string }
   | { sub: "candles"; underlying: string }
-  | { sub: "paper_position"; id: number };
+  | { sub: "paper_position"; id: number }
+  | { sub: "live_positions" }
+  | { sub: "live_strategy"; id: number };
 
 type UnsubMsg = { unsub: string; id?: number; underlying?: string; expiry?: string };
 
@@ -133,11 +190,21 @@ function startFlushLoop(): void {
       const batch = queue;
       queue = [];
       useChainStore.getState()._applyBatch(batch);
-      if (paperListeners.size) {
+      if (
+        paperListeners.size ||
+        livePositionsListeners.size ||
+        liveStrategyListeners.size
+      ) {
         for (const f of batch) {
           if (f.ch === "paper_position") {
             const pf = f as PaperPositionFrame;
             for (const fn of paperListeners) fn(pf);
+          } else if (f.ch === "live_positions") {
+            const lf = f as LivePositionsFrame;
+            for (const fn of livePositionsListeners) fn(lf);
+          } else if (f.ch === "live_strategy") {
+            const sf = f as LiveStrategyFrame;
+            for (const fn of liveStrategyListeners) fn(sf);
           }
         }
       }
@@ -227,4 +294,29 @@ export function unsubscribePaperPosition(id: number): void {
   // Tell the hub to stop polling/pushing this id (it supports unsub); also keeps
   // it from being replayed on reconnect.
   send({ unsub: "paper_position", id });
+}
+
+// --- Live monitor topics (ADR 0004 §9) ------------------------------------
+export function subscribeLivePositions(): void {
+  if (!hasWindow()) return;
+  desiredSubs.set("live_positions", { sub: "live_positions" });
+  ensureSocket();
+  send({ sub: "live_positions" });
+}
+
+export function unsubscribeLivePositions(): void {
+  desiredSubs.delete("live_positions");
+  send({ unsub: "live_positions" });
+}
+
+export function subscribeLiveStrategy(id: number): void {
+  if (!hasWindow()) return;
+  desiredSubs.set(`live_strategy:${id}`, { sub: "live_strategy", id });
+  ensureSocket();
+  send({ sub: "live_strategy", id });
+}
+
+export function unsubscribeLiveStrategy(id: number): void {
+  desiredSubs.delete(`live_strategy:${id}`);
+  send({ unsub: "live_strategy", id });
 }

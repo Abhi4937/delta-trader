@@ -125,6 +125,21 @@ async def _push_subscriptions(
             snap = await bus.get_latest(f"paper:mtm:{sub.pid}")
             if snap:
                 await websocket.send_text(_encode({"ch": "paper_position", "id": sub.pid, **snap}))
+        elif sub.kind == "live_positions":
+            symbols = sorted(await bus.smembers("live:positions"))
+            rows = [snap for s in symbols if (snap := await bus.get_latest(f"live:position:{s}"))]
+            await websocket.send_text(_encode({"ch": "live_positions", "rows": rows}))
+        elif sub.kind == "live_strategy" and sub.pid is not None:
+            sl = await bus.get_latest(f"live:sl:{sub.pid}")
+            await websocket.send_text(
+                _encode(
+                    {
+                        "ch": "live_strategy",
+                        "id": sub.pid,
+                        "sl_state": sl.get("state") if sl else None,
+                    }
+                )
+            )
         elif sub.kind == "option_chain" and sub.expiry:
             symbols = sorted(await bus.smembers(f"idx:chain:{sub.underlying}:{sub.expiry}"))
             rows = []

@@ -14,13 +14,18 @@ from collections.abc import AsyncIterator
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health, paper, products, stream
+from app.api import health, live, paper, products, stream
 from app.api.responses import DecimalJSONResponse
 from app.core.config import settings
 from app.core.logging import logger, setup_logging
 from app.db.session import dispose_engine
 from app.services.bootstrap import bootstrap_products
+from app.services.delta_rest import DeltaRestClient
 from app.services.delta_ws import DeltaWSClient
+from app.services.live.closer import LiveCloser
+from app.services.live.order_sync import OrderSync
+from app.services.live.position_sync import PositionSync
+from app.services.live.sl_monitor import SLMonitor
 from app.services.paper.mtm_worker import PaperMtmWorker
 from app.services.redis_bus import close_bus, get_bus
 from app.services.runtime import get_runtime, reset_runtime
@@ -55,11 +60,21 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     aggregator = MinuteAggregator(runtime.buffer)
     paper_mtm = PaperMtmWorker(bus=bus)
 
+    # Live monitor (Section 2) — read-only sync + stop-loss monitor. The auth gate
+    # makes these no-ops until Delta API keys are configured.
+    live_rest = DeltaRestClient()
+    position_sync = PositionSync(rest=live_rest, bus=bus)
+    order_sync = OrderSync(rest=live_rest, bus=bus)
+    sl_mon = SLMonitor(closer=LiveCloser(rest=live_rest, bus=bus), bus=bus)
+
     tasks.append(asyncio.create_task(ws.run()))
     tasks.append(asyncio.create_task(normalizer.run()))
     tasks.append(asyncio.create_task(spot.run()))
     tasks.append(asyncio.create_task(aggregator.run()))
     tasks.append(asyncio.create_task(paper_mtm.run()))
+    tasks.append(asyncio.create_task(position_sync.run()))
+    tasks.append(asyncio.create_task(order_sync.run()))
+    tasks.append(asyncio.create_task(sl_mon.run()))
     logger.info("delta-trader backend started", tasks=len(tasks))
 
     try:
@@ -70,9 +85,13 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         spot.stop()
         aggregator.stop()
         paper_mtm.stop()
+        position_sync.stop()
+        order_sync.stop()
+        sl_mon.stop()
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
+        await live_rest.aclose()
         await close_bus()
         await dispose_engine()
         reset_runtime()
@@ -96,4 +115,5 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(products.router)
 app.include_router(paper.router)
+app.include_router(live.router)
 app.include_router(stream.router)
