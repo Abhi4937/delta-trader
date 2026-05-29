@@ -71,10 +71,16 @@ async def test_retries_on_5xx_then_succeeds() -> None:
     assert route.call_count == 2  # one retry
 
 
-async def test_auth_call_blocked_without_live_trading() -> None:
+async def test_order_placement_blocked_without_live_trading(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    # Reads need only keys; ORDER PLACEMENT additionally requires live_trading_enabled.
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "live_trading_enabled", False)
     async with DeltaRestClient(base_url=BASE, api_key="k", api_secret="s") as client:
         with pytest.raises(DeltaAuthError):
-            await client.get_positions()
+            await client.place_order({"product_id": 1, "size": 1, "side": "sell"})
 
 
 def test_signature_is_deterministic_hmac() -> None:
