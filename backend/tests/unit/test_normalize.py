@@ -9,7 +9,8 @@ from hypothesis import strategies as st
 
 from app.workers.tick_normalizer import (
     _dec,
-    _normalize_iv,
+    _extract_iv,
+    _scale_iv,
     normalize_candle,
     normalize_spot,
     normalize_ticker,
@@ -23,7 +24,7 @@ TICKER_FRAME = {
     "oi": "0.4550",
     "volume": 0.872,
     "greeks": {"delta": "-0.878", "gamma": "0.00012", "theta": "-59.4", "vega": "12.6"},
-    "quotes": {"best_bid": "1943", "best_ask": "1971"},
+    "quotes": {"best_bid": "1943", "best_ask": "1971", "mark_iv": "0.24951"},
     "timestamp": 1779998765391723,
 }
 
@@ -36,11 +37,22 @@ def test_dec_parses_and_tolerates_garbage() -> None:
     assert _dec("not-a-number") is None
 
 
-def test_iv_heuristic_handles_both_scales() -> None:
-    # REST fraction stays as-is; WS percent-scaled gets divided by 100.
-    assert _normalize_iv(Decimal("0.2495")) == Decimal("0.2495")
-    assert _normalize_iv(Decimal("55")) == Decimal("0.55")
-    assert _normalize_iv(None) is None
+def test_extract_iv_prefers_mark_iv() -> None:
+    # quotes.mark_iv (clean fraction) wins over the ambiguous top-level mark_vol.
+    frame = {"mark_vol": "55"}  # would mis-scale via the fallback
+    assert _extract_iv(frame, {"mark_iv": "0.2400"}) == Decimal("0.2400")
+    # Low true-IV (<=5%) is preserved exactly — the old >5 heuristic could not.
+    assert _extract_iv({}, {"mark_iv": "0.0425"}) == Decimal("0.0425")
+    # No mark_iv -> fall back to mark_vol heuristic.
+    assert _extract_iv({"mark_vol": "0.2495"}, {}) == Decimal("0.2495")
+    assert _extract_iv({}, {}) is None
+
+
+def test_scale_iv_fallback_handles_both_scales() -> None:
+    # REST fraction stays as-is; legacy WS percent-scaled gets divided by 100.
+    assert _scale_iv(Decimal("0.2495")) == Decimal("0.2495")
+    assert _scale_iv(Decimal("55")) == Decimal("0.55")
+    assert _scale_iv(None) is None
 
 
 def test_normalize_ticker_decimal_and_iv() -> None:
@@ -48,7 +60,7 @@ def test_normalize_ticker_decimal_and_iv() -> None:
     assert tick is not None
     assert tick.channel == "ticker"
     assert isinstance(tick.mark_price, Decimal)
-    assert tick.iv == Decimal("0.2495043")  # already a fraction -> unchanged
+    assert tick.iv == Decimal("0.24951")  # from quotes.mark_iv
     assert tick.delta == Decimal("-0.878")
     assert tick.best_bid == Decimal("1943")
     # ts parsed from microseconds
@@ -74,8 +86,8 @@ def test_normalize_candle_and_spot() -> None:
 
 
 @given(st.decimals(min_value=0, max_value=1000, places=2, allow_nan=False))
-def test_iv_heuristic_monotonic_threshold(v: Decimal) -> None:
-    out = _normalize_iv(v)
+def test_scale_iv_monotonic_threshold(v: Decimal) -> None:
+    out = _scale_iv(v)
     assert out is not None
     # result is always a plausible sigma fraction (< original when scaled down)
     assert out <= v or v <= 5

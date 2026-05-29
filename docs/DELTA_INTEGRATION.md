@@ -9,15 +9,20 @@ public endpoints during Phase 1. See also `.claude/skills/delta-api`.
 
 ## Verified quirks (Phase 1)
 
-### `mark_vol` scaling differs by transport
-- **REST `/v2/tickers`** returns `mark_vol` already as a **sigma fraction**
-  (e.g. `"0.2495"` = ~25% IV). It is **NOT** ×100 here. `quotes.mark_iv` agrees.
-- The `delta-api` skill documents the WS `v2/ticker` channel as sending IV×100.
-- We normalize defensively in `app/workers/tick_normalizer._normalize_iv`: values
-  `> 5` are treated as percent-scaled and divided by 100; values `<= 5` are taken
-  as fractions. Crypto option IV realistically lives in `[0.05, 5.0]`, so the
-  threshold cleanly separates the two encodings. Deep ITM/OTM strikes can report
-  large/unstable IV — expected, not a bug.
+### IV: use `quotes.mark_iv`, not `mark_vol`
+- Both the WS `v2/ticker` frame and REST `/v2/tickers` carry **`quotes.mark_iv`** —
+  Delta's authoritative mark IV, **always a clean sigma fraction** (e.g.
+  `"0.24001"` = ~24% IV). This is the source of truth; we read it directly in
+  `app/workers/tick_normalizer._extract_iv`.
+- The top-level `mark_vol` is ambiguous: REST sends a fraction (`"0.2495"`) while
+  the `delta-api` skill documents the WS channel as IV×100. We only fall back to it
+  (via `_scale_iv`: divide by 100 when `> 5`) if `quotes.mark_iv` is absent.
+- **Why the switch:** the old `mark_vol > 5 → ÷100` heuristic mis-scaled any true
+  IV `<= 5%` by 100× (it looked like a fraction and was left as-is). Reading
+  `mark_iv` removes that latent bug entirely. Verified ATM and deep strikes now
+  match Delta's published IV exactly.
+- Deep ITM/OTM strikes can report large/clamped IV (Delta floors illiquid strikes
+  to a flat value) — this is Delta's own data, not a scaling bug on our side.
 
 ### Product id field
 - The integer product id is the `id` field on `/v2/products` objects (e.g. `136153`).
