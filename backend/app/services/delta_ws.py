@@ -18,6 +18,7 @@ from collections.abc import Awaitable, Callable
 import orjson
 import websockets
 
+from app.core import metrics
 from app.core.config import settings
 from app.core.logging import logger
 from app.services.redis_bus import RedisBus, get_bus
@@ -81,6 +82,7 @@ class DeltaWSClient:
                 ws = await self._connect(self.url)
             except Exception as exc:
                 attempt += 1
+                metrics.delta_api_errors.inc()
                 logger.warning("delta ws connect failed", attempt=attempt, error=str(exc))
                 await self._sleep_backoff(backoff, attempt)
                 backoff = min(backoff * 2, self._max_backoff)
@@ -102,6 +104,7 @@ class DeltaWSClient:
                 with contextlib.suppress(Exception):
                     await ws.close()
             if not self._stop.is_set():
+                metrics.delta_ws_reconnects.inc()
                 await self._sleep_backoff(backoff, attempt)
                 backoff = min(backoff * 2, self._max_backoff)
 

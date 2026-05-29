@@ -10,6 +10,7 @@ rebuilt from Postgres every 5 s (and on boot — crash recovery).
 from __future__ import annotations
 
 import asyncio
+import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from decimal import Decimal
@@ -18,6 +19,7 @@ import asyncpg
 import orjson
 from sqlalchemy import select
 
+from app.core import metrics
 from app.core.config import settings
 from app.core.logging import logger
 from app.db.session import get_sessionmaker
@@ -180,6 +182,7 @@ class PaperMtmWorker:
         self._cache = cache
 
     async def _tick(self, now: datetime) -> None:
+        t0 = time.perf_counter()
         for pos in self._cache.values():
             # Fetch all leg marks concurrently (bounds tick latency at leg count).
             snaps = await asyncio.gather(
@@ -222,6 +225,8 @@ class PaperMtmWorker:
             }
             await self._publish(pos.position_id, now, total, snapshot)
             self._accumulate(pos.position_id, now, total, snapshot)
+        if self._cache:
+            metrics.mtm_compute_duration_ms.observe((time.perf_counter() - t0) * 1000)
 
     async def _publish(
         self,
