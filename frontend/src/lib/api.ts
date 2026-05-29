@@ -56,9 +56,21 @@ export interface CandlesResponse {
 
 const API_BASE = "/api";
 
+/**
+ * Shared request headers. VITE_API_TOKEN is an optional bearer token for a
+ * gated prod backend; when set we send `Authorization: Bearer <token>` on every
+ * REST call. Unset in dev -> no header, backend is permissive.
+ */
+export function authHeaders(extra?: Record<string, string>): HeadersInit {
+  const headers: Record<string, string> = { Accept: "application/json", ...extra };
+  const token = import.meta.env.VITE_API_TOKEN as string | undefined;
+  if (token) headers.Authorization = `Bearer ${token}`;
+  return headers;
+}
+
 async function getJSON<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { Accept: "application/json" },
+    headers: authHeaders(),
   });
   if (!res.ok) {
     throw new Error(`GET ${path} failed: ${res.status} ${res.statusText}`);

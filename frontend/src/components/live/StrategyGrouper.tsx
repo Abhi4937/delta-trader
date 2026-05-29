@@ -6,6 +6,7 @@ import {
   NotConfiguredError,
   type LivePosition,
 } from "../../lib/liveApi";
+import { toast } from "../../lib/toast";
 
 interface StrategyGrouperProps {
   positions: LivePosition[];
@@ -41,8 +42,9 @@ export default function StrategyGrouper({
     setBusy(true);
     setError(null);
     try {
-      await createLiveStrategy(name.trim(), Array.from(selected));
+      const created = await createLiveStrategy(name.trim(), Array.from(selected));
       await qc.invalidateQueries({ queryKey: ["live-strategies"] });
+      toast.success(`Strategy #${created.strategy_id} created`);
       setSelected(new Set());
       setName("");
     } catch (e) {
@@ -50,10 +52,13 @@ export default function StrategyGrouper({
         setError(
           "One or more selected positions are already in a strategy. Pick untagged positions.",
         );
+        toast.error("One or more positions are already in a strategy");
       } else if (e instanceof NotConfiguredError) {
         setError("Live trading not configured — add Delta API keys.");
+        toast.error("Live trading not configured — add Delta API keys");
       } else {
         setError(e instanceof Error ? e.message : "Failed to create strategy.");
+        toast.error(e instanceof Error ? e.message : "Failed to create strategy");
       }
     } finally {
       setBusy(false);

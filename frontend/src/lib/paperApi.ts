@@ -2,6 +2,8 @@
 // Hits the Vite proxy at /api/... -> FastAPI :8001. All numeric fields are
 // Decimal-as-strings on the wire — never parsed to float here.
 
+import { authHeaders } from "./api";
+
 const API_BASE = "/api";
 
 // ---------------------------------------------------------------------------
@@ -177,7 +179,7 @@ async function parseError(res: Response, path: string): Promise<never> {
 async function postJSON<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    headers: authHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify(body),
   });
   if (!res.ok) return parseError(res, `POST ${path}`);
@@ -186,7 +188,7 @@ async function postJSON<T>(path: string, body: unknown): Promise<T> {
 
 async function getJSON<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { Accept: "application/json" },
+    headers: authHeaders(),
   });
   if (!res.ok) return parseError(res, `GET ${path}`);
   return (await res.json()) as T;

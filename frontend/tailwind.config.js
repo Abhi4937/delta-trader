@@ -8,7 +8,8 @@ export default {
         red: "#ef4444",
         bg: "#0a0a0a",
         text: "#e5e5e5",
-        neutral: "#737373",
+        // Muted text bumped to ~5.6:1 contrast on #0a0a0a for WCAG AA.
+        neutral: "#8b8b8b",
       },
       fontFamily: {
         mono: [

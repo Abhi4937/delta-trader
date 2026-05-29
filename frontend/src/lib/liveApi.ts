@@ -6,6 +6,8 @@
 // are absent. Order-placing paths (stop-loss arm/disarm) are double-gated and
 // can also return 403 (live_trading_disabled) / 422 (confirmation/threshold).
 
+import { authHeaders } from "./api";
+
 const API_BASE = "/api";
 
 // ---------------------------------------------------------------------------
@@ -175,7 +177,7 @@ async function parseError(res: Response, path: string): Promise<never> {
 
 async function getJSON<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { Accept: "application/json" },
+    headers: authHeaders(),
   });
   if (!res.ok) return parseError(res, `GET ${path}`);
   return (await res.json()) as T;
@@ -184,7 +186,7 @@ async function getJSON<T>(path: string): Promise<T> {
 async function postJSON<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    headers: authHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify(body),
   });
   if (!res.ok) return parseError(res, `POST ${path}`);
@@ -194,7 +196,7 @@ async function postJSON<T>(path: string, body: unknown): Promise<T> {
 async function deleteJSON<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     method: "DELETE",
-    headers: { Accept: "application/json" },
+    headers: authHeaders(),
   });
   if (!res.ok) return parseError(res, `DELETE ${path}`);
   return (await res.json()) as T;
