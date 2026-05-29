@@ -2,7 +2,42 @@
 name = "delta-trader-backend"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = []  # filled in Phase 1
+dependencies = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.6",
+  "websockets==13.0.1",
+  "httpx==0.27.2",
+  "pydantic==2.9.2",
+  "pydantic-settings==2.5.2",
+  "asyncpg==0.29.0",
+  "psycopg2-binary==2.9.9",
+  "redis==5.0.8",
+  "sqlalchemy[asyncio]==2.0.35",
+  "alembic==1.13.3",
+  "python-dotenv==1.2.2",
+  "numpy==2.1.1",
+  "pandas==2.2.3",
+  "pyarrow==17.0.0",
+  "orjson==3.11.5",
+  "loguru==0.7.2",
+  "tenacity==9.0.0",
+  "prometheus-client==0.21.0",
+  "slowapi==0.1.9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.3.3",
+  "pytest-asyncio==0.24.0",
+  "pytest-cov==5.0.0",
+  "pytest-mock==3.14.0",
+  "respx==0.21.1",
+  "hypothesis==6.112.1",
+  "vcrpy==6.0.1",
+  "testcontainers[postgres]==4.8.1",
+  "ruff==0.6.8",
+  "mypy==1.11.2",
+]
 
 [tool.ruff]
 line-length = 100
@@ -12,13 +47,27 @@ target-version = "py311"
 select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF", "ASYNC"]
 ignore = ["E501"]
 
+[tool.ruff.lint.isort]
+# Deterministic across environments: `app` is the only first-party package;
+# alembic/sqlalchemy are third-party regardless of local scaffold dirs.
+known-first-party = ["app"]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI dependency-injection legitimately calls these in argument defaults.
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "fastapi.Body"]
+
 [tool.mypy]
 python_version = "3.11"
 strict = true
 plugins = ["pydantic.mypy"]
 
+[[tool.mypy.overrides]]
+module = ["asyncpg.*", "testcontainers.*", "vcr.*"]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 addopts = "-q --strict-markers --cov=app --cov-report=term-missing"
 testpaths = ["tests"]
 markers = [

@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-green: #10b981;
+  --color-red: #ef4444;
+  --color-bg: #0a0a0a;
+  --color-text: #e5e5e5;
+  /* Muted text: bumped from #737373 (~4.0:1) to #8b8b8b (~5.6:1) so muted copy
+     and badges clear WCAG AA on the #0a0a0a background. Dark-only. */
+  --color-neutral: #8b8b8b;
+  --color-panel: #111111;
+  --color-border: #262626;
+
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family:
+    "JetBrains Mono", "Geist Mono", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* All numeric displays use tabular figures so columns align. */
+.tabular-nums,
+table,
+.num {
+  font-variant-numeric: tabular-nums;
+}
