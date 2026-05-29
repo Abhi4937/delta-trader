@@ -4,6 +4,7 @@ import ExpirySelector from "../components/ExpirySelector";
 import OptionChainTable from "../components/OptionChainTable";
 import SpotChart from "../components/SpotChart";
 import PaperTradePage from "./paper/PaperTradePage";
+import LiveMonitorPage from "./live/LiveMonitorPage";
 import { useExpiries } from "../hooks/useExpiries";
 import { useOptionChain } from "../hooks/useOptionChain";
 import { useSpotCandles } from "../hooks/useSpotCandles";
@@ -11,7 +12,7 @@ import { fmt } from "../lib/decimal";
 
 const UNDERLYING = "BTC";
 
-type Tab = "chain" | "trade";
+type Tab = "chain" | "trade" | "live";
 
 export default function Section1Paper(): JSX.Element {
   const { data: expiries = [], isLoading: expiriesLoading } = useExpiries(UNDERLYING);
@@ -66,9 +67,16 @@ export default function Section1Paper(): JSX.Element {
         >
           Paper Trade
         </TabButton>
+        <TabButton
+          active={tab === "live"}
+          onClick={() => setTab("live")}
+          testid="tab-live"
+        >
+          Live Monitor
+        </TabButton>
       </nav>
 
-      {tab === "chain" ? (
+      {tab === "chain" && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_420px]">
           <section>
             <div className="mb-2 flex items-center justify-between text-xs text-neutral">
@@ -83,9 +91,9 @@ export default function Section1Paper(): JSX.Element {
             <SpotChart close={spotClose} />
           </section>
         </div>
-      ) : (
-        <PaperTradePage />
       )}
+      {tab === "trade" && <PaperTradePage />}
+      {tab === "live" && <LiveMonitorPage />}
     </div>
   );
 }
