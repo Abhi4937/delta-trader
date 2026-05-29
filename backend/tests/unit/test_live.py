@@ -198,3 +198,20 @@ async def test_sl_fires_after_debounce_and_closes(monkeypatch: pytest.MonkeyPatc
     await mon._tick()
     assert (await bus.get_latest("live:sl:1"))["state"] == "CLOSED"
     assert ("CLOSING", "CLOSED") in events
+
+
+async def test_aggregate_flat_leg_does_not_mark_stale() -> None:
+    """A closed/flat leg (missing hash) must be excluded, NOT marked stale —
+    otherwise the SL would freeze on the remaining open legs (must-fix #1)."""
+    from app.services.live.mtm import aggregate
+
+    bus = FakeBus()
+    # 'OPEN' has a fresh mark; 'GONE' has no position hash (leg was closed).
+    await bus.set_latest(
+        "live:position:OPEN",
+        {"symbol": "OPEN", "size": "1", "contract_size": "1", "entry_price": "100", "margin": "10"},
+    )
+    await bus.set_latest("latest:OPEN", {"mark_price": "90", "delta": "0.5"})
+    agg = await aggregate(["OPEN", "GONE"], bus=cast(rb.RedisBus, bus))
+    assert agg.mark_stale is False  # flat leg excluded, not stale
+    assert agg.unrealized_pnl == Decimal("-10")  # 1*(90-100)*1

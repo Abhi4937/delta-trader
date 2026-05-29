@@ -39,8 +39,10 @@ async def aggregate(symbols: list[str], bus: RedisBus | None = None) -> LiveAggr
     mark_stale = False
     for symbol in symbols:
         pos = await bus.get_latest(f"live:position:{symbol}")
+        # A flat/closed leg (no hash, or size 0) is EXCLUDED — it is NOT a stale
+        # mark. Marking it stale would freeze the SL on the remaining open legs (a
+        # partially-reduced strategy is exactly when the stop must still work).
         if not pos:
-            mark_stale = True
             continue
         size = _dec(pos.get("size")) or Decimal(0)
         if size == 0:
@@ -51,6 +53,7 @@ async def aggregate(symbols: list[str], bus: RedisBus | None = None) -> LiveAggr
         tick = await bus.get_latest(f"latest:{symbol}")
         mark = _dec(tick.get("mark_price")) or _dec(pos.get("mark_price"))
         if mark is None:
+            # An OPEN leg with no fresh mark is genuinely stale.
             mark_stale = True
         views.append(
             LegView(

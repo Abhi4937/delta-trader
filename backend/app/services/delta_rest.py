@@ -84,12 +84,14 @@ class DeltaRestClient:
         order_placing: bool = False,
     ) -> Any:
         headers: dict[str, str] = {"Accept": "application/json"}
-        # Build a deterministic, alphabetically-sorted query string for signing AND
-        # send that exact same ordered sequence to httpx so signed == sent.
+        # Build a deterministic, alphabetically-sorted query. Sign over EXACTLY the
+        # percent-encoded string httpx will send (str(QueryParams) == wire form), so
+        # the signature matches even for reserved chars (commas, spaces).
         sorted_items: list[tuple[str, str]] = (
             sorted((k, str(v)) for k, v in params.items()) if params else []
         )
-        query = "?" + "&".join(f"{k}={v}" for k, v in sorted_items) if sorted_items else ""
+        query_params = httpx.QueryParams(dict(sorted_items))
+        query = ("?" + str(query_params)) if sorted_items else ""
         body_str = orjson.dumps(body).decode() if body is not None else ""
 
         if auth:
@@ -109,9 +111,8 @@ class DeltaRestClient:
         if body is not None:
             headers["Content-Type"] = "application/json"
 
-        # dict preserves insertion order (== sorted), so the sent query matches
-        # the signed query string byte-for-byte.
-        ordered_params = dict(sorted_items)
+        # Send the SAME QueryParams that were signed -> wire == signed byte-for-byte.
+        ordered_params = query_params
         resp = await self._client.request(
             method,
             path,
