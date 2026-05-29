@@ -142,3 +142,15 @@ Duration: ~66 min (19:52 -> 20:58 UTC)
   - Re-ran gate: ruff+mypy clean, 56 backend tests pass; paper e2e re-passed on rebuilt backend.
   - Deferred NITs (-> report): N1 %return denominator, N4 naked-short-call margin grid cap, N6 preview persists strategy per call, expired-leg last-good freeze not yet implemented.
 - Commits: e9fceee/3fb2652 backend, 814471c/71c4ac7 frontend, 6f3a813 docs, ee57bd9 + d8640fc fixes.
+
+## 2026-05-29 (cont) — Phase 3 — Live Monitor (Section 2)
+- User chose "build key-less now": full code + mocked tests + safety gates, read-only by default; testnet drill deferred to user (RUNBOOK_LIVE.md).
+- ADR 0004 (paranoid mode): single require_auth gate, shared token bucket, user-tagged grouping (no auto-cluster), SL state machine ARMED->TRIGGERED->CLOSING->CLOSED|FAILED (Redis-persisted, restart-resume), reduce_only closes, no key leakage.
+- Backend: auth_gate (503/403/422/429), delta_rest extended (place/cancel order, body signing, token bucket; reads need keys-only, writes need live_trading+confirm), position_sync/order_sync, strategy_grouper, mtm (reuses quant), closer (gate-first, INTENT log, retry-once), sl_monitor (state machine), api/live.py, migration 0003, WS topics live_positions/live_strategy. 69 tests; gates verified live (503 no-keys).
+- Frontend: liveApi, liveStore, LivePositionsTable (503->not-configured panel), StrategyGrouper, StopLossDialog (confirm-checkbox-gated), LiveStrategyDetail, LiveMonitorPage with red LIVE banner. 30 vitest, 3 e2e green (foundation+paper+live, live mocked).
+- Reviewer (paranoid): APPROVE-with-changes. 2 MUST-FIX fixed:
+  1. SL froze when any leg went flat (missing position hash set mark_stale=True -> breach never counted). Fixed: flat/closed legs excluded, not stale; only OPEN legs with missing marks are stale. Regression test added.
+  2. Signed query not byte-identical to httpx wire encoding for reserved chars. Fixed: sign over str(QueryParams) and send the same QueryParams. (No current auth call had reserved chars -> latent.)
+  Verified clean by reviewer: gate-before-payload, defense-in-depth live check in _request, NO key/secret/signature in any log/URL/response, reduce_only closes, single shared bucket, index snapshot iteration, bound SQL params, Decimal money path, restart resume.
+  NITs deferred (-> report): SecretStr for keys, close size as string, retry backoff/transient-only, ADR DELETE-gate table vs keys-only code, attempts counter unused.
+- Commits: e0159be ADR, c028910/bcdea56 backend, 77fce1d/31d9ed5 frontend, 9b6043c docs, 079ee27 fixes.
