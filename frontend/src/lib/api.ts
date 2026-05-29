@@ -33,6 +33,27 @@ export interface OptionChainResponse {
   rows: OptionRow[];
 }
 
+/**
+ * Raw spot/premium candle from `/spot/candles`. Numeric fields may arrive as
+ * Decimal-as-string OR plain JSON number depending on the cache path — callers
+ * normalize via `toDecimal`. `time` is unix seconds.
+ */
+export interface RawCandle {
+  time: number;
+  open: string | number;
+  high: string | number;
+  low: string | number;
+  close: string | number;
+  volume?: string | number;
+}
+
+export interface CandlesResponse {
+  symbol: string;
+  resolution: string;
+  candles: RawCandle[];
+  cached?: boolean;
+}
+
 const API_BASE = "/api";
 
 async function getJSON<T>(path: string): Promise<T> {
@@ -57,5 +78,22 @@ export function getOptionChain(
 ): Promise<OptionChainResponse> {
   return getJSON<OptionChainResponse>(
     `/option-chain?underlying=${encodeURIComponent(underlying)}&expiry=${encodeURIComponent(expiry)}`,
+  );
+}
+
+/**
+ * Fetch candles for a spot symbol (e.g. "BTCUSD") or an option symbol (its
+ * premium history). `start`/`end` are unix seconds.
+ */
+export function getCandles(
+  symbol: string,
+  resolution: string,
+  start: number,
+  end: number,
+): Promise<CandlesResponse> {
+  return getJSON<CandlesResponse>(
+    `/spot/candles?symbol=${encodeURIComponent(symbol)}&resolution=${encodeURIComponent(
+      resolution,
+    )}&start=${Math.floor(start)}&end=${Math.floor(end)}`,
   );
 }

@@ -14,7 +14,7 @@ from collections.abc import AsyncIterator
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health, live, paper, products, stream
+from app.api import health, live, paper, products, spot, stream
 from app.api.responses import DecimalJSONResponse
 from app.core.config import settings
 from app.core.logging import logger, setup_logging
@@ -116,4 +116,5 @@ app.include_router(health.router)
 app.include_router(products.router)
 app.include_router(paper.router)
 app.include_router(live.router)
+app.include_router(spot.router)
 app.include_router(stream.router)

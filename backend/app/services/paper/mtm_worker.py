@@ -26,6 +26,7 @@ from app.services.paper.models import signed_qty
 from app.services.quant.greeks import net_signed_greeks
 from app.services.quant.iv import strategy_iv
 from app.services.quant.pnl import unrealized_pnl
+from app.services.quant.rv import historical_rv, intraday_rv
 from app.services.quant.types import LegView
 from app.services.redis_bus import RedisBus, get_bus
 
@@ -44,6 +45,8 @@ _MTM_COLUMNS = (
     "net_vega",
     "strategy_iv",
     "mark_stale",
+    "rv_intraday",
+    "rv_historical",
 )
 
 _UPSERT_SQL = f"""
@@ -54,8 +57,11 @@ ON CONFLICT (position_id, ts) DO UPDATE SET
   unrealized_pnl=EXCLUDED.unrealized_pnl, realized_pnl=EXCLUDED.realized_pnl,
   net_delta=EXCLUDED.net_delta, net_gamma=EXCLUDED.net_gamma,
   net_theta=EXCLUDED.net_theta, net_vega=EXCLUDED.net_vega,
-  strategy_iv=EXCLUDED.strategy_iv, mark_stale=EXCLUDED.mark_stale;
+  strategy_iv=EXCLUDED.strategy_iv, mark_stale=EXCLUDED.mark_stale,
+  rv_intraday=EXCLUDED.rv_intraday, rv_historical=EXCLUDED.rv_historical;
 """
+
+UNDERLYING_FUTURE = "BTCUSD"
 
 
 @dataclass
@@ -81,6 +87,8 @@ class _MtmAcc:
     net_vega: Decimal
     strategy_iv: Decimal | None
     mark_stale: bool
+    rv_intraday: Decimal | None = None
+    rv_historical: Decimal | None = None
 
     def update(self, total: Decimal, snap: dict[str, Decimal | None | bool]) -> None:
         self.high = max(self.high, total)
@@ -270,6 +278,32 @@ class PaperMtmWorker:
         else:
             acc.update(total, snap)
 
+    async def _underlying_rv(
+        self, conn: asyncpg.Connection
+    ) -> tuple[Decimal | None, Decimal | None]:
+        """Underlying RV from ticks_minute: intraday (1m closes) + historical (daily)."""
+        intra: Decimal | None = None
+        hist: Decimal | None = None
+        try:
+            rows = await conn.fetch(
+                "SELECT close FROM ticks_minute WHERE symbol=$1 "
+                "AND ts > now() - ($2 || ' minutes')::interval ORDER BY ts",
+                UNDERLYING_FUTURE,
+                str(settings.rv_intraday_window_minutes),
+            )
+            intra = intraday_rv([Decimal(str(r["close"])) for r in rows if r["close"] is not None])
+            drows = await conn.fetch(
+                "SELECT time_bucket('1 day', ts) AS d, last(close, ts) AS c FROM ticks_minute "
+                "WHERE symbol=$1 AND ts > now() - ($2 || ' days')::interval "
+                "GROUP BY d ORDER BY d",
+                UNDERLYING_FUTURE,
+                str(settings.rv_historical_window_days),
+            )
+            hist = historical_rv([Decimal(str(r["c"])) for r in drows if r["c"] is not None])
+        except Exception as exc:
+            logger.warning("underlying rv compute failed", error=str(exc))
+        return intra, hist
+
     async def _flush(self, now: datetime) -> None:
         current = _minute(now)
         # Peek (do NOT pop) closed buckets — only delete them after a successful
@@ -277,27 +311,34 @@ class PaperMtmWorker:
         closed = [k for k, acc in self._buf.items() if acc.ts < current]
         if not closed:
             return
-        records = [
-            (
-                r.position_id,
-                r.ts,
-                r.open,
-                r.high,
-                r.low,
-                r.close,
-                r.unrealized_pnl,
-                r.realized_pnl,
-                r.net_delta,
-                r.net_gamma,
-                r.net_theta,
-                r.net_vega,
-                r.strategy_iv,
-                r.mark_stale,
-            )
-            for r in (self._buf[k] for k in closed)
-        ]
         conn = await asyncpg.connect(self._dsn)
         try:
+            # Underlying RV is the same for every position this cycle — compute once.
+            rv_intra, rv_hist = await self._underlying_rv(conn)
+            for k in closed:
+                self._buf[k].rv_intraday = rv_intra
+                self._buf[k].rv_historical = rv_hist
+            records = [
+                (
+                    r.position_id,
+                    r.ts,
+                    r.open,
+                    r.high,
+                    r.low,
+                    r.close,
+                    r.unrealized_pnl,
+                    r.realized_pnl,
+                    r.net_delta,
+                    r.net_gamma,
+                    r.net_theta,
+                    r.net_vega,
+                    r.strategy_iv,
+                    r.mark_stale,
+                    r.rv_intraday,
+                    r.rv_historical,
+                )
+                for r in (self._buf[k] for k in closed)
+            ]
             async with conn.transaction():
                 await conn.execute(
                     "CREATE TEMP TABLE _staging_pmtm "

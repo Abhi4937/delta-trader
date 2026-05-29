@@ -11,6 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy import select, text
 
+from app.api.timeseries import read_timeseries
 from app.core.config import settings
 from app.core.logging import logger
 from app.db.session import get_sessionmaker
@@ -164,6 +165,18 @@ async def close_position(
     detail = await _position_detail(position_id)
     detail["close"] = result
     return detail
+
+
+@router.get("/positions/{position_id}/timeseries")
+async def position_timeseries(
+    position_id: int,
+    fields: str = Query("close,delta,gamma,theta,vega,iv,rv_intraday,rv_historical"),
+    from_: str | None = Query(None, alias="from"),
+    to: str | None = Query(None),
+) -> dict[str, Any]:
+    return await read_timeseries(
+        "paper_mtm_minute", "position_id", position_id, fields, from_=from_, to=to
+    )
 
 
 @router.get("/positions/{position_id}/mtm")

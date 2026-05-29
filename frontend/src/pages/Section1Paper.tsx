@@ -87,8 +87,8 @@ export default function Section1Paper(): JSX.Element {
           </section>
 
           <section>
-            <div className="mb-2 text-xs text-neutral">BTC Spot (1m close)</div>
-            <SpotChart close={spotClose} />
+            <div className="mb-2 text-xs text-neutral">BTC Spot (1m candles + indicators)</div>
+            <SpotChart symbol="BTCUSD" underlying={UNDERLYING} />
           </section>
         </div>
       )}
