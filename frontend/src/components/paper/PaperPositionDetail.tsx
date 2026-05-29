@@ -21,6 +21,12 @@ import { parseSymbol } from "../../lib/symbols";
 import { usePaperMtm } from "../../hooks/usePaperMtm";
 import { useOptionChain } from "../../hooks/useOptionChain";
 import type { OptionRow } from "../../lib/api";
+import DetailTabs, { type TabDef } from "../DetailTabs";
+import PositionGreeksChart from "../charts/PositionGreeksChart";
+import PositionIVChart from "../charts/PositionIVChart";
+import RVPanel from "../charts/RVPanel";
+import VolConeMini from "../charts/VolConeMini";
+import SpotChart from "../SpotChart";
 
 interface PaperPositionDetailProps {
   position: PaperPosition;
@@ -109,6 +115,85 @@ export default function PaperPositionDetail({
 
   const { rows } = useOptionChain(UNDERLYING, legExpiry);
 
+  const legSymbols = useMemo(
+    () => position.legs.map((l) => l.symbol),
+    [position.legs],
+  );
+
+  const tabs: TabDef[] = [
+    {
+      key: "overview",
+      label: "Overview",
+      testid: "detail-tab-overview",
+      render: () => (
+        <div className="flex flex-col gap-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+            <GreeksPanel mtm={mtm} />
+            <IvPanel mtm={mtm} legs={position.legs} rows={rows} />
+            <RvPanel
+              intraday={rv?.intraday ?? null}
+              historical={rv?.historical ?? null}
+              windowMinutes={rv?.window_minutes}
+              windowDays={rv?.window_days}
+            />
+          </div>
+          <LegBreakdown legs={position.legs} rows={rows} />
+        </div>
+      ),
+    },
+    {
+      key: "pnl",
+      label: "PnL",
+      testid: "detail-tab-pnl",
+      render: () => <PnlChart curve={curve} />,
+    },
+    {
+      key: "greeks",
+      label: "Greeks",
+      testid: "detail-tab-greeks",
+      render: () => (
+        <PositionGreeksChart source={{ kind: "paper", id: position.id }} />
+      ),
+    },
+    {
+      key: "ivrv",
+      label: "IV/RV",
+      testid: "detail-tab-ivrv",
+      render: () => (
+        <div className="flex flex-col gap-3">
+          <PositionIVChart
+            source={{ kind: "paper", id: position.id }}
+            legSymbols={legSymbols}
+            rows={rows}
+          />
+          <RVPanel
+            source={{ kind: "paper", id: position.id }}
+            rv={
+              rv
+                ? {
+                    intraday: rv.intraday,
+                    historical: rv.historical,
+                    windowMinutes: rv.window_minutes,
+                    windowDays: rv.window_days,
+                  }
+                : null
+            }
+          />
+          <VolConeMini
+            underlying={position.underlying}
+            currentRv={rv?.intraday ?? rv?.historical ?? null}
+          />
+        </div>
+      ),
+    },
+    {
+      key: "spot",
+      label: "Spot",
+      testid: "detail-tab-spot",
+      render: () => <SpotChart symbol="BTCUSD" underlying={position.underlying} />,
+    },
+  ];
+
   return (
     <div
       className="flex flex-col gap-3 rounded border border-[var(--color-border)] bg-[var(--color-panel)] p-3"
@@ -132,23 +217,7 @@ export default function PaperPositionDetail({
         </div>
       </div>
 
-      {/* live PnL chart */}
-      <PnlChart curve={curve} />
-
-      {/* greeks + IV + RV panels */}
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        <GreeksPanel mtm={mtm} />
-        <IvPanel mtm={mtm} legs={position.legs} rows={rows} />
-        <RvPanel
-          intraday={rv?.intraday ?? null}
-          historical={rv?.historical ?? null}
-          windowMinutes={rv?.window_minutes}
-          windowDays={rv?.window_days}
-        />
-      </div>
-
-      {/* leg breakdown */}
-      <LegBreakdown legs={position.legs} rows={rows} />
+      <DetailTabs tabs={tabs} initialKey="overview" />
     </div>
   );
 }
