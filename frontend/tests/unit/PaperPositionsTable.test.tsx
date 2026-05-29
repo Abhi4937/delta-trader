@@ -75,6 +75,7 @@ describe("PaperPositionsTable", () => {
         onClose={vi.fn()}
       />,
     );
-    expect(screen.getByText(/No open positions/i)).toBeInTheDocument();
+    expect(screen.getByText(/No paper positions yet/i)).toBeInTheDocument();
+    expect(screen.getByTestId("empty-state")).toBeInTheDocument();
   });
 });
