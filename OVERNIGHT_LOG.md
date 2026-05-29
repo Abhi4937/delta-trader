@@ -154,3 +154,12 @@ Duration: ~66 min (19:52 -> 20:58 UTC)
   Verified clean by reviewer: gate-before-payload, defense-in-depth live check in _request, NO key/secret/signature in any log/URL/response, reduce_only closes, single shared bucket, index snapshot iteration, bound SQL params, Decimal money path, restart resume.
   NITs deferred (-> report): SecretStr for keys, close size as string, retry backoff/transient-only, ADR DELETE-gate table vs keys-only code, attempts counter unused.
 - Commits: e0159be ADR, c028910/bcdea56 backend, 77fce1d/31d9ed5 frontend, 9b6043c docs, 079ee27 fixes.
+
+## 2026-05-29 (cont) — Phase 4 — Indicators, IV/RV, Greeks charts
+- ADR 0005 (written directly — short, decision pre-specified): indicators on FRONTEND (pure fns), backend persists RV + serves candles/timeseries.
+- Backend: migration 0004 (rv_intraday/rv_historical on both *_mtm_minute; greeks+strategy_iv already existed); paper mtm_worker computes RV once/flush; /paper+/live timeseries endpoints (whitelisted field map, bound params); cached /spot/candles proxy; backfill_greeks_columns.py (filled 521 rows). 72 tests.
+- Frontend: lib/indicators (EMA/RSI/MACD/BBands/ATR/ADX, Wilder, null warm-up); upgraded SpotChart (panes, ADX(14) default) reused as OptionPremiumChart; PositionGreeksChart/PositionIVChart/RVPanel/VolConeMini; detail tabs Overview|PnL|Greeks|IV/RV|Spot. 53 vitest, 5 e2e green. Incremental recompute, bounded history.
+- Reviewer: 2 must-fix fixed (backfill table whitelist; live historical-RV parity via Delta daily candles). Dismissed "wrong candle resolution" with evidence (Delta India accepts 1m/5m -> 59 candles live; skill documents it).
+- Soak (15 min): backend mem 93.19->93.33 MiB (flat, no leak), rv bars 553->598 (~3/min), 0 NEW tracebacks.
+- Edge cases (report): ADX 3-stage warm-up + DX zero-guard; RSI flat->50; MACD signal seeded over contiguous defined macd; ATR TR0 undefined. IV/RV anomaly: rv_historical from ticks_minute daily is NULL until ~30d of data; /mtm sources it from Delta daily candles (documented in INDICATORS.md; RV panel renders whichever window has data).
+- Commits: 270fab4 ADR, 7aff75f backend, c21a494/42bae43 frontend, 6dde5d4 fixes+graphify+docs. PR #5 MERGED (squash c8b045d).
