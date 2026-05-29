@@ -20,6 +20,14 @@ class FakeBus:
         if mapping:
             self.latest[key] = dict(mapping)
 
+    async def set_hash(self, key: str, mapping: dict[str, str]) -> None:
+        # persistent hash (no TTL) — merge into existing
+        if mapping:
+            self.latest.setdefault(key, {}).update(mapping)
+
+    async def delete(self, key: str) -> None:
+        self.latest.pop(key, None)
+
     async def get_latest(self, key: str) -> dict[str, str]:
         return self.latest.get(key, {})
 
@@ -29,6 +37,10 @@ class FakeBus:
     async def sadd(self, key: str, *members: str) -> None:
         if members:
             self.sets.setdefault(key, set()).update(members)
+
+    async def srem(self, key: str, *members: str) -> None:
+        if key in self.sets:
+            self.sets[key].difference_update(members)
 
     async def smembers(self, key: str) -> set[str]:
         return self.sets.get(key, set())

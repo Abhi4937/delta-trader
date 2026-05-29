@@ -17,6 +17,7 @@ import time
 from typing import Any
 
 import httpx
+import orjson
 from tenacity import (
     retry,
     retry_if_exception_type,
@@ -26,6 +27,7 @@ from tenacity import (
 
 from app.core.config import settings
 from app.core.logging import logger
+from app.services.live.auth_gate import get_auth_bucket
 
 
 class DeltaAuthError(RuntimeError):
@@ -77,7 +79,9 @@ class DeltaRestClient:
         path: str,
         *,
         params: dict[str, Any] | None = None,
+        body: dict[str, Any] | None = None,
         auth: bool = False,
+        order_placing: bool = False,
     ) -> Any:
         headers: dict[str, str] = {"Accept": "application/json"}
         # Build a deterministic, alphabetically-sorted query string for signing AND
@@ -86,23 +90,35 @@ class DeltaRestClient:
             sorted((k, str(v)) for k, v in params.items()) if params else []
         )
         query = "?" + "&".join(f"{k}={v}" for k, v in sorted_items) if sorted_items else ""
+        body_str = orjson.dumps(body).decode() if body is not None else ""
 
         if auth:
-            if not settings.live_trading_enabled:
-                raise DeltaAuthError(
-                    "Authenticated Delta call blocked: live_trading_enabled is false"
-                )
+            # Reads need only keys; order-placing additionally needs live trading on.
             if not self._api_key or not self._api_secret:
                 raise DeltaAuthError("Authenticated Delta call requires api key + secret")
+            if order_placing and not settings.live_trading_enabled:
+                raise DeltaAuthError("Order placement blocked: live_trading_enabled is false")
+            # Shared auth token bucket protects the account-wide rate limit.
+            await get_auth_bucket().acquire(block=not order_placing)
             ts = str(int(time.time()))
-            signature = _sign(self._api_secret, method.upper(), ts, path, query, "")
+            signature = _sign(self._api_secret, method.upper(), ts, path, query, body_str)
             headers.update({"api-key": self._api_key, "timestamp": ts, "signature": signature})
-            logger.info("delta auth request", method=method, path=path)
+            # Log intent WITHOUT keys or signature.
+            logger.info("delta auth request", method=method, path=path, order_placing=order_placing)
+
+        if body is not None:
+            headers["Content-Type"] = "application/json"
 
         # dict preserves insertion order (== sorted), so the sent query matches
         # the signed query string byte-for-byte.
         ordered_params = dict(sorted_items)
-        resp = await self._client.request(method, path, params=ordered_params, headers=headers)
+        resp = await self._client.request(
+            method,
+            path,
+            params=ordered_params,
+            headers=headers,
+            content=body_str if body is not None else None,
+        )
         if resp.status_code >= 500:
             resp.raise_for_status()  # retryable
         resp.raise_for_status()
@@ -140,9 +156,26 @@ class DeltaRestClient:
             params={"symbol": symbol, "resolution": resolution, "start": start, "end": end},
         )
 
-    # --- authenticated (gated) -------------------------------------------
+    # --- authenticated reads (keys only) ---------------------------------
     async def get_positions(self) -> Any:
         return await self._request("GET", "/v2/positions/margined", auth=True)
 
     async def get_open_orders(self) -> Any:
         return await self._request("GET", "/v2/orders", params={"state": "open"}, auth=True)
+
+    # --- authenticated writes (keys + live_trading_enabled) --------------
+    async def place_order(self, payload: dict[str, Any]) -> Any:
+        """Place an order. ``order_placing=True`` enforces the live-trading guard
+        and uses non-blocking rate limiting (burst-sensitive)."""
+        return await self._request(
+            "POST", "/v2/orders", body=payload, auth=True, order_placing=True
+        )
+
+    async def cancel_order(self, order_id: int, product_id: int) -> Any:
+        return await self._request(
+            "DELETE",
+            "/v2/orders",
+            body={"id": order_id, "product_id": product_id},
+            auth=True,
+            order_placing=True,
+        )
