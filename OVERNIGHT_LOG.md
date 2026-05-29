@@ -163,3 +163,13 @@ Duration: ~66 min (19:52 -> 20:58 UTC)
 - Soak (15 min): backend mem 93.19->93.33 MiB (flat, no leak), rv bars 553->598 (~3/min), 0 NEW tracebacks.
 - Edge cases (report): ADX 3-stage warm-up + DX zero-guard; RSI flat->50; MACD signal seeded over contiguous defined macd; ATR TR0 undefined. IV/RV anomaly: rv_historical from ticks_minute daily is NULL until ~30d of data; /mtm sources it from Delta daily candles (documented in INDICATORS.md; RV panel renders whichever window has data).
 - Commits: 270fab4 ADR, 7aff75f backend, c21a494/42bae43 frontend, 6dde5d4 fixes+graphify+docs. PR #5 MERGED (squash c8b045d).
+
+## 2026-05-29 (cont) — Phase 5 — Deploy, harden, polish (v1.0.0)
+- ADR 0006 (single Oracle VM + compose). Prod overlay (caddy TLS only published; restart+limits; !reset host ports), Caddyfile (/api strip-prefix, /ws, security headers), systemd unit.
+- Observability: /metrics (prometheus_client counters + MTM histogram), /health/deep freshness (tick<60s, bar<180s), optional Prometheus+Grafana overlay + dashboard, Healthchecks.io pinger. Backups: backup.sh + RUNBOOK_BACKUPS.
+- Security: bearer-token gate on /api/* (constant-time, /health+/metrics exempt, WS ?token=), slowapi 60/min/route, env CORS, pip-audit+pnpm audit (orjson/python-dotenv bumped; starlette multipart-CVEs N/A no-uploads + pyarrow not-exposed documented in SECURITY.md). 77 backend tests (+bearer-gate tests).
+- Frontend polish: sonner toasts, ConnectionBadge, empty states+skeletons, keyboard shortcuts, VITE_API_TOKEN passthrough, favicon/meta, AA contrast. 58 vitest + 5 e2e green.
+- Docs: DEPLOY_ORACLE.md, README + ARCHITECTURE refresh, graphify + callflow export.
+- Final reviewer: 1 real must-fix (runbook Docker install -> get.docker.com) fixed; 1 dismissed (auto-migration claim true — backend entrypoint runs alembic upgrade head). NITs fixed: VITE_API_TOKEN build-arg, constant-time compare, Caddy security headers, slowapi XFF note.
+- Representative soak (15min, prod backend, 1 paper position): mem 105.6->107.7 MiB (converging, deltas +1.2/+0.6/+0.3 = no leak), bars +1/min, 0 reconnects, 0 tracebacks. Full 24h soak is for the user post-Oracle-deploy (docs/SOAK_REPORT.md).
+- NOT done by me (needs user): actual Oracle Cloud deploy (account/KYC/billing) + 24h soak + testnet drill. All documented.

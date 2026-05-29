@@ -4,6 +4,8 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import type { OptionRow } from "../lib/api";
 import { parseSymbol } from "../lib/symbols";
 import { fmt, toDecimal } from "../lib/decimal";
+import Skeleton from "./Skeleton";
+import EmptyState from "./EmptyState";
 
 interface OptionChainTableProps {
   rows: OptionRow[];
@@ -149,16 +151,19 @@ export default function OptionChainTable({
 
   if (isLoading && strikes.length === 0) {
     return (
-      <div className="flex h-40 items-center justify-center text-neutral">
-        Loading option chain…
+      <div className="rounded border border-[var(--color-border)]">
+        <Skeleton rows={10} />
       </div>
     );
   }
 
   if (strikes.length === 0) {
     return (
-      <div className="flex h-40 items-center justify-center text-neutral">
-        No option chain data.
+      <div className="rounded border border-[var(--color-border)]">
+        <EmptyState
+          title="No option chain data"
+          hint="Waiting for rows for this expiry…"
+        />
       </div>
     );
   }

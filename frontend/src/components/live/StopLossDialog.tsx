@@ -10,6 +10,7 @@ import {
   type SlState,
   type StopLossSpec,
 } from "../../lib/liveApi";
+import { toast } from "../../lib/toast";
 
 interface StopLossDialogProps {
   strategyId: number;
@@ -62,6 +63,17 @@ export default function StopLossDialog({
     return e instanceof Error ? e.message : "Stop-loss request failed.";
   }
 
+  /** Short toast copy per error class (spec wording). */
+  function toastError(e: unknown): void {
+    if (e instanceof LiveTradingDisabledError) {
+      toast.error("Enable live trading to arm a stop-loss");
+    } else if (e instanceof NotConfiguredError) {
+      toast.error("Configure Delta API keys first");
+    } else {
+      toast.error(e instanceof Error ? e.message : "Stop-loss request failed");
+    }
+  }
+
   async function onArm(): Promise<void> {
     if (!canConfirm) return;
     setBusy(true);
@@ -73,9 +85,11 @@ export default function StopLossDialog({
     try {
       await setStopLoss(strategyId, spec);
       await qc.invalidateQueries({ queryKey: ["live-strategies"] });
+      toast.success("SL armed");
       onClose();
     } catch (e) {
       setError(mapError(e));
+      toastError(e);
     } finally {
       setBusy(false);
     }
@@ -87,9 +101,11 @@ export default function StopLossDialog({
     try {
       await clearStopLoss(strategyId);
       await qc.invalidateQueries({ queryKey: ["live-strategies"] });
+      toast.success("SL disarmed");
       onClose();
     } catch (e) {
       setError(mapError(e));
+      toastError(e);
     } finally {
       setBusy(false);
     }

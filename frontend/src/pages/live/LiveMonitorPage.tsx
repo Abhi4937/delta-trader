@@ -4,6 +4,8 @@ import LivePositionsTable from "../../components/live/LivePositionsTable";
 import StrategyGrouper from "../../components/live/StrategyGrouper";
 import LiveStrategyDetail from "../../components/live/LiveStrategyDetail";
 import SlBadge from "../../components/live/SlBadge";
+import Skeleton from "../../components/Skeleton";
+import EmptyState from "../../components/EmptyState";
 import { useLivePositions, useLiveStrategies } from "../../hooks/useLiveData";
 import { Decimal, toDecimal } from "../../lib/decimal";
 import type { LiveStrategy } from "../../lib/liveApi";
@@ -15,7 +17,7 @@ function pnlClass(d: Decimal | null): string {
 
 export default function LiveMonitorPage(): JSX.Element {
   const { positions, isLoading, notConfigured } = useLivePositions();
-  const { strategies } = useLiveStrategies();
+  const { strategies, isLoading: strategiesLoading } = useLiveStrategies();
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const selected = useMemo(
@@ -59,6 +61,7 @@ export default function LiveMonitorPage(): JSX.Element {
               strategies={strategies}
               selectedId={selectedId}
               onSelect={setSelectedId}
+              isLoading={strategiesLoading}
             />
           </section>
 
@@ -77,11 +80,24 @@ function StrategiesTable({
   strategies,
   selectedId,
   onSelect,
+  isLoading,
 }: {
   strategies: LiveStrategy[];
   selectedId: number | null;
   onSelect: (id: number) => void;
+  isLoading?: boolean;
 }): JSX.Element {
+  if (isLoading && strategies.length === 0) {
+    return (
+      <div
+        className="overflow-hidden rounded border border-[var(--color-border)]"
+        data-testid="live-strategies-table"
+      >
+        <Skeleton rows={3} />
+      </div>
+    );
+  }
+
   return (
     <div
       className="overflow-hidden rounded border border-[var(--color-border)]"
@@ -136,9 +152,10 @@ function StrategiesTable({
         </tbody>
       </table>
       {strategies.length === 0 && (
-        <div className="py-6 text-center text-sm text-neutral">
-          No strategies yet — group positions above to create one.
-        </div>
+        <EmptyState
+          title="No strategies yet"
+          hint="Group positions above to create one."
+        />
       )}
     </div>
   );

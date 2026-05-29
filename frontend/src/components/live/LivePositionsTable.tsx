@@ -2,6 +2,8 @@ import React from "react";
 import clsx from "clsx";
 import type { LivePosition } from "../../lib/liveApi";
 import { Decimal, fmt, toDecimal } from "../../lib/decimal";
+import Skeleton from "../Skeleton";
+import EmptyState from "../EmptyState";
 
 interface LivePositionsTableProps {
   positions: LivePosition[];
@@ -80,6 +82,18 @@ export default function LivePositionsTable({
     );
   }
 
+  // Initial load (configured): pulsing skeleton until the first snapshot.
+  if (isLoading && positions.length === 0) {
+    return (
+      <div
+        className="overflow-hidden rounded border border-[var(--color-border)]"
+        data-testid="live-positions-table"
+      >
+        <Skeleton rows={4} />
+      </div>
+    );
+  }
+
   return (
     <div
       className="overflow-hidden rounded border border-[var(--color-border)]"
@@ -103,9 +117,10 @@ export default function LivePositionsTable({
         </tbody>
       </table>
       {positions.length === 0 && (
-        <div className="py-6 text-center text-sm text-neutral">
-          {isLoading ? "Loading live positions…" : "No live positions."}
-        </div>
+        <EmptyState
+          title="No live positions"
+          hint="Open positions on your Delta account will appear here."
+        />
       )}
     </div>
   );

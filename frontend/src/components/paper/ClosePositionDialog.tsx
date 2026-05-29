@@ -9,6 +9,7 @@ import {
 import { Decimal, fmt, toDecimal } from "../../lib/decimal";
 import { useOptionChain } from "../../hooks/useOptionChain";
 import { parseSymbol } from "../../lib/symbols";
+import { toast } from "../../lib/toast";
 
 interface ClosePositionDialogProps {
   position: PaperPosition;
@@ -55,12 +56,18 @@ export default function ClosePositionDialog({
       await qc.invalidateQueries({ queryKey: ["paper-mtm", position.id] });
       setRealized(res.close.realized_pnl);
       setPhase("closed");
+      const pnl = toDecimal(res.close.realized_pnl);
+      toast.success(
+        `Position #${position.id} closed · realized PnL $${pnl ? pnl.toFixed(2) : res.close.realized_pnl}`,
+      );
     } catch (e) {
       if (e instanceof InsufficientDepthError) {
         setInsufficient(true);
         setError(e.message);
+        toast.error("Insufficient depth to close — try again shortly");
       } else {
         setError(e instanceof Error ? e.message : "Close failed.");
+        toast.error(e instanceof Error ? e.message : "Close failed");
       }
       setPhase("error");
     }

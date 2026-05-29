@@ -16,6 +16,7 @@ from decimal import Decimal
 
 from sqlalchemy import text
 
+from app.core import metrics
 from app.core.config import settings
 from app.core.logging import logger
 from app.db.session import get_sessionmaker
@@ -152,6 +153,7 @@ class SLMonitor:
     async def _do_close(self, sid: int, state: dict[str, str]) -> None:
         await self._bus.set_hash(_key(sid), {"state": CLOSING, "triggered_at": _now()})
         await _event(sid, state.get("state"), CLOSING, {})
+        metrics.sl_triggered.inc()
         attempts = int(state.get("attempts", "0")) + 1
         try:
             result = await self._closer.close_strategy(sid, confirm=True)

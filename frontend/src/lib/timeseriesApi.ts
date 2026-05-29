@@ -4,6 +4,8 @@
 // Returns a tidy frame `{fields, points:[{ts, <field>:str|null}]}`. All numeric
 // fields are Decimal-as-strings (or null) on the wire — never floats.
 
+import { authHeaders } from "./api";
+
 const API_BASE = "/api";
 
 export type TimeseriesField =
@@ -54,7 +56,7 @@ const DEFAULT_FIELDS: TimeseriesField[] = [
 
 async function getJSON<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { Accept: "application/json" },
+    headers: authHeaders(),
   });
   if (res.status === 503) throw new TimeseriesNotConfiguredError();
   if (!res.ok) {

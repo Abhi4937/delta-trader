@@ -4,6 +4,8 @@ import type { PaperPosition } from "../../lib/paperApi";
 import { isStale } from "../../lib/paperApi";
 import { Decimal, toDecimal } from "../../lib/decimal";
 import { usePaperMtm } from "../../hooks/usePaperMtm";
+import Skeleton from "../Skeleton";
+import EmptyState from "../EmptyState";
 
 interface PaperPositionsTableProps {
   positions: PaperPosition[];
@@ -113,6 +115,18 @@ export default function PaperPositionsTable({
   onClose,
   isLoading,
 }: PaperPositionsTableProps): JSX.Element {
+  // Initial load: pulsing skeleton while we have no rows yet.
+  if (isLoading && positions.length === 0) {
+    return (
+      <div
+        className="overflow-hidden rounded border border-[var(--color-border)]"
+        data-testid="paper-positions-table"
+      >
+        <Skeleton rows={4} />
+      </div>
+    );
+  }
+
   return (
     <div
       className="overflow-hidden rounded border border-[var(--color-border)]"
@@ -143,9 +157,10 @@ export default function PaperPositionsTable({
         </tbody>
       </table>
       {positions.length === 0 && (
-        <div className="py-6 text-center text-sm text-neutral">
-          {isLoading ? "Loading positions…" : "No open positions."}
-        </div>
+        <EmptyState
+          title="No paper positions yet — build a strategy"
+          hint="Use the strategy builder above, then Preview and Execute."
+        />
       )}
     </div>
   );

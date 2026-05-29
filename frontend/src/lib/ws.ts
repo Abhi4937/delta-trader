@@ -117,21 +117,31 @@ export function onLiveStrategyFrame(fn: LiveStrategyListener): () => void {
 // ---------------------------------------------------------------------------
 // Store
 // ---------------------------------------------------------------------------
+/** Coarse WS connection status surfaced to the UI (ConnectionBadge). */
+export type WsStatus = "connected" | "reconnecting" | "disconnected";
+
 export interface ChainState {
   /** latest option_chain rows keyed by expiry code */
   chains: Record<string, OptionRow[]>;
   /** latest spot candle close (string|null) */
   spotClose: string | null;
   connected: boolean;
+  /** coarse connection status for the ConnectionBadge */
+  status: WsStatus;
+  /** epoch ms of the last message received (null = none yet) */
+  lastMessageAt: number | null;
   /** internal: apply a coalesced batch of frames */
   _applyBatch: (frames: ServerFrame[]) => void;
   _setConnected: (c: boolean) => void;
+  _setStatus: (s: WsStatus) => void;
 }
 
 export const useChainStore = create<ChainState>((set) => ({
   chains: {},
   spotClose: null,
   connected: false,
+  status: "disconnected",
+  lastMessageAt: null,
   _applyBatch: (frames) =>
     set((state) => {
       let chains = state.chains;
@@ -150,10 +160,30 @@ export const useChainStore = create<ChainState>((set) => ({
           spotClose = cdf.close;
         }
       }
-      return { chains, spotClose };
+      // Stamp the last-message time once per flushed batch (RAF cadence).
+      return { chains, spotClose, lastMessageAt: Date.now() };
     }),
-  _setConnected: (c) => set({ connected: c }),
+  _setConnected: (c) =>
+    set({ connected: c, status: c ? "connected" : "disconnected" }),
+  _setStatus: (s) => set({ status: s }),
 }));
+
+/**
+ * Snapshot of the WS status for non-reactive callers. Components should prefer
+ * subscribing via `useChainStore` selectors (e.g. ConnectionBadge).
+ */
+export function getWsStatus(): {
+  status: WsStatus;
+  connected: boolean;
+  lastMessageAt: number | null;
+} {
+  const s = useChainStore.getState();
+  return {
+    status: s.status,
+    connected: s.connected,
+    lastMessageAt: s.lastMessageAt,
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Singleton WebSocket with RAF-batched flush.
@@ -180,7 +210,13 @@ function hasWindow(): boolean {
 
 function wsUrl(): string {
   const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
-  return `${proto}//${window.location.host}/ws`;
+  let url = `${proto}//${window.location.host}/ws`;
+  // VITE_API_TOKEN: optional bearer token for a gated prod backend. When set,
+  // append it as a query param (WS can't carry an Authorization header). Unset
+  // in dev -> no token, backend is permissive.
+  const token = import.meta.env.VITE_API_TOKEN as string | undefined;
+  if (token) url += `?token=${encodeURIComponent(token)}`;
+  return url;
 }
 
 function startFlushLoop(): void {
@@ -250,6 +286,9 @@ function ensureSocket(): void {
     if (socket === ws) socket = null;
     useChainStore.getState()._setConnected(false);
     if (reconnectTimer !== null) return;
+    // We have subscriptions we intend to keep -> show "reconnecting", not a
+    // bare "disconnected", while the backoff timer is pending.
+    useChainStore.getState()._setStatus("reconnecting");
     reconnectTimer = setTimeout(() => {
       reconnectTimer = null;
       ensureSocket();

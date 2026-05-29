@@ -5,6 +5,10 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
+# Optional platform bearer token, inlined at build time so the gated prod UI can
+# authenticate to its own backend. Pass with: --build-arg VITE_API_TOKEN=...
+ARG VITE_API_TOKEN=""
+ENV VITE_API_TOKEN=$VITE_API_TOKEN
 RUN pnpm build
 
 # --- serve stage ---

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#0a0a0a"/>
+  <!-- candle wick -->
+  <rect x="14.5" y="5" width="3" height="22" fill="#10b981"/>
+  <!-- candle body -->
+  <rect x="10" y="11" width="12" height="12" rx="1.5" fill="#10b981"/>
+  <!-- delta glyph -->
+  <path d="M16 13 L20 21 L12 21 Z" fill="#0a0a0a"/>
+</svg>

@@ -1,0 +1,43 @@
+{
+  "title": "Delta Trader",
+  "uid": "delta-trader-main",
+  "schemaVersion": 39,
+  "version": 1,
+  "time": { "from": "now-6h", "to": "now" },
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1, "title": "Tick rate (per s)", "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [{ "expr": "rate(ticks_received_total[1m])", "legendFormat": "ticks/s" }]
+    },
+    {
+      "id": 2, "title": "MTM compute latency p99 (ms)", "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [{ "expr": "histogram_quantile(0.99, rate(mtm_compute_duration_ms_bucket[5m]))", "legendFormat": "p99" }]
+    },
+    {
+      "id": 3, "title": "Minute bars persisted (total)", "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 8 },
+      "targets": [{ "expr": "ticks_persisted_total" }]
+    },
+    {
+      "id": 4, "title": "Paper strategies executed", "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 8 },
+      "targets": [{ "expr": "paper_strategies_executed_total" }]
+    },
+    {
+      "id": 5, "title": "Stop-loss triggers", "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 8 },
+      "targets": [{ "expr": "sl_triggered_total" }]
+    },
+    {
+      "id": 6, "title": "Delta errors / WS reconnects", "type": "timeseries",
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 8 },
+      "targets": [
+        { "expr": "rate(delta_api_errors_total[5m])", "legendFormat": "errors/s" },
+        { "expr": "rate(delta_ws_reconnect_count[5m])", "legendFormat": "reconnects/s" }
+      ]
+    }
+  ]
+}

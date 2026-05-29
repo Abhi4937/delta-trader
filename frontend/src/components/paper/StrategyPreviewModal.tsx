@@ -10,6 +10,7 @@ import {
 } from "../../lib/paperApi";
 import { Decimal } from "../../lib/decimal";
 import { estimatedSlippageCost, netGreeks, type MathLeg } from "../../lib/strategy-math";
+import { toast } from "../../lib/toast";
 
 interface StrategyPreviewModalProps {
   spec: StrategySpec;
@@ -60,17 +61,20 @@ export default function StrategyPreviewModal({
     setError(null);
     setInsufficient(false);
     try {
-      await executeStrategy({ strategy_id: preview.strategy_id });
+      const pos = await executeStrategy({ strategy_id: preview.strategy_id });
       await qc.invalidateQueries({ queryKey: ["paper-positions"] });
       setPhase("executed");
+      toast.success(`Position #${pos.id} opened`);
       // brief confirmation then close
       window.setTimeout(onClose, 600);
     } catch (e) {
       if (e instanceof InsufficientDepthError) {
         setInsufficient(true);
         setError(e.message);
+        toast.error("Insufficient orderbook depth — order not filled");
       } else {
         setError(e instanceof Error ? e.message : "Execute failed.");
+        toast.error(e instanceof Error ? e.message : "Execute failed");
       }
       setPhase("error");
     }

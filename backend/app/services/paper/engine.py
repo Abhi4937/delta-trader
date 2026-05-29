@@ -15,6 +15,7 @@ from typing import Any
 
 from sqlalchemy import select, text
 
+from app.core import metrics
 from app.core.config import settings
 from app.core.logging import logger
 from app.db.session import get_sessionmaker
@@ -181,6 +182,7 @@ class PaperEngine:
             pos_id = int(pos.id)
         await self._event(pos_id, "executed", {"entry_cost": str(result.entry_cost)})
         await self._bus.publish("paper:events", f"executed:{pos_id}")
+        metrics.paper_strategies_executed.inc()
         logger.info("paper position executed", position_id=pos_id, legs=len(result.legs))
         return pos_id
 

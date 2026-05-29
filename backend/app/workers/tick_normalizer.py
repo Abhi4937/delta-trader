@@ -13,6 +13,7 @@ from typing import Any
 
 import orjson
 
+from app.core import metrics
 from app.core.logging import logger
 from app.models.market import Tick
 from app.services.redis_bus import RedisBus, get_bus
@@ -142,6 +143,7 @@ class TickNormalizer:
             return
         await self._bus.set_latest(f"latest:{tick.symbol}", tick.to_redis_mapping())
         self._buffer.add(tick)
+        metrics.ticks_received.inc()
 
     def stop(self) -> None:
         self._running = False

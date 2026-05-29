@@ -308,8 +308,11 @@ export default function SpotChart({
       <div className="relative h-72 w-full rounded border border-[var(--color-border)] bg-bg">
         <div ref={mainRef} className="h-full w-full" data-testid="spot-chart-main" />
         {bars.length === 0 && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-neutral">
-            {candlesQuery.isLoading ? "Loading candles…" : "No candle data"}
+          <div
+            className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-neutral"
+            data-testid="empty-state"
+          >
+            {candlesQuery.isLoading ? "Loading candles…" : "waiting for candles…"}
           </div>
         )}
       </div>

@@ -88,3 +88,28 @@ rebuilt from Postgres on restart, idempotent re-flush. See ADR 0003 §11.
 Tick-to-MTM stays in-process (WS → normalize → Redis → fan-out), Postgres off the
 hot path. Frontend updates are RAF-coalesced (PnL number 4 Hz, chart/greeks 1 Hz);
 the WS hub throttles to ≤2 Hz per channel.
+
+## Live monitor (Phase 3) — see ADR 0004
+Read-only by default. `services/live/` syncs real positions/orders (authenticated
+REST + WS) into Redis, aggregates MTM/Greeks/IV/RV over user-tagged strategies
+(reusing `quant/`), and runs a **stop-loss state machine** (ARMED → TRIGGERED →
+CLOSING → CLOSED|FAILED, Redis-persisted, restart-resumes). The only write path is
+the `closer` (market `reduce_only` orders), gated by a single `require_auth`:
+keys → 503, `live_trading_enabled` → 403, per-request `confirm` → 422; a shared
+token bucket → 429. `live_mtm_minute` mirrors `paper_mtm_minute`.
+
+## Indicators / IV / RV (Phase 4) — see ADR 0005
+Indicators are **pure frontend functions** of the price series (EMA/RSI/MACD/
+Bollinger/ATR/ADX, Wilder smoothing, `null` warm-up). The backend persists
+`rv_intraday`/`rv_historical` per minute and serves `/positions|strategies/{id}/timeseries`
+plus a cached `/spot/candles` proxy. Charts live under detail tabs
+(Overview | PnL | Greeks | IV/RV | Spot). See `docs/INDICATORS.md`.
+
+## Production (Phase 5) — see ADR 0006
+Single Oracle Always-Free VM: Caddy (TLS, 80/443) → backend (`/api`, `/ws`) +
+frontend (static); postgres/redis internal-only. Prod overlay
+(`docker-compose.prod.yml`) adds `restart: unless-stopped` + memory limits and
+publishes only Caddy; a systemd unit starts it at boot. Observability is an optional
+overlay (Prometheus `/metrics` + Grafana). Security: optional `API_BEARER_TOKEN`
+gate on `/api/*`, per-IP rate limiting (slowapi), env-driven CORS, nightly `pg_dump`.
+See `docs/DEPLOY_ORACLE.md`, `docs/RUNBOOK_BACKUPS.md`, `SECURITY.md`.

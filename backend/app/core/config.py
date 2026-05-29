@@ -65,10 +65,20 @@ class Settings(BaseSettings):
     auth_rate_limit_per_sec: float = 10.0
     sl_debounce_ticks: int = 3
 
+    # Deploy / ops (Phase 5)
+    healthcheck_ping_url: str = ""  # Healthchecks.io URL; pinged every 60s if set
+    api_bearer_token: str = ""  # if set, required on /api/* (enforced in prod)
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+
     @computed_field  # type: ignore[prop-decorator]
     @property
     def underlying_list(self) -> list[str]:
         return [u.strip().upper() for u in self.underlyings.split(",") if u.strip()]
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def cors_origin_list(self) -> list[str]:
+        return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
     @computed_field  # type: ignore[prop-decorator]
     @property

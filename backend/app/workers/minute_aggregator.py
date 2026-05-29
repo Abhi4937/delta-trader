@@ -12,6 +12,7 @@ from datetime import UTC, datetime
 
 import asyncpg
 
+from app.core import metrics
 from app.core.config import settings
 from app.core.logging import logger
 from app.workers.minute_buffer import ROW_COLUMNS, MinuteAccumulator, MinuteBuffer
@@ -74,6 +75,7 @@ class MinuteAggregator:
         except Exception:
             self._buffer.readd(drained)
             raise
+        metrics.ticks_persisted.inc(len(drained))
         logger.info("minute bars persisted", rows=len(drained))
         return len(drained)
 

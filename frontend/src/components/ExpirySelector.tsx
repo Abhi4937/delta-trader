@@ -1,3 +1,4 @@
+import type { Ref } from "react";
 import type { Expiry } from "../lib/api";
 
 interface ExpirySelectorProps {
@@ -5,6 +6,8 @@ interface ExpirySelectorProps {
   value: string | null;
   onChange: (expiryCode: string) => void;
   disabled?: boolean;
+  /** optional ref to the <select> so the "/" shortcut can focus it. */
+  selectRef?: Ref<HTMLSelectElement>;
 }
 
 export default function ExpirySelector({
@@ -12,11 +15,13 @@ export default function ExpirySelector({
   value,
   onChange,
   disabled,
+  selectRef,
 }: ExpirySelectorProps): JSX.Element {
   return (
     <label className="flex items-center gap-2 text-sm text-neutral">
       <span>Expiry</span>
       <select
+        ref={selectRef}
         className="rounded border border-[var(--color-border)] bg-[var(--color-panel)] px-2 py-1 font-mono text-text outline-none focus:border-green disabled:opacity-50"
         value={value ?? ""}
         disabled={disabled || expiries.length === 0}
